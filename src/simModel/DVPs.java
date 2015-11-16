@@ -21,4 +21,25 @@ class DVPs
 	   return(nextTime);
 	}
 	------------------------------------------------------------*/
+	
+	
+	//Return cycle time in minute according to test type.
+	protected double getUCycleTime(TestMachine.Type type){
+		
+		double cycleTime = 0;
+		
+		if(type == TestMachine.Type.CELL1) 
+			cycleTime = 0.71;
+		else if(type == TestMachine.Type.CELL2)
+			cycleTime = 0.85;
+		else if(type == TestMachine.Type.CELL3)
+			cycleTime = 1.03;
+		else if(type == TestMachine.Type.CELL4)
+			cycleTime = 1.24;
+		else if(type == TestMachine.Type.CELL5)
+			cycleTime = 1.7;
+		
+		return cycleTime;
+		
+	}
 }

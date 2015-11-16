@@ -2,8 +2,7 @@ package simModel;
 
 public class MaintenanceEmployee {
 
-	int tid;						//the id of test machine being served
-	enum State{BUSY,AVAILABLE};		
-	State state;					//the state of the employee
+	TestMachine testMachine;		//The test machine currently being served by the employee.
+									//"NONE" means no machine is being served.
 	
 }

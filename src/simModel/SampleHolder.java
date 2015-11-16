@@ -2,7 +2,7 @@ package simModel;
 
 public class SampleHolder {
 
-	Sample sample;			//the sample in the sample holder.
-							//if the value is NULL, then there's no sample.
+	Sample sample;			//The sample in the sample holder.
+							//If the value is NULL, then there's no sample.
 	
 }

@@ -18,7 +18,7 @@ public class SMLabTesting extends AOSimulationModel
         // Define the parameters
 	protected int numTestMachines[];
 	protected int numSampleHolders;
-	//maxNumSampleHolders
+	protected int maxEmptySampleHolders;
 	/*-------------Entity Data Structures-------------------*/
 	/* Group and Queue Entities */
 	protected ArrayList<SampleHolder> rqTransportationLoop = new ArrayList<SampleHolder>();
@@ -31,8 +31,9 @@ public class SMLabTesting extends AOSimulationModel
 	// Define the reference variables to the various 
 	// entities with scope Set and Unary
 	// Objects can be created here or in the Initialise Action
-    protected Sample sample;
 	protected SampleHolder sampleHolder[];
+	protected TestMachine textMachine[][];
+	protected LoadUnloadMachine loadUnloadMachine;
     protected MaintenanceEmployee maintenanceEmployee;
 	/* Input Variables */
 	// Define any Independent Input Varaibles here
