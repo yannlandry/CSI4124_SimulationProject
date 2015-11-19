@@ -1,5 +1,7 @@
 package simModel;
 
+import simulationModelling.OutputSequence;
+
 class Output 
 {
 	SMLabTesting model;
@@ -9,7 +11,8 @@ class Output
     // Trajectory Sequences
 
     // Sample Sequences
-
+	OutputSequence phiNormalTestingTime;
+	OutputSequence phiRushTestingTime;
     // DSOVs available in the OutputSequence objects
     // If seperate methods required to process Trajectory or Sample
     // Sequences - add them here

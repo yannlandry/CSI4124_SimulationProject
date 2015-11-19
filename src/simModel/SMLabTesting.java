@@ -2,6 +2,9 @@ package simModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
@@ -22,10 +25,10 @@ public class SMLabTesting extends AOSimulationModel
 	/*-------------Entity Data Structures-------------------*/
 	/* Group and Queue Entities */
 	protected ArrayList<SampleHolder> rqTransportationLoop = new ArrayList<SampleHolder>();
-	protected ArrayList<SampleHolder> qLoadUnloadWaitingLine = new ArrayList<SampleHolder>();
-	protected HashMap<Integer, ArrayList<SampleHolder>> qInputQueue = new HashMap<Integer, ArrayList<SampleHolder>>();
-	protected HashMap<Integer, ArrayList<SampleHolder>> qTestCellWaitingLine = new HashMap<Integer, ArrayList<SampleHolder>>();
-	protected HashMap<Integer, ArrayList<SampleHolder>> qExitLine = new HashMap<Integer, ArrayList<SampleHolder>>();
+	protected ArrayBlockingQueue<SampleHolder> qLoadUnloadWaitingLine = new ArrayBlockingQueue<SampleHolder>(5);
+	protected HashMap<Integer, ArrayBlockingQueue<SampleHolder>> qInputQueue = new HashMap<Integer, ArrayBlockingQueue<SampleHolder>>();
+	protected HashMap<Integer, ArrayBlockingQueue<SampleHolder>> qTestCellWaitingLine = new HashMap<Integer, ArrayBlockingQueue<SampleHolder>>();
+	protected HashMap<Integer, ArrayBlockingQueue<SampleHolder>> qExitLine = new HashMap<Integer, ArrayBlockingQueue<SampleHolder>>();
 	protected ArrayList<TestMachine> qMachineTeBeRepaired = new ArrayList<TestMachine>();
 	protected ArrayList<TestMachine> qMachineTeBeCleaned = new ArrayList<TestMachine>();
 	// Define the reference variables to the various 
