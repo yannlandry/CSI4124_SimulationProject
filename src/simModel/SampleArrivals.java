@@ -19,8 +19,10 @@ public class SampleArrivals {
 		icSample.startTime = model.getClock();
 		
 		if(icSample.type.equals(Sample.Type.NORMAL)){
-			model.qInputQueue
+			model.qInputQueue.get(Constants.NORMAL).add(icSample);
 		}
+		else
+			model.qInputQueue.get(Constants.RUSH).add(icSample);
 	}
 	
 }

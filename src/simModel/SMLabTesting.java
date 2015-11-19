@@ -26,7 +26,9 @@ public class SMLabTesting extends AOSimulationModel
 	/* Group and Queue Entities */
 	protected ArrayList<SampleHolder> rqTransportationLoop = new ArrayList<SampleHolder>();
 	protected ArrayBlockingQueue<SampleHolder> qLoadUnloadWaitingLine = new ArrayBlockingQueue<SampleHolder>(5);
-	protected HashMap<Integer, ArrayBlockingQueue<SampleHolder>> qInputQueue = new HashMap<Integer, ArrayBlockingQueue<SampleHolder>>();
+	protected HashMap<Integer, ArrayBlockingQueue<Sample>> qInputQueue = new HashMap<Integer, ArrayBlockingQueue<Sample>>();
+	protected ArrayBlockingQueue<Sample> qInputQueueN = new ArrayBlockingQueue<Sample>(3);
+	protected ArrayBlockingQueue<Sample> qInputQueueR = new ArrayBlockingQueue<Sample>(3);
 	protected HashMap<Integer, ArrayBlockingQueue<SampleHolder>> qTestCellWaitingLine = new HashMap<Integer, ArrayBlockingQueue<SampleHolder>>();
 	protected HashMap<Integer, ArrayBlockingQueue<SampleHolder>> qExitLine = new HashMap<Integer, ArrayBlockingQueue<SampleHolder>>();
 	protected ArrayList<TestMachine> qMachineTeBeRepaired = new ArrayList<TestMachine>();
@@ -81,7 +83,9 @@ public class SMLabTesting extends AOSimulationModel
 		// rgCounter and qCustLine objects created in Initalise Action
 		
 		// Initialise the simulation model
-		initAOSimulModel(t0time,tftime);   
+		initAOSimulModel(t0time,tftime);  
+		this.qInputQueue.put(Constants.NORMAL, qInputQueueN);
+		this.qInputQueue.put(Constants.RUSH, qInputQueueR);
 
 		     // Schedule the first arrivals and employee scheduling
 		Initialise init = new Initialise(this);
