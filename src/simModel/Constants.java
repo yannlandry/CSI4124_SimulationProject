@@ -20,7 +20,13 @@ class Constants
 	protected final static int STN_SPACING = 8;
 	//The distance between the entry point of a test cell or the load/unload area and its exit point.
 	protected final static int NX_SPACING = 3;
+	//Value to indicate that something is empty, or not servicing anything. It is an empty reference.
+	protected final static int NONE = -1;
+	//There are no sample. It is an empty reference
+	protected final static Sample NO_SAMPLE = null;
+	//Value to indicate the number of test that can be performed by the machine tester in CELL2 before it needs to be cleaned
+	protected final static int NUMB_TEST_BEFORE = 300;
 	
 	//Not yet decided by CM team:
-	//NONE, NO_SAMPLE, NO_SAMPLEHOLDER, NUMBER_TEST, PROPN_RUSH, PROPN_NORMAL
+	//EMPTY_SEQ, NONE_WAITING
 }

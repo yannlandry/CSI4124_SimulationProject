@@ -79,75 +79,75 @@ class RVPs
 	}
 	
 	//RVP for SampleType
-	private final double PROPN_NORMAL = 0.93;
+	private final double PCT_N = 0.93;
 	// PROPN_RUSH = 7%, but not needed for calculation
 	MersenneTwister typeRandGen;
 	public Sample.Type sampleType(){
 		double randNum = typeRandGen.nextDouble();
 		Sample.Type type;
-		if(randNum<PROPN_NORMAL) type = Sample.Type.NORMAL;
+		if(randNum<PCT_N) type = Sample.Type.NORMAL;
 		else type = Sample.Type.RUSH;
 		return(type);
 	}
 	
 	//RVP for sample test sequence
-	private final double PROPN_1 = 0.22;
-	private final double PROPN_2 = 0.46;
-	private final double PROPN_3 = 1.00;
-	private final double PROPN_4 = 0.71;
-	private final double PROPN_5 = 0.13;
-	private final double PROPN_6 = 0.33;
-	private final double PROPN_7 = 0.85;
-	private final double PROPN_8 = 0.06;
-	private final double PROPN_9 = 0.59;
+	private final double PCT_1 = 0.22;
+	private final double PCT_2 = 0.46;
+	private final double PCT_3 = 1.00;
+	private final double PCT_4 = 0.71;
+	private final double PCT_5 = 0.13;
+	private final double PCT_6 = 0.33;
+	private final double PCT_7 = 0.85;
+	private final double PCT_8 = 0.06;
+	private final double PCT_9 = 0.59;
 	
 	public ArrayList<Integer> sampleSequence(){
 		double randNum = typeRandGen.nextDouble();
 		ArrayList<Integer> sequence = new ArrayList<Integer>();
-		if(randNum<PROPN_8){
+		if(randNum<PCT_8){
 			sequence.add(5);
 			sequence.add(3);
 			sequence.add(1);
 		}
-		else if(randNum<PROPN_5){
+		else if(randNum<PCT_5){
 			sequence.add(2);
 			sequence.add(5);
 			sequence.add(1);
 		}
-		else if(randNum<PROPN_1){
+		else if(randNum<PCT_1){
 			sequence.add(1);
 			sequence.add(2);
 			sequence.add(4);
 			sequence.add(5);
 		}
-		else if(randNum<PROPN_6){
+		else if(randNum<PCT_6){
 			sequence.add(4);
 			sequence.add(5);
 			sequence.add(2);
 			sequence.add(3);
 		}
-		else if(randNum<PROPN_4){
+		else if(randNum<PCT_4){
 			sequence.add(4);
 			sequence.add(3);
 			sequence.add(2);
 		}
-		else if(randNum<PROPN_2){
+		else if(randNum<PCT_2){
 			sequence.add(3);
 			sequence.add(4);
 			sequence.add(5);
 		}
-		else if(randNum<PROPN_9){
+		else if(randNum<PCT_9){
 			sequence.add(2);
 			sequence.add(4);
 			sequence.add(5);
 		}
-		else if(randNum<PROPN_7){
+		else if(randNum<PCT_7){
 			sequence.add(1);
 			sequence.add(5);
 			sequence.add(3);
 			sequence.add(4);
 		}
-		else if(randNum<PROPN_3){
+		else if(randNum<PCT_3){
 			sequence.add(1);
 			sequence.add(2);
 			sequence.add(3);
@@ -156,6 +156,7 @@ class RVPs
 		
 		return sequence;
 	}
+	
 	
 	private double triangularDistribution(double a, double b, double c) {
 	    double F = (c - a) / (b - a);
