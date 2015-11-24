@@ -32,14 +32,14 @@ class RVPs
 	
 	/* Random Variate Procedure for Arrivals */
 	private Exponential interArrDist;  // Exponential distribution for interarrival times
-	private final double MEAN1=3600/119, MEAN2=3600/107, MEAN3=3600/100,
-						 MEAN4=3600/113, MEAN5=3600/123, MEAN6=3600/116,
-						 MEAN7=3600/107, MEAN8=3600/121, MEAN9=3600/131,
-						 MEAN10=3600/152, MEAN11=3600/171, MEAN12=3600/191,
-						 MEAN13=3600/200, MEAN14=3600/178, MEAN15=3600/171,
-						 MEAN16=3600/152, MEAN17=3600/134, MEAN18=3600/147,
-						 MEAN19=3600/165, MEAN20=3600/155, MEAN21=3600/149,
-						 MEAN22=3600/134, MEAN23=3600/119, MEAN24=3600/116;
+	private final double MEAN1=60/119, MEAN2=60/107, MEAN3=60/100,
+						 MEAN4=60/113, MEAN5=60/123, MEAN6=60/116,
+						 MEAN7=60/107, MEAN8=60/121, MEAN9=60/131,
+						 MEAN10=60/152, MEAN11=60/171, MEAN12=60/191,
+						 MEAN13=60/200, MEAN14=60/178, MEAN15=60/171,
+						 MEAN16=60/152, MEAN17=60/134, MEAN18=60/147,
+						 MEAN19=60/165, MEAN20=60/155, MEAN21=60/149,
+						 MEAN22=60/134, MEAN23=60/119, MEAN24=60/116;
 	
 	protected double duSampleInput()  // for getting next value of duInput
 	{
@@ -48,30 +48,30 @@ class RVPs
         nxtInterArr = interArrDist.nextDouble();
 	    // Note that interarrival time is added to current
 	    // clock value to get the next arrival time.
-        if(model.getClock()<3600) mean = MEAN1;
-        else if (model.getClock()<7200) mean = MEAN2;
-        else if (model.getClock()<10800) mean = MEAN3;
-        else if (model.getClock()<14400) mean = MEAN4;
-        else if (model.getClock()<18000) mean = MEAN5;
-        else if (model.getClock()<21600) mean = MEAN6;
-        else if (model.getClock()<25200) mean = MEAN7;
-        else if (model.getClock()<28800) mean = MEAN8;
-        else if (model.getClock()<32400) mean = MEAN9;
-        else if (model.getClock()<36000) mean = MEAN10;
-        else if (model.getClock()<39600) mean = MEAN11;
-        else if (model.getClock()<43200) mean = MEAN12;
-        else if (model.getClock()<46800) mean = MEAN13;
-        else if (model.getClock()<50400) mean = MEAN14;
-        else if (model.getClock()<54000) mean = MEAN15;
-        else if (model.getClock()<57600) mean = MEAN16;
-        else if (model.getClock()<61200) mean = MEAN17;
-        else if (model.getClock()<64800) mean = MEAN18;
-        else if (model.getClock()<68400) mean = MEAN19;
-        else if (model.getClock()<72000) mean = MEAN20;
-        else if (model.getClock()<75600) mean = MEAN21;
-        else if (model.getClock()<79200) mean = MEAN22;
-        else if (model.getClock()<82800) mean = MEAN23;
-        else if (model.getClock()<84600) mean = MEAN24;
+        if(model.getClock()<60) mean = MEAN1;
+        else if (model.getClock()<120) mean = MEAN2;
+        else if (model.getClock()<180) mean = MEAN3;
+        else if (model.getClock()<240) mean = MEAN4;
+        else if (model.getClock()<300) mean = MEAN5;
+        else if (model.getClock()<360) mean = MEAN6;
+        else if (model.getClock()<420) mean = MEAN7;
+        else if (model.getClock()<480) mean = MEAN8;
+        else if (model.getClock()<540) mean = MEAN9;
+        else if (model.getClock()<600) mean = MEAN10;
+        else if (model.getClock()<660) mean = MEAN11;
+        else if (model.getClock()<720) mean = MEAN12;
+        else if (model.getClock()<780) mean = MEAN13;
+        else if (model.getClock()<840) mean = MEAN14;
+        else if (model.getClock()<900) mean = MEAN15;
+        else if (model.getClock()<960) mean = MEAN16;
+        else if (model.getClock()<1020) mean = MEAN17;
+        else if (model.getClock()<1080) mean = MEAN18;
+        else if (model.getClock()<1140) mean = MEAN19;
+        else if (model.getClock()<1200) mean = MEAN20;
+        else if (model.getClock()<1260) mean = MEAN21;
+        else if (model.getClock()<1320) mean = MEAN22;
+        else if (model.getClock()<1380) mean = MEAN23;
+        else if (model.getClock()<1440) mean = MEAN24;
         
         nxtInterArr = model.getClock() + interArrDist.nextDouble(mean);
         //Why do we use model.getClock() twice???????
