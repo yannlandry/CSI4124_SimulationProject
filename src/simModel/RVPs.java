@@ -1,8 +1,10 @@
 package simModel;
 
+import java.security.KeyStore.LoadStoreParameter;
 import java.util.ArrayList;
 
 import cern.jet.random.Exponential;
+import cern.jet.random.Normal;
 import cern.jet.random.engine.MersenneTwister;
 
 class RVPs 
@@ -19,18 +21,21 @@ class RVPs
 	{ 
 		this.model = model; 
 		// Set up distribution functions
-		interArrDist = new Exponential(MEAN1,  
-				                       new MersenneTwister(sd.seed1));
+		interArrDist = new Exponential(MEAN1, new MersenneTwister(sd.seed1));
 		loadUnloadTime = triangularDistribution(0.18, 0.23, 0.45);
 		cleaningTime = triangularDistribution(5, 6, 10);
-//		repairTime = 
+		repairTime1 = new Normal(MEAN_R_1, SD_R_1, new MersenneTwister(sd.seed2));
+		repairTime3 = new Normal(MEAN_R_3, SD_R_3, new MersenneTwister(sd.seed3));
+		repairTime4 = new Normal(MEAN_R_4, SD_R_4, new MersenneTwister(sd.seed4));
+		repairTime5 = new Normal(MEAN_R_5, SD_R_5, new MersenneTwister(sd.seed5));
+		timeToFail1 = new Normal(MEAN_F_1, SD_F_1, new MersenneTwister(sd.seed6));
+		timeToFail3 = new Normal(MEAN_F_3, SD_F_3, new MersenneTwister(sd.seed7));
+		timeToFail4 = new Normal(MEAN_F_4, SD_F_4, new MersenneTwister(sd.seed8));
+		timeToFail5 = new Normal(MEAN_F_5, SD_F_5, new MersenneTwister(sd.seed9));
 	}
 	
-	private double loadUnloadTime;
-	private double cleaningTime;
-	private double repairTime;
 	
-	/* Random Variate Procedure for Arrivals */
+	//RVP for sample arrivals
 	private Exponential interArrDist;  // Exponential distribution for interarrival times
 	private final double MEAN1=60/119, MEAN2=60/107, MEAN3=60/100,
 						 MEAN4=60/113, MEAN5=60/123, MEAN6=60/116,
@@ -157,7 +162,80 @@ class RVPs
 		return sequence;
 	}
 	
+	//RVP for loadUnload time
+	private double loadUnloadTime;
 	
+	public double uLoadUnloadTime(){
+		return loadUnloadTime;
+	}
+	
+	//RVP for loadUnload time
+	private double cleaningTime;
+	
+	public double uCleaningTime(){
+		return cleaningTime;
+	}
+	
+	//RVP for repair time
+	private final double MEAN_R_1 = 11;
+	private final double MEAN_R_3 = 7;
+	private final double MEAN_R_4 = 14;
+	private final double MEAN_R_5 = 13;
+	private final double SD_R_1 = Math.sqrt(MEAN_R_1*0.2);
+	private final double SD_R_3 = Math.sqrt(MEAN_R_3*0.2);
+	private final double SD_R_4 = Math.sqrt(MEAN_R_4*0.2);
+	private final double SD_R_5 = Math.sqrt(MEAN_R_5*0.2);
+	
+	private Normal repairTime1;
+	private Normal repairTime3;
+	private Normal repairTime4;
+	private Normal repairTime5;
+	
+	public double uRepairTime(TestMachine.Type type){
+		double time = 0;
+		if(type.equals(TestMachine.Type.CELL1))
+			time = repairTime1.nextDouble();
+		else if(type.equals(TestMachine.Type.CELL3))
+			time = repairTime3.nextDouble();
+		else if(type.equals(TestMachine.Type.CELL4))
+			time = repairTime4.nextDouble();
+		else if(type.equals(TestMachine.Type.CELL5))
+			time = repairTime5.nextDouble();
+		
+		return time;	
+	}
+	
+	//RVP for time to fail
+	private final double MEAN_F_1 = 840;
+	private final double MEAN_F_3 = 540;
+	private final double MEAN_F_4 = 900;
+	private final double MEAN_F_5 = 960;
+	private final double SD_F_1 = Math.sqrt(MEAN_F_1*0.2);
+	private final double SD_F_3 = Math.sqrt(MEAN_F_3*0.2);
+	private final double SD_F_4 = Math.sqrt(MEAN_F_4*0.2);
+	private final double SD_F_5 = Math.sqrt(MEAN_F_5*0.2);
+	
+	private Normal timeToFail1;
+	private Normal timeToFail3;
+	private Normal timeToFail4;
+	private Normal timeToFail5;
+	
+	public double uTimeToFail(TestMachine.Type type){
+		double time = 0;
+		if(type.equals(TestMachine.Type.CELL1))
+			time = timeToFail1.nextDouble();
+		else if(type.equals(TestMachine.Type.CELL3))
+			time = timeToFail3.nextDouble();
+		else if(type.equals(TestMachine.Type.CELL4))
+			time = timeToFail4.nextDouble();
+		else if(type.equals(TestMachine.Type.CELL5))
+			time = timeToFail5.nextDouble();
+		
+		return time;	
+	}
+	
+	
+	//Triangular distribution
 	private double triangularDistribution(double a, double b, double c) {
 	    double F = (c - a) / (b - a);
 	    double rand = Math.random();
