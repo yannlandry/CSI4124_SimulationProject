@@ -1,5 +1,7 @@
 package simModel;
 
+import hep.aida.ref.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -24,20 +26,19 @@ public class SMLabTesting extends AOSimulationModel
 	protected int maxEmptySampleHolders;
 	/*-------------Entity Data Structures-------------------*/
 	/* Group and Queue Entities */
-	protected ArrayList<SampleHolder> rqTransportationLoop = new ArrayList<SampleHolder>();
+	//protected ArrayList<SampleHolder> rqTransportationLoop = new ArrayList<SampleHolder>();
 	protected ArrayBlockingQueue<SampleHolder> qLoadUnloadWaitingLine = new ArrayBlockingQueue<SampleHolder>(5);
-	protected HashMap<Integer, ArrayBlockingQueue<Sample>> qInputQueue = new HashMap<Integer, ArrayBlockingQueue<Sample>>();
-	protected ArrayBlockingQueue<Sample> qInputQueueN = new ArrayBlockingQueue<Sample>(3);
-	protected ArrayBlockingQueue<Sample> qInputQueueR = new ArrayBlockingQueue<Sample>(3);
-	protected HashMap<Integer, ArrayBlockingQueue<SampleHolder>> qTestCellWaitingLine = new HashMap<Integer, ArrayBlockingQueue<SampleHolder>>();
-	protected HashMap<Integer, ArrayBlockingQueue<SampleHolder>> qExitLine = new HashMap<Integer, ArrayBlockingQueue<SampleHolder>>();
-	protected ArrayList<TestMachine> qMachineTeBeRepaired = new ArrayList<TestMachine>();
-	protected ArrayList<TestMachine> qMachineTeBeCleaned = new ArrayList<TestMachine>();
+	protected InputQueue[] qInputQueue = new InputQueue[2];
+	protected TestCellWaitingLine[] qTestCellWaitingLine = new TestCellWaitingLine[5];
+	protected ExitLine[] qExitLine = new ExitLine[6];
+	protected ArrayList<Integer[]> qMachineTeBeRepaired = new ArrayList<Integer[]>();
+	protected ArrayList<Integer[]> qMachineTeBeCleaned = new ArrayList<Integer[]>();
 	// Define the reference variables to the various 
 	// entities with scope Set and Unary
 	// Objects can be created here or in the Initialise Action
 	protected SampleHolder sampleHolder[];
-	protected TestMachine textMachine[][];
+	protected TransportationLoop rqTransportationLoop;
+	protected HashMap<Integer, ArrayList<TestMachine>> testMachine = new HashMap<Integer, ArrayList<TestMachine>>();
 	protected LoadUnloadMachine loadUnloadMachine;
     protected MaintenanceEmployee maintenanceEmployee;
 	/* Input Variables */
@@ -72,7 +73,7 @@ public class SMLabTesting extends AOSimulationModel
 	// Constructor
 	public SMLabTesting(double t0time, double tftime, /*define other args,*/ Seeds sd)
 	{
-		// Initialise parameters here
+		// Initialize parameters here
 		numTestMachines = new int[] {1,1,1,1,1};
 		numSampleHolders = 5;
 		//maxNumSampleHolders
@@ -80,17 +81,25 @@ public class SMLabTesting extends AOSimulationModel
 		// Create RVP object with given seed
 		rvp = new RVPs(this,sd);
 		
-		// rgCounter and qCustLine objects created in Initalise Action
+		// rgCounter and qCustLine objects created in Initialize Action
 		
-		// Initialise the simulation model
-		initAOSimulModel(t0time,tftime);  
-		this.qInputQueue.put(Constants.NORMAL, qInputQueueN);
-		this.qInputQueue.put(Constants.RUSH, qInputQueueR);
+		// Initialize the simulation model
+		initAOSimulModel(t0time,tftime);
+		ArrayList<TestMachine> testMachineCell1 = new ArrayList<TestMachine>();
+		ArrayList<TestMachine> testMachineCell2 = new ArrayList<TestMachine>();
+		ArrayList<TestMachine> testMachineCell3 = new ArrayList<TestMachine>();
+		ArrayList<TestMachine> testMachineCell4 = new ArrayList<TestMachine>();
+		ArrayList<TestMachine> testMachineCell5 = new ArrayList<TestMachine>();
+		testMachine.put(Constants.CELL1, testMachineCell1);
+		testMachine.put(Constants.CELL2, testMachineCell2);
+		testMachine.put(Constants.CELL3, testMachineCell3);
+		testMachine.put(Constants.CELL4, testMachineCell4);
+		testMachine.put(Constants.CELL5, testMachineCell5);
 
-		     // Schedule the first arrivals and employee scheduling
+		// Schedule the first arrivals and employee scheduling
 		Initialise init = new Initialise(this);
 		scheduleAction(init);  // Should always be first one scheduled.
-		// Schedule other scheduled actions and acitvities here
+		// Schedule other scheduled actions and activities here
 		SampleArrivals sampleArrivals = new SampleArrivals(this);
 		scheduleAction(sampleArrivals);
 	}

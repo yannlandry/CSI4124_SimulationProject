@@ -1,10 +1,12 @@
 package simModel;
 
-public class SampleArrivals {
+import simulationModelling.ScheduledAction;
+
+public class SampleArrivals extends ScheduledAction {
 
 	SMLabTesting model;
 	//constructor
-	public SampleArrivals(){
+	public SampleArrivals(SMLabTesting model){
 		this.model = model;
 	}
 	//time sequence
@@ -19,10 +21,10 @@ public class SampleArrivals {
 		icSample.startTime = model.getClock();
 		
 		if(icSample.type.equals(Sample.Type.NORMAL)){
-			model.qInputQueue.get(Constants.NORMAL).add(icSample);
+			model.qInputQueue[Constants.NORMAL].inputQueue.add(icSample);
 		}
 		else
-			model.qInputQueue.get(Constants.RUSH).add(icSample);
+			model.qInputQueue[Constants.RUSH].inputQueue.add(icSample);
 	}
 	
 }

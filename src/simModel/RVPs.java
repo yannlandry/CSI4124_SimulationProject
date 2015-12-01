@@ -191,16 +191,35 @@ class RVPs
 	private Normal repairTime4;
 	private Normal repairTime5;
 	
-	public double uRepairTime(TestMachine.Type type){
+	public double uRepairTime(int cellID){
 		double time = 0;
-		if(type.equals(TestMachine.Type.CELL1))
-			time = repairTime1.nextDouble();
-		else if(type.equals(TestMachine.Type.CELL3))
-			time = repairTime3.nextDouble();
-		else if(type.equals(TestMachine.Type.CELL4))
-			time = repairTime4.nextDouble();
-		else if(type.equals(TestMachine.Type.CELL5))
-			time = repairTime5.nextDouble();
+//		int key = 0;
+//		
+//		if(model.testMachine.containsValue(tM)){
+//			for(int k : model.testMachine.keySet()){
+//				if(model.testMachine.get(k).contains(tM)){
+//					key = k;
+//					break;
+//				}
+//			}
+//		}
+		
+		switch (cellID){
+			case Constants.CELL1:
+				time = repairTime1.nextDouble();
+				break;
+			case Constants.CELL3:
+				time = repairTime3.nextDouble();
+				break;
+			case Constants.CELL4:
+				time = repairTime4.nextDouble();
+				break;
+			case Constants.CELL5:
+				time = repairTime5.nextDouble();
+				break;
+			default:
+				break;
+		}
 		
 		return time;	
 	}
@@ -220,16 +239,35 @@ class RVPs
 	private Normal timeToFail4;
 	private Normal timeToFail5;
 	
-	public double uTimeToFail(TestMachine.Type type){
+	public double uTimeToFail(int cellID){
 		double time = 0;
-		if(type.equals(TestMachine.Type.CELL1))
-			time = timeToFail1.nextDouble();
-		else if(type.equals(TestMachine.Type.CELL3))
-			time = timeToFail3.nextDouble();
-		else if(type.equals(TestMachine.Type.CELL4))
-			time = timeToFail4.nextDouble();
-		else if(type.equals(TestMachine.Type.CELL5))
-			time = timeToFail5.nextDouble();
+//		int key = 0;
+//		
+//		if(model.testMachine.containsValue(tM)){
+//			for(int k : model.testMachine.keySet()){
+//				if(model.testMachine.get(k).contains(tM)){
+//					key = k;
+//					break;
+//				}
+//			}
+//		}
+		
+		switch (cellID){
+			case Constants.CELL1:
+				time = timeToFail1.nextDouble();
+				break;
+			case Constants.CELL3:
+				time = timeToFail3.nextDouble();
+				break;
+			case Constants.CELL4:
+				time = timeToFail4.nextDouble();
+				break;
+			case Constants.CELL5:
+				time = timeToFail5.nextDouble();
+				break;
+			default:
+				break;
+		}
 		
 		return time;	
 	}

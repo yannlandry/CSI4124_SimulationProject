@@ -1,5 +1,8 @@
 package simModel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 class DVPs 
 {
 	SMLabTesting model;  // for accessing the clock
@@ -24,14 +27,42 @@ class DVPs
 	
 	
 	//Return cycle time in minute according to test type.
-	protected double getUCycleTime(TestMachine.Type type){
+	protected double getUCycleTime(int cellID){
 		double cycleTime = 0;
-		if(type.equals(TestMachine.Type.CELL1)) cycleTime = 0.77;
-		else if(type.equals(TestMachine.Type.CELL2)) cycleTime = 0.85;
-		else if(type.equals(TestMachine.Type.CELL3)) cycleTime = 1.03;
-		else if(type.equals(TestMachine.Type.CELL4)) cycleTime = 1.24;
-		else if(type.equals(TestMachine.Type.CELL5)) cycleTime = 1.7;
+//		int key = 0;
+//		
+//		if(model.testMachine.containsValue(tM)){
+//			for(int k : model.testMachine.keySet()){
+//				if(model.testMachine.get(k).contains(tM)){
+//					key = k;
+//					break;
+//				}
+//			}
+//		}
 		
+		switch (cellID){
+			case Constants.CELL1:
+				cycleTime = 0.77;
+				break;
+			case Constants.CELL2:
+				cycleTime = 0.85;
+				break;
+			case Constants.CELL3:
+				cycleTime = 1.03;
+				break;
+			case Constants.CELL4:
+				cycleTime = 1.24;
+				break;
+			//case Constants.CELL5
+			default:
+				cycleTime = 1.7;			
+		}
+			
 		return cycleTime;		
+	}
+	
+	//The returned value is the rotation time in minute of the transportation loop.
+	protected double move1PosTime(){
+		return 1/60;
 	}
 }

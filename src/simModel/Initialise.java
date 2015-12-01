@@ -22,7 +22,21 @@ class Initialise extends ScheduledAction
 	{
 		// System Initialisation
                 // Add initilisation instructions 
+		model.qInputQueue[Constants.NORMAL].n = Constants.NONE_WAITING;
+		model.qInputQueue[Constants.RUSH].n = Constants.NONE_WAITING;
 		
+		model.qExitLine[Constants.LUA].n = Constants.NONE_WAITING;
+		
+		int index = 0;
+		
+		while(index<model.numSampleHolders){
+			model.sampleHolder[index].sampleRef = Constants.NO_SAMPLE;
+			index += 1;
+		}
+		
+		while((model.qLoadUnloadWaitingLine.size()<Constants.LUA_Q_LEN) && (model.numSampleHolders>0)){
+			
+		}
 
 		
 	}
