@@ -29,6 +29,13 @@ class Initialise extends ScheduledAction
 		
 		int index = 0;
 		
+		while(index < Constants.TLOOP_LEN){
+			model.rqTransportationLoop.positions[index] = Constants.NONE;
+		}
+		model.rqTransportationLoop.offset = 0;
+		
+		index = 0;
+		
 		while(index<model.numSampleHolders){
 			model.sampleHolder[index].sampleRef = Constants.NO_SAMPLE;
 			index += 1;
@@ -52,6 +59,8 @@ class Initialise extends ScheduledAction
 			model.output.totalEntryAttempts[cid] = 0;
 			model.output.pctUnsuccessfulEntry[cid] = 0;
 		}
+		
+		
 		
 
 		
