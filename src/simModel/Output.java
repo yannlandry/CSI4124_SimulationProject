@@ -18,4 +18,9 @@ class Output
     // Sequences - add them here
 
     // SSOVs
+	protected int[] totalEntryAttempts = new int[6];
+	protected int[] unsuccessfulEntry = new int[6];
+	protected double[] pctUnsuccessfulEntry = new double[6];
+		
+	
 }

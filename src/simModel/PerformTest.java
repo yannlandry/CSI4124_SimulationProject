@@ -1,22 +1,16 @@
 package simModel;
 
-import simulationModelling.ConditionalActivity;
+public class PerformTest {
 
-public class LoadUnload extends ConditionalActivity {
-
-	SMLabTesting model;
+SMLabTesting model;
 	
 	//Constructor
-	protected LoadUnload(SMLabTesting model){
+	protected PerformTest(SMLabTesting model){
 		this.model = model;
 	}
 	//Precondition
 	protected static boolean precondition(SMLabTesting model){
-		boolean returnValue = false;
-		if((model.qLoadUnloadWaitingLine.size()!=Constants.NONE_WAITING)&&
-				(model.loadUnloadMachine.sampleHolderID==Constants.NONE)){
-			returnValue = true;
-		}
+		boolean returnValue = model.udp.CanPerformTest()
 		return returnValue;
 	}
 	

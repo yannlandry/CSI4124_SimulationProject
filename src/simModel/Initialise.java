@@ -34,9 +34,26 @@ class Initialise extends ScheduledAction
 			index += 1;
 		}
 		
-		while((model.qLoadUnloadWaitingLine.size()<Constants.LUA_Q_LEN) && (model.numSampleHolders>0)){
-			
+		model.loadUnloadMachine.sampleHolderID = Constants.NONE;
+		model.qExitLine[Constants.LUA].n = Constants.NONE_WAITING;
+		model.rqTransportationLoop.offset = 0;
+		
+		for(int cid=Constants.CELL1;cid<=Constants.CELL5;cid++){
+			model.qTestCellWaitingLine[cid].n = Constants.NONE_WAITING;
 		}
+		
+		model.udp.sampleHolderInitialPosition();
+		model.udp.testMachineInitialization();
+		
+		int[] testMachineNONE = {Constants.NONE, Constants.NONE};
+		model.maintenanceEmployee.testMachineID = testMachineNONE;
+		
+		for(int cid=Constants.CELL1;cid<=Constants.LUA;cid++){
+			model.output.unsuccessfulEntry[cid] = 0;
+			model.output.totalEntryAttempts[cid] = 0;
+			model.output.pctUnsuccessfulEntry[cid] = 0;
+		}
+		
 
 		
 	}

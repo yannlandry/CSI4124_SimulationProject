@@ -1,22 +1,15 @@
 package simModel;
 
-import simulationModelling.ConditionalActivity;
-
-public class LoadUnload extends ConditionalActivity {
-
+public class StartTest {
 	SMLabTesting model;
 	
 	//Constructor
-	protected LoadUnload(SMLabTesting model){
+	protected StartTest(SMLabTesting model){
 		this.model = model;
 	}
 	//Precondition
-	protected static boolean precondition(SMLabTesting model){
-		boolean returnValue = false;
-		if((model.qLoadUnloadWaitingLine.size()!=Constants.NONE_WAITING)&&
-				(model.loadUnloadMachine.sampleHolderID==Constants.NONE)){
-			returnValue = true;
-		}
+	protected static boolean precondition(int[] testMachineID){
+		boolean returnValue = model.udp.canStartTest(testMachineID[0],testMachineID[1]);
 		return returnValue;
 	}
 	
@@ -54,5 +47,4 @@ public class LoadUnload extends ConditionalActivity {
 		model.qExitLine[Constants.LUA].exitLine.add(model.loadUnloadMachine.sampleHolderID);
 		model.loadUnloadMachine.sampleHolderID = Constants.NONE;
 	}
-	
 }

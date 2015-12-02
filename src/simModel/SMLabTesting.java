@@ -27,12 +27,13 @@ public class SMLabTesting extends AOSimulationModel
 	/*-------------Entity Data Structures-------------------*/
 	/* Group and Queue Entities */
 	//protected ArrayList<SampleHolder> rqTransportationLoop = new ArrayList<SampleHolder>();
-	protected ArrayBlockingQueue<SampleHolder> qLoadUnloadWaitingLine = new ArrayBlockingQueue<SampleHolder>(5);
+	protected ArrayBlockingQueue<Integer> qLoadUnloadWaitingLine = new ArrayBlockingQueue<Integer>(Constants.LUA_Q_LEN);
 	protected InputQueue[] qInputQueue = new InputQueue[2];
 	protected TestCellWaitingLine[] qTestCellWaitingLine = new TestCellWaitingLine[5];
 	protected ExitLine[] qExitLine = new ExitLine[6];
 	protected ArrayList<Integer[]> qMachineTeBeRepaired = new ArrayList<Integer[]>();
 	protected ArrayList<Integer[]> qMachineTeBeCleaned = new ArrayList<Integer[]>();
+	protected ArrayList<Integer[]> qMaintenanceWaitingLine = new ArrayList<Integer[]>();
 	// Define the reference variables to the various 
 	// entities with scope Set and Unary
 	// Objects can be created here or in the Initialise Action

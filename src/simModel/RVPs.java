@@ -218,6 +218,7 @@ class RVPs
 				time = repairTime5.nextDouble();
 				break;
 			default:
+				System.out.println("No repairTime information for CELL2.");
 				break;
 		}
 		
@@ -266,6 +267,7 @@ class RVPs
 				time = timeToFail5.nextDouble();
 				break;
 			default:
+				System.out.println("No timeToFailure information for CELL2.");
 				break;
 		}
 		
