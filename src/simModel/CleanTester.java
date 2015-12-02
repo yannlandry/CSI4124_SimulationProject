@@ -2,17 +2,16 @@ package simModel;
 
 import simulationModelling.ConditionalActivity;
 
-public class RepairTester extends ConditionalActivity {
-
-	SMLabTesting model;
+public class CleanTester extends ConditionalActivity{
+SMLabTesting model;
 	
 	//Constructor
-	protected RepairTester(SMLabTesting model){
+	protected CleanTester(SMLabTesting model){
 		this.model = model;
 	}
 	//Precondition
 	protected static boolean precondition(SMLabTesting model){
-		boolean returnValue = model.udp.canRepairTester();
+		boolean returnValue = model.udp.canCleanTester();
 	}
 	
 	//Starting Event SCS
@@ -24,10 +23,9 @@ public class RepairTester extends ConditionalActivity {
 	}
 	
 	//Duration
-	public double duration(Integer[] testMachineID)  
+	public double duration()  
 	{ 
-		int cell_id = testMachineID[0];
-		return model.rvp.uRepairTime(cell_id);
+		return model.rvp.uCleaningTime();
 	}
 		
 	//Terminating Event SCS
@@ -35,10 +33,9 @@ public class RepairTester extends ConditionalActivity {
 		int cell_id = testMachineID[0];
 		int machine_id = testMachineID[1];
 				
-		model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure = model.rvp.uTimeToFail(cell_id);
+		model.testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning = Constants.NUM_TEST_BEFORE;
 		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.AVAILABLE;
 		
 		model.maintenanceEmployee.testMachineID = Constants.TM_NONE;	
 	}
-	
 }

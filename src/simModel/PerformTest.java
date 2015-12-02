@@ -10,43 +10,49 @@ SMLabTesting model;
 	}
 	//Precondition
 	protected static boolean precondition(SMLabTesting model){
-		boolean returnValue = model.udp.CanPerformTest()
+		boolean returnValue = model.udp.CanPerformTest();
 		return returnValue;
 	}
 	
 	//Starting Event SCS
-	public void startingEvent(){
+	public void startingEvent(Integer[] testMachineID){
 		Output output = model.output;
-		int ident = model.qLoadUnloadWaitingLine.remove();
-		model.loadUnloadMachine.sampleHolderID = ident;
+		int cell_id = testMachineID[0];
+		int machine_id = testMachineID[1];
 		
-		if(model.sampleHolder[ident].sampleRef!=Constants.NO_SAMPLE){
-			model.udp.SampleOutput(model.sampleHolder[ident].sampleRef);
-			model.sampleHolder[ident].sampleRef = Constants.NO_SAMPLE;
-		}
-		Sample icSample = new Sample();
-		if(model.qInputQueue[Constants.RUSH].n != Constants.NONE_WAITING){			
-			icSample = model.qInputQueue[Constants.RUSH].inputQueue.remove();
-			model.sampleHolder[ident].sampleRef = icSample;
-		}
-		else if(model.qInputQueue[Constants.NORMAL].n != Constants.NONE_WAITING){
-			icSample = model.qInputQueue[Constants.NORMAL].inputQueue.remove();
-			model.sampleHolder[ident].sampleRef = icSample;
+		if(model.testMachine.get(cell_id).get(machine_id).sampleHolderID == Constants.NONE){
+			int ident = model.qTestCellWaitingLine[cell_id].testCellWaitingLine.remove();
+			model.testMachine.get(cell_id).get(machine_id).sampleHolderID = ident;
+			model.qTestCellWaitingLine[cell_id].n -= 1;
 		}
 		
-		
+		model.testMachine.get(cell_id).get(machine_id).state.equals(TestMachine.State.BUSY);
 	}
 	
 	//Duration
-	public double duration()  
+	public double duration(Integer[] testMachineID)  
 	{ 
-		return model.rvp.uLoadUnloadTime();
+		int cell_id = testMachineID[0];
+		return model.dvp.getUCycleTime(cell_id);
 	}
 	
 	//Terminating Event SCS
-	public void terminateEvent(){
-		model.qExitLine[Constants.LUA].exitLine.add(model.loadUnloadMachine.sampleHolderID);
-		model.loadUnloadMachine.sampleHolderID = Constants.NONE;
+	public void terminatingEvent(Integer[] testMachineID){
+		int cell_id = testMachineID[0];
+		int machine_id = testMachineID[1];
+		model.qExitLine[cell_id].exitLine.add(model.testMachine.get(cell_id).get(machine_id).sampleHolderID);
+		model.testMachine.get(cell_id).get(machine_id).sampleHolderID = Constants.NONE;
+		
+		if(cell_id == Constants.CELL2){
+			model.testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning -= 1;
+			if(model.testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning == 0){
+				model.qMaintenanceWaitingLine.add(testMachineID);
+				model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.MAINTENANCE;
+			}
+		}
+		else{
+			model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure -= model.dvp.getUCycleTime(cell_id);
+		}
 	}
 	
 }

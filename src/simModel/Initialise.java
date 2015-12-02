@@ -45,8 +45,7 @@ class Initialise extends ScheduledAction
 		model.udp.sampleHolderInitialPosition();
 		model.udp.testMachineInitialization();
 		
-		int[] testMachineNONE = {Constants.NONE, Constants.NONE};
-		model.maintenanceEmployee.testMachineID = testMachineNONE;
+		model.maintenanceEmployee.testMachineID = Constants.TM_NONE;
 		
 		for(int cid=Constants.CELL1;cid<=Constants.LUA;cid++){
 			model.output.unsuccessfulEntry[cid] = 0;

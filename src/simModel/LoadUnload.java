@@ -50,7 +50,7 @@ public class LoadUnload extends ConditionalActivity {
 	}
 	
 	//Terminating Event SCS
-	public void terminateEvent(){
+	public void terminatingEvent(){
 		model.qExitLine[Constants.LUA].exitLine.add(model.loadUnloadMachine.sampleHolderID);
 		model.loadUnloadMachine.sampleHolderID = Constants.NONE;
 	}

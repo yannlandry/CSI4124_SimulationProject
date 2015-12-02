@@ -1,5 +1,7 @@
 package simModel;
 
+import simModel.TestMachine.State;
+
 public class StartTest {
 	SMLabTesting model;
 	
@@ -14,37 +16,31 @@ public class StartTest {
 	}
 	
 	//Starting Event SCS
-	public void startingEvent(){
+	public void startingEvent(Integer[] testMachineID){
 		Output output = model.output;
-		int ident = model.qLoadUnloadWaitingLine.remove();
-		model.loadUnloadMachine.sampleHolderID = ident;
-		
-		if(model.sampleHolder[ident].sampleRef!=Constants.NO_SAMPLE){
-			model.udp.SampleOutput(model.sampleHolder[ident].sampleRef);
-			model.sampleHolder[ident].sampleRef = Constants.NO_SAMPLE;
-		}
-		Sample icSample = new Sample();
-		if(model.qInputQueue[Constants.RUSH].n != Constants.NONE_WAITING){			
-			icSample = model.qInputQueue[Constants.RUSH].inputQueue.remove();
-			model.sampleHolder[ident].sampleRef = icSample;
-		}
-		else if(model.qInputQueue[Constants.NORMAL].n != Constants.NONE_WAITING){
-			icSample = model.qInputQueue[Constants.NORMAL].inputQueue.remove();
-			model.sampleHolder[ident].sampleRef = icSample;
+		int cell_id = testMachineID[0];
+		int machine_id = testMachineID[1];
+		if(model.testMachine.get(cell_id).get(machine_id).sampleHolderID == Constants.NONE){
+			int ident = model.qTestCellWaitingLine[cell_id].testCellWaitingLine.remove();
+			model.testMachine.get(cell_id).get(machine_id).sampleHolderID = ident;
 		}
 		
-		
+		model.testMachine.get(cell_id).get(machine_id).state.equals(TestMachine.State.BUSY);
 	}
 	
 	//Duration
-	public double duration()  
+	public double duration(Integer[] testMachineID)  
 	{ 
-		return model.rvp.uLoadUnloadTime();
+		int cell_id = testMachineID[0];
+		int machine_id = testMachineID[1];
+		return model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure;
 	}
 	
 	//Terminating Event SCS
-	public void terminateEvent(){
-		model.qExitLine[Constants.LUA].exitLine.add(model.loadUnloadMachine.sampleHolderID);
-		model.loadUnloadMachine.sampleHolderID = Constants.NONE;
+	public void terminatingEvent(Integer[] testMachineID){
+		int cell_id = testMachineID[0];
+		int machine_id = testMachineID[1];
+		model.qMaintenanceWaitingLine.add(testMachineID);
+		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.MAINTENANCE;
 	}
 }

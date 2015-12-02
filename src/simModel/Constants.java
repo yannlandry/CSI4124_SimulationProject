@@ -20,8 +20,10 @@ class Constants
 	protected final static int STN_SPACING = 8;
 	//The distance between the entry point of a test cell or the load/unload area and its exit point.
 	protected final static int NX_SPACING = 3;
-	//Value to indicate that something is empty, or not servicing anything. It is an empty reference.
+	//Empty ID for anything that is referenced with a single ID
 	protected final static int NONE = -1;
+	//Two-dimensional empty ID for a testMachine with cell and machine
+	protected final static Integer[] TM_NONE = {NONE, NONE};
 	//There are no sample. It is an empty reference
 	protected final static Sample NO_SAMPLE = null;
 	//Value to indicate that a queue is currently empty.
