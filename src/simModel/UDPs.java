@@ -135,20 +135,20 @@ class UDPs
 	protected boolean canRepairTester(){
 		return model.maintenanceEmployee.testMachineID == Constants.TM_NONE
 			&& model.qMaintenanceWaitingLine.size() != NONE_WAITING
-			&& model.qMaintenanceWaitingLine[0][0] != CELL2;
+			&& model.qMaintenanceWaitingLine.peek()[0] != CELL2;
 	}
 	 
 	protected boolean canCleanTester(){
 		return model.maintenanceEmployee.testMachineID == Constants.TM_NONE
 			&& model.qMaintenanceWaitingLine.size() != NONE_WAITING
-			&& model.qMaintenanceWaitingLine[0][0] == CELL2;
+			&& model.qMaintenanceWaitingLine.peek()[0] == CELL2;
 	}
 	 
 	protected int nextTestInSequence(Sample sampleRef){
 		if(sampleRef.testSequence.isEmpty())
 			return Constants.LUA;
 		else
-			return sampleRef.testSequence[0] - 1;
+			return sampleRef.testSequence.peek() - 1;
 	}
 	 
 	protected void popTestFromSequence(Sample sampleRef){

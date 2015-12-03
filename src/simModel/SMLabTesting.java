@@ -29,13 +29,13 @@ public class SMLabTesting extends AOSimulationModel
 	
 	/*----------Entities----------*/
 	/* Queues */
-	protected ArrayList<Sample>[] qInputQueue = new ArrayList<Sample>[2];
+	protected Queue<Sample>[] qInputQueue = new ArrayList<Sample>[2];
 
-	protected ArrayBlockingQueue<Integer>[] qTestCellWaitingLine = new ArrayBlockingQueue<Integer>[5]; // init in constructor
+	protected Queue<Integer>[] qTestCellWaitingLine = new ArrayBlockingQueue<Integer>[5]; // init in constructor
 	protected LoadUnloadWaitingLine qLoadUnloadWaitingLine = new LoadUnloadWaitingLine();
-	protected ArrayList<Integer> qExitLine = new ArrayList<Integer>[6];
+	protected Queue<Integer> qExitLine = new ArrayList<Integer>[6];
 
-	protected ArrayList<Integer[]> qMaintenanceWaitingLine = new ArrayList<Integer[]>();
+	protected Queue<Integer[]> qMaintenanceWaitingLine = new ArrayList<Integer[]>();
 
 	/* Not queues */
 	// Objects can be created here or in the Initialise Action
