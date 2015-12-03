@@ -7,168 +7,151 @@ class UDPs
 	// Constructor
 	protected UDPs(SMLabTesting model) { this.model = model; }
 
-	// Translate User Defined Procedures into methods
-    /*-------------------------------------------------
-	                       Example
-	    protected int ClerkReadyToCheckOut()
-        {
-        	int num = 0;
-        	Clerk checker;
-        	while(num < model.NumClerks)
-        	{
-        		checker = model.Clerks[num];
-        		if((checker.currentstatus == Clerk.status.READYCHECKOUT)  && checker.list.size() != 0)
-        		{return num;}
-        		num +=1;
-        	}
-        	return -1;
-        }
-	------------------------------------------------------------*/
-	 protected void updateSuccessfulSSOV(int cell_id){
-		 model.output.totalEntryAttempts[cell_id]++;
-		 model.output.pctUnsuccessfulEntry[cell_id] = model.output.unsuccessfulEntry[cell_id]/model.output.totalEntryAttempts[cell_id];
-	 }
+	protected void updateSuccessfulSSOV(int cell_id){
+		model.output.totalEntryAttempts[cell_id]++;
+		
+		model.output.pctUnsuccessfulEntry[cell_id]
+			= model.output.unsuccessfulEntry[cell_id] / model.output.totalEntryAttempts[cell_id];
+	}
 	 
-	 protected void updateUnsuccessfulSSOV(int cell_id){
-		 model.output.totalEntryAttempts[cell_id]++;
-		 model.output.unsuccessfulEntry[cell_id]++;
-		 model.output.pctUnsuccessfulEntry[cell_id] = model.output.unsuccessfulEntry[cell_id]/model.output.totalEntryAttempts[cell_id];
-	 }
+	protected void updateUnsuccessfulSSOV(int cell_id){
+		model.output.totalEntryAttempts[cell_id]++;
+		model.output.unsuccessfulEntry[cell_id]++;
+		
+		model.output.pctUnsuccessfulEntry[cell_id]
+			= model.output.unsuccessfulEntry[cell_id] / model.output.totalEntryAttempts[cell_id];
+	}
 	 
-	 protected void moveOffToCell(int index, int cell_id){
-		 int shIndex = model.rqTransportationLoop.positions[index];
+	protected void moveOffToCell(int index, int cell_id){
+		int shIndex = model.rqTransportationLoop.positions[index];
 		 
-		 if((shIndex != Constants.NONE)&&
-				 (model.sampleHolder[shIndex].sampleRef != Constants.NO_SAMPLE)){
-			 if(model.sampleHolder[shIndex].sampleRef.testSequence.get(0) == cell_id){
-				 model.qTestCellWaitingLine[cell_id].testCellWaitingLine.add(shIndex);
+		if(shIndex != Constants.NONE
+			&& model.sampleHolder[shIndex].sampleRef != Constants.NO_SAMPLE
+			&& model.sampleHolder[shIndex].sampleRef.testSequence.size() > 0
+			&& model.sampleHolder[shIndex].sampleRef.testSequence[0] == cell_id) {
+
+			// try to push in line
+			if(model.qTestCellWaitingLine[cell_id].offer(shIndex)) {
 				 updateSuccessfulSSOV(cell_id);
-				 PopTestFromSequence(model.sampleHolder[shIndex].sampleRef);
-			 }
-			 else{
+				 popTestFromSequence(model.sampleHolder[shIndex].sampleRef);
+			}
+			else {
 				 updateUnsuccessfulSSOV(cell_id);
-			 }
-		 }
-	 }
-	 
-	 protected void moveOffToLoadUnload(int index){
-		 int shIndex = model.rqTransportationLoop.positions[index];
-		 
-		 if((shIndex != Constants.NONE)&&
-				 (model.sampleHolder[shIndex].sampleRef != Constants.NO_SAMPLE)){
-			 if(model.sampleHolder[shIndex].sampleRef.testSequence.isEmpty()){
-				 if(model.qLoadUnloadWaitingLine.add(shIndex))
-					 model.rqTransportationLoop.positions[index] = Constants.NONE;
-			 }
-		 }
-		 else{
-			 if(model.qLoadUnloadWaitingLine.size() < model.maxEmptySampleHolders){
-				 if(model.qLoadUnloadWaitingLine.add(shIndex))
-					 model.rqTransportationLoop.positions[index] = Constants.NONE;
-			 }
+			}
 		}
-	 }
+	}
 	 
-	 protected void moveOffLoop(){
-		 int pos = 0;
-		 for(int i = Constants.CELL1; i<Constants.LUA; i++){
-			pos = Constants.TLOOP_LEN - ((model.rqTransportationLoop.offset + Constants.TLOOP_LEN - (i+1)*Constants.STN_SPACING) % Constants.TLOOP_LEN);
-			moveOffToCell(pos, i);
-		 }
+	protected void moveOffToLoadUnload(int index){
+		int shIndex = model.rqTransportationLoop.positions[index];
+		 
+		// sample holder at position?
+		if(shIndex != Constants.NONE) {
+			
+			// loaded with finished sample?
+			if(model.sampleHolder[shIndex].sampleRef != Constants.NO_SAMPLE
+				&& model.sampleHolder[shIndex].sampleRef.testSequence.isEmpty() // needs a udp here, nah?
+				&& model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.offer(shIndex)) {
+					
+					model.rqTransportationLoop.positions[index] = Constants.NONE;
+			}
+			
+			// unloaded, can we still insert?
+			else if(model.qLoadUnloadWaitingLine.numEmptyHolders < model.maxEmptyHolders
+				&& model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.offer(shIndex)) {
+				
+					model.rqTransportationLoop.positions[index] = Constants.NONE;
+					model.qLoadUnloadWaitingLine.numEmptyHolders++;
+			}
+		}
+	}
+	 
+	protected void moveOffLoop() {
+		for(int i = Constants.CELL1; i < Constants.LUA; i++)
+			moveOffToCell(Constants.TLOOP_LEN - ((model.rqTransportationLoop.offset + Constants.TLOOP_LEN - (i + 1) * Constants.STN_SPACING) % Constants.TLOOP_LEN), i);
 		 
 		moveOffToLoadUnload(Constants.TLOOP_LEN - model.rqTransportationLoop.offset);
 		 
-	 }
+	}
 	 
-	 protected void moveOn(int index, int cell_id){
-		 if((model.qExitLine[cell_id].exitLine.size()!=0)&&(model.rqTransportationLoop.positions[index] == Constants.NONE)){
-			 int shID = model.qExitLine[cell_id].exitLine.remove(0);
-			 model.rqTransportationLoop.positions[index] = shID;
-		 }
-	 }
-	 
-	 protected void moveOnLoop(){
-		 int pos = 0;
-		 for(int i = Constants.CELL1; i<Constants.LUA; i++){
-			pos = Constants.TLOOP_LEN - ((model.rqTransportationLoop.offset + Constants.TLOOP_LEN - (i+1)*Constants.STN_SPACING + 3) % Constants.TLOOP_LEN);
-			moveOn(pos, i);
+	protected void moveOn(int index, int cell_id) {
+		if(model.qExitLine[cell_id].size() != NONE_WAITING
+		 	&& model.rqTransportationLoop.positions[index] == Constants.NONE) {
+			
+				model.rqTransportationLoop.positions[index] = model.qExitLine[cell_id].remove();
 		}
-		 moveOffToLoadUnload(Constants.TLOOP_LEN - model.rqTransportationLoop.offset);
-	 }
+	}
 	 
-	 protected void testMachineInitialization(){
-		 for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; cell_id++){
-			 for(int machine_id = 0; machine_id < model.testMachine.get(cell_id).size(); machine_id++){
-				 model.testMachine.get(cell_id).get(machine_id).sampleHolderID = Constants.NONE;
-				 model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.AVAILABLE;
-				 if(cell_id == Constants.CELL2)
-					 model.testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning = Constants.NUM_TEST_BEFORE;
-				 else
-					 model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure = model.rvp.uTimeToFail(cell_id);
-			 }
-		 }
-	 }
+	protected void moveOnLoop() {
+		for(int i = Constants.CELL1; i <= Constants.LUA; i++)
+			moveOn((Constants.TLOOP_LEN - ((model.rqTransportationLoop.offset + Constants.TLOOP_LEN - (i + 1) * Constants.STN_SPACING) % Constants.TLOOP_LEN) + 3) % Constants.TLOOP_LEN, i);
+	}
+
+	protected void sampleHoldersInitialPositions() {
+		int sh = 0;
+		int total = model.numSampleHolders;
+
+		// fill load/unload waiting line with empty sample holders
+		while(sh < total && model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.offer(sh++));
+		// adjust count, ALWAYS adjust count
+		model.qLoadUnloadWaitingLine.numEmptyHolders = model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.size();
+
+		// distribute among remaining cells
+		for(int i = CELL1; sh < total; i = (i + 1) % 5)
+			model.qExitLine.add(sh++);
+
+	}
 	 
-	 protected boolean canPerformTest(int cell_id, int machine_id){
-		 boolean retValue = false;
-		 if(model.testMachine.get(cell_id).get(machine_id).state.equals(TestMachine.State.AVAILABLE)){
-			 if(model.qTestCellWaitingLine[cell_id].testCellWaitingLine.isEmpty() || 
-					 model.testMachine.get(cell_id).get(machine_id).sampleHolderID != Constants.NONE){
-				 if((cell_id != Constants.CELL2)&&(model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure >= model.rvp.uTimeToFail(cell_id)))
-					 retValue = true;
-			 }
-		 }
-		 return retValue;
-	 }
+	protected void testMachineInitialization(){
+		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; cell_id++){
+			for(int machine_id = 0; machine_id < model.testMachine[cell_id].size(); machine_id++){
+				
+				model.testMachine[cell_id][machine_id].sampleHolderID = Constants.NONE;
+				model.testMachine[cell_id][machine_id].state = TestMachine.State.AVAILABLE;
+				
+				if(cell_id == Constants.CELL2)
+					model.testMachine[cell_id][machine_id].testsLeftBeforeCleaning = Constants.NUM_TEST_BEFORE;
+				else
+					model.testMachine[cell_id][machine_id].timeLeftToFailure = model.rvp.uTimeToFail(cell_id);
+			}
+		}
+	}
 	 
-	 protected boolean canStartTest(int cell_id, int machine_id){
-		 boolean retValue = false;
-		 if(model.testMachine.get(cell_id).get(machine_id).state.equals(TestMachine.State.AVAILABLE)){
-			 if(model.qTestCellWaitingLine[cell_id].testCellWaitingLine.isEmpty() || 
-					 model.testMachine.get(cell_id).get(machine_id).sampleHolderID != Constants.NONE){
-				 if((cell_id != Constants.CELL2)&&(cell_id != Constants.LUA)&&(model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure < model.rvp.uTimeToFail(cell_id)))
-					 retValue = true;
-			 }
-		 }
-		 return retValue;
-	 }
+	protected boolean canPerformTest(int cell_id, int machine_id){
+		TestMachine tm = model.testMachine[cell_id][machine_id];
+
+		return tm.state == TestMachine.State.AVAILABLE
+			&& (model.qTestCellWaitingLine[cell_id].size() != NONE_WAITING || tm.sampleHolderID != Constants.NONE)
+			&& (cell_id == CELL2 || tm.timeLeftToFailure >= model.dvp.uCycleTime(cell_id));
+	}
 	 
-	 protected boolean canRepairTester(int cell_id, int machine_id){
-		 boolean retValue = false;
-		 if(model.maintenanceEmployee.testMachineID.equals(Constants.NONE)){
-			 if(!(model.qMaintenanceWaitingLine.isEmpty())){
-				 Integer[] TMID = model.qMaintenanceWaitingLine.get(0);
-				 if((TMID[0] != Constants.CELL2)&&(TMID[0] != Constants.LUA))
-					 retValue = true;
-			 }
-		 }
-		 return retValue;
-	 }
-	
-	 protected boolean canCleanTester(int cell_id, int machine_id){
-		 boolean retValue = false;
-		 if(model.maintenanceEmployee.testMachineID.equals(Constants.NONE)){
-			 if(!(model.qMaintenanceWaitingLine.isEmpty())){
-				 Integer[] TMID = model.qMaintenanceWaitingLine.get(0);
-				 if(TMID[0] == Constants.CELL2)
-					 retValue = true;
-			 }
-		 }
-		 return retValue;
-	 }
+	protected boolean canStartTest(int cell_id, int machine_id){
+		TestMachine tm = model.testMachine[cell_id][machine_id];
+
+		return tm.state == TestMachine.State.AVAILABLE
+			&& (model.qTestCellWaitingLine[cell_id].size() != NONE_WAITING || tm.sampleHolderID != Constants.NONE)
+			&& cell_id != CELL2 && tm.timeLeftToFailure < model.dvp.uCycleTime(cell_id));
+	}
 	 
-	 protected int nextTestInSequence(Sample sampleRef){
-		 int nextCell;
-		 if(sampleRef.testSequence.isEmpty())
-			 nextCell = Constants.LUA;
-		 else nextCell = sampleRef.testSequence.get(0) - 1;
-		 
-		 return nextCell;
-	 }
+	protected boolean canRepairTester(){
+		return model.maintenanceEmployee.testMachineID == Constants.TM_NONE
+			&& model.qMaintenanceWaitingLine.size() != NONE_WAITING
+			&& model.qMaintenanceWaitingLine[0][0] != CELL2;
+	}
 	 
-	 protected void PopTestFromSequence(Sample sampleRef){
-		 sampleRef.testSequence.remove(0);
-	 }
+	protected boolean canCleanTester(){
+		return model.maintenanceEmployee.testMachineID == Constants.TM_NONE
+			&& model.qMaintenanceWaitingLine.size() != NONE_WAITING
+			&& model.qMaintenanceWaitingLine[0][0] == CELL2;
+	}
 	 
-	 protected 
+	protected int nextTestInSequence(Sample sampleRef){
+		if(sampleRef.testSequence.isEmpty())
+			return Constants.LUA;
+		else
+			return sampleRef.testSequence[0] - 1;
+	}
+	 
+	protected void popTestFromSequence(Sample sampleRef){
+		sampleRef.testSequence.poll();
+	}
 }

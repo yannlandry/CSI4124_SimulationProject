@@ -6,41 +6,41 @@ public class LoadUnload extends ConditionalActivity {
 
 	SMLabTesting model;
 	
-	//Constructor
+	// Constructor
 	protected LoadUnload(SMLabTesting model){
 		this.model = model;
 	}
-	//Precondition
+	
+	// Precondition
 	protected static boolean precondition(SMLabTesting model){
-		boolean returnValue = false;
-		if((model.qLoadUnloadWaitingLine.size()!=Constants.NONE_WAITING)&&
-				(model.loadUnloadMachine.sampleHolderID==Constants.NONE)){
-			returnValue = true;
-		}
-		return returnValue;
+		return model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.size() != Constants.NONE_WAITING
+			&& model.loadUnloadMachine.sampleHolderID == Constants.NONE;
 	}
 	
-	//Starting Event SCS
+	// Starting Event SCS
 	public void startingEvent(){
 		Output output = model.output;
+		
+		// dequeue & assign to machine
 		int ident = model.qLoadUnloadWaitingLine.remove();
 		model.loadUnloadMachine.sampleHolderID = ident;
 		
-		if(model.sampleHolder[ident].sampleRef!=Constants.NO_SAMPLE){
+		// unload sample holder
+		if(model.sampleHolder[ident].sampleRef != Constants.NO_SAMPLE){
 			model.udp.SampleOutput(model.sampleHolder[ident].sampleRef);
 			model.sampleHolder[ident].sampleRef = Constants.NO_SAMPLE;
 		}
-		Sample icSample = new Sample();
-		if(model.qInputQueue[Constants.RUSH].n != Constants.NONE_WAITING){			
-			icSample = model.qInputQueue[Constants.RUSH].inputQueue.remove();
-			model.sampleHolder[ident].sampleRef = icSample;
+		else {
+			model.loadUnloadWaitingLine.numEmptyHolders--; // decrease empty holders count
 		}
-		else if(model.qInputQueue[Constants.NORMAL].n != Constants.NONE_WAITING){
-			icSample = model.qInputQueue[Constants.NORMAL].inputQueue.remove();
-			model.sampleHolder[ident].sampleRef = icSample;
-		}
+
+		// load from rush line in priority
+		if(model.qInputQueue[Constants.RUSH].size() != Constants.NONE_WAITING)	
+			model.sampleHolder[ident].sampleRef = model.qInputQueue[Constants.RUSH].inputQueue.remove();
 		
-		
+		// otherwise load from normal line
+		else if(model.qInputQueue[Constants.NORMAL].size() != Constants.NONE_WAITING)
+			model.sampleHolder[ident].sampleRef = model.qInputQueue[Constants.NORMAL].inputQueue.remove();
 	}
 	
 	//Duration
@@ -51,7 +51,7 @@ public class LoadUnload extends ConditionalActivity {
 	
 	//Terminating Event SCS
 	public void terminatingEvent(){
-		model.qExitLine[Constants.LUA].exitLine.add(model.loadUnloadMachine.sampleHolderID);
+		model.qExitLine[Constants.LUA].add(model.loadUnloadMachine.sampleHolderID);
 		model.loadUnloadMachine.sampleHolderID = Constants.NONE;
 	}
 	

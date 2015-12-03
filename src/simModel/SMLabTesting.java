@@ -19,38 +19,40 @@ import simulationModelling.SequelActivity;
 public class SMLabTesting extends AOSimulationModel
 {
 	// Constants available from Constants class
-	/* Parameter */
-        // Define the parameters
+	
+	
+	/*----------Parameters----------*/
 	protected int numTestMachines[];
 	protected int numSampleHolders;
 	protected int maxEmptySampleHolders;
-	/*-------------Entity Data Structures-------------------*/
-	/* Group and Queue Entities */
-	//protected ArrayList<SampleHolder> rqTransportationLoop = new ArrayList<SampleHolder>();
-	protected ArrayBlockingQueue<Integer> qLoadUnloadWaitingLine = new ArrayBlockingQueue<Integer>(Constants.LUA_Q_LEN);
-	protected InputQueue[] qInputQueue = new InputQueue[2];
-	protected TestCellWaitingLine[] qTestCellWaitingLine = new TestCellWaitingLine[5];
-	protected ExitLine[] qExitLine = new ExitLine[6];
-	protected ArrayList<Integer[]> qMachineTeBeRepaired = new ArrayList<Integer[]>();
-	protected ArrayList<Integer[]> qMachineTeBeCleaned = new ArrayList<Integer[]>();
+	
+	
+	/*----------Entities----------*/
+	/* Queues */
+	protected ArrayList<Sample>[] qInputQueue = new ArrayList<Sample>[2];
+
+	protected ArrayBlockingQueue<Integer>[] qTestCellWaitingLine = new ArrayBlockingQueue<Integer>[5]; // init in constructor
+	protected LoadUnloadWaitingLine qLoadUnloadWaitingLine = new LoadUnloadWaitingLine();
+	protected ArrayList<Integer> qExitLine = new ArrayList<Integer>[6];
+
 	protected ArrayList<Integer[]> qMaintenanceWaitingLine = new ArrayList<Integer[]>();
-	// Define the reference variables to the various 
-	// entities with scope Set and Unary
+
+	/* Not queues */
 	// Objects can be created here or in the Initialise Action
 	protected SampleHolder sampleHolder[];
 	protected TransportationLoop rqTransportationLoop;
 	protected HashMap<Integer, ArrayList<TestMachine>> testMachine = new HashMap<Integer, ArrayList<TestMachine>>();
 	protected LoadUnloadMachine loadUnloadMachine;
-    protected MaintenanceEmployee maintenanceEmployee;
-	/* Input Variables */
-	// Define any Independent Input Varaibles here
+	protected MaintenanceEmployee maintenanceEmployee;
+
 	
-	// References to RVP and DVP objects
+	/*----------Inputs----------*/
 	protected RVPs rvp;  // Reference to rvp object - object created in constructor
 	protected DVPs dvp = new DVPs(this);  // Reference to dvp object
 	protected UDPs udp = new UDPs(this);
 
-	// Output object
+	
+	/*----------Outputs----------*/
 	protected Output output = new Output(this);
 	
 	// Output values - define the public methods that return values
@@ -65,9 +67,14 @@ public class SMLabTesting extends AOSimulationModel
 		return output.pctRushSamplesCompleted();
 	}
 
-	// Constructor
-	public SMLabTesting(double t0time, double tftime, /*define other args,*/ Seeds sd)
+	
+	/*----------Constructor----------*/
+	public SMLabTesting(double t0time, double tftime, /* define other args,*/ Seeds sd)
 	{
+		// init TestCellWaitingLines
+		for(int i = 0; i < 4; ++i)
+			qTestCellWaitingLine[i] = new ArrayBlockingQueue<Integer>(Constants.TEST_Q_LEN);
+
 		// Initialize parameters here
 		numTestMachines = new int[] {1,1,1,1,1};
 		numSampleHolders = 5;

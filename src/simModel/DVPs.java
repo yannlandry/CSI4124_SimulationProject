@@ -9,60 +9,26 @@ class DVPs
 	
 	// Constructor
 	protected DVPs(SMLabTesting model) { this.model = model; }
-
-	// Translate deterministic value procedures into methods
-        /* -------------------------------------------------
-	                       Example
-	protected double getEmpNum()  // for getting next value of EmpNum(t)
-	{
-	   double nextTime;
-	   if(model.clock == 0.0) nextTime = 90.0;
-	   else if(model.clock == 90.0) nextTime = 210.0;
-	   else if(model.clock == 210.0) nextTime = 420.0;
-	   else if(model.clock == 420.0) nextTime = 540.0;
-	   else nextTime = -1.0;  // stop scheduling
-	   return(nextTime);
-	}
-	------------------------------------------------------------*/
 	
-	
-	//Return cycle time in minute according to test type.
-	protected double getUCycleTime(int cellID){
-		double cycleTime = 0;
-//		int key = 0;
-//		
-//		if(model.testMachine.containsValue(tM)){
-//			for(int k : model.testMachine.keySet()){
-//				if(model.testMachine.get(k).contains(tM)){
-//					key = k;
-//					break;
-//				}
-//			}
-//		}
-		
+	// Return cycle time in minute according to test type.
+	protected double getUCycleTime(int cellID) {
 		switch (cellID){
 			case Constants.CELL1:
-				cycleTime = 0.77;
-				break;
+				return 0.77;
 			case Constants.CELL2:
-				cycleTime = 0.85;
-				break;
+				return 0.85;
 			case Constants.CELL3:
-				cycleTime = 1.03;
-				break;
+				return 1.03;
 			case Constants.CELL4:
-				cycleTime = 1.24;
-				break;
-			//case Constants.CELL5
+				return 1.24;
+			case Constants.CELL5:
 			default:
-				cycleTime = 1.7;			
-		}
-			
-		return cycleTime;		
+				return 1.7;			
+		}		
 	}
 	
-	//The returned value is the rotation time in minute of the transportation loop.
-	protected double move1PosTime(){
-		return 1/60;
+	// The returned value is the rotation time in minute of the transportation loop.
+	protected double moveOnePosTime(){
+		return 1.0 / 60.0;
 	}
 }

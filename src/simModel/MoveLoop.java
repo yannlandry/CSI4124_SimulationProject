@@ -2,7 +2,7 @@ package simModel;
 
 import simulationModelling.ScheduledAction;
 
-public class MoveLoop extends ScheduledAction{
+public class MoveLoop extends ScheduledAction {
 
 	SMLabTesting model;
 	
@@ -13,12 +13,12 @@ public class MoveLoop extends ScheduledAction{
 	
 	//time sequence
 	public double timeSequence(){
-		return model.dvp.move1PosTime();
+		return model.dvp.moveOnePosTime();
 	}
 	
 	//event SCS
 	public void actionEvent(){
-		model.rqTransportationLoop.offset = (model.rqTransportationLoop.offset +1 ) % (Constants.TLOOP_LEN);
+		model.rqTransportationLoop.offset = (model.rqTransportationLoop.offset + 1) % (Constants.TLOOP_LEN);
 		model.udp.MoveOffLoop();
 		model.udp.MoveOnLoop();
 	}

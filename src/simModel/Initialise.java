@@ -20,51 +20,30 @@ class Initialise extends ScheduledAction
 
 	protected void actionEvent() 
 	{
-		// System Initialisation
-                // Add initilisation instructions 
-		model.qInputQueue[Constants.NORMAL].n = Constants.NONE_WAITING;
-		model.qInputQueue[Constants.RUSH].n = Constants.NONE_WAITING;
-		
-		model.qExitLine[Constants.LUA].n = Constants.NONE_WAITING;
-		
-		int index = 0;
-		
-		while(index < Constants.TLOOP_LEN){
-			model.rqTransportationLoop.positions[index] = Constants.NONE;
-		}
-		model.rqTransportationLoop.offset = 0;
-		
-		index = 0;
-		
-		while(index<model.numSampleHolders){
-			model.sampleHolder[index].sampleRef = Constants.NO_SAMPLE;
-			index += 1;
-		}
-		
+		// init load/unload
 		model.loadUnloadMachine.sampleHolderID = Constants.NONE;
-		model.qExitLine[Constants.LUA].n = Constants.NONE_WAITING;
+		
+		// init transportation loop
+		for(int i; i < Constants.TLOOP_LEN; ++i)
+			model.rqTransportationLoop.positions[i] = Constants.NONE;
 		model.rqTransportationLoop.offset = 0;
+
+		// init sample holders
+		for(int i = 0; i < model.numSampleHolders; ++i)
+			model.sampleHolder[i].sampleRef = Constants.NO_SAMPLE;
+		model.udp.sampleHoldersInitialPositions();
 		
-		for(int cid=Constants.CELL1;cid<=Constants.CELL5;cid++){
-			model.qTestCellWaitingLine[cid].n = Constants.NONE_WAITING;
-		}
-		
-		model.udp.sampleHolderInitialPosition();
+		// init test machines
 		model.udp.testMachineInitialization();
 		
+		// init maintenance employee
 		model.maintenanceEmployee.testMachineID = Constants.TM_NONE;
 		
-		for(int cid=Constants.CELL1;cid<=Constants.LUA;cid++){
+		for(int cid = Constants.CELL1; cid <= Constants.LUA; ++cid) {
 			model.output.unsuccessfulEntry[cid] = 0;
 			model.output.totalEntryAttempts[cid] = 0;
 			model.output.pctUnsuccessfulEntry[cid] = 0;
 		}
-		
-		
-		
-
-		
 	}
-	
 
 }
