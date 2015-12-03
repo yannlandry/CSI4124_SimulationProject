@@ -3,7 +3,7 @@ package simModel;
 import simulationModelling.ConditionalActivity;
 
 public class CleanTester extends ConditionalActivity{
-SMLabTesting model;
+	SMLabTesting model;
 	
 	// Constructor
 	protected CleanTester(SMLabTesting model) {
@@ -11,13 +11,13 @@ SMLabTesting model;
 	}
 	
 	// Precondition
-	protected static boolean precondition(SMLabTesting model) {
+	protected static boolean precondition() {
 		return model.udp.canCleanTester();
 	}
 	
 	// Starting Event SCS
 	public void startingEvent(Integer[] testMachineID) {
-		model.maintenanceEmployee.testMachineID = model.qMaintenanceWaitingLine.remove(testMachineID);		
+		model.maintenanceEmployee.testMachineID = model.qMaintenanceWaitingLine.remove();		
 	}
 	
 	// Duration

@@ -2,7 +2,7 @@ package simModel;
 
 public class PerformTest {
 
-SMLabTesting model;
+	SMLabTesting model;
 	
 	// Constructor
 	protected PerformTest(SMLabTesting model) {
@@ -10,7 +10,7 @@ SMLabTesting model;
 	}
 	
 	// Precondition
-	protected static boolean precondition(SMLabTesting model, Integer[] testMachineID){ // how can I add cell_id and machine_id parameters?
+	protected static boolean precondition(Integer[] testMachineID){ // how can I add cell_id and machine_id parameters?
 		return model.udp.CanPerformTest(testMachineID[0], testMachineID[1]);
 	}
 	

@@ -12,7 +12,7 @@ public class RepairTester extends ConditionalActivity {
 	}
 	
 	// Precondition
-	protected static boolean precondition(SMLabTesting model) {
+	protected static boolean precondition() {
 		return model.udp.canRepairTester();
 	}
 	
