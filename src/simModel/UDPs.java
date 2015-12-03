@@ -43,7 +43,7 @@ class UDPs
 			 if(model.sampleHolder[shIndex].sampleRef.testSequence.get(0) == cell_id){
 				 model.qTestCellWaitingLine[cell_id].testCellWaitingLine.add(shIndex);
 				 updateSuccessfulSSOV(cell_id);
-				 model.sampleHolder[shIndex].sampleRef.testSequence.remove(0);
+				 PopTestFromSequence(model.sampleHolder[shIndex].sampleRef);
 			 }
 			 else{
 				 updateUnsuccessfulSSOV(cell_id);
@@ -108,5 +108,67 @@ class UDPs
 			 }
 		 }
 	 }
+	 
+	 protected boolean canPerformTest(int cell_id, int machine_id){
+		 boolean retValue = false;
+		 if(model.testMachine.get(cell_id).get(machine_id).state.equals(TestMachine.State.AVAILABLE)){
+			 if(model.qTestCellWaitingLine[cell_id].testCellWaitingLine.isEmpty() || 
+					 model.testMachine.get(cell_id).get(machine_id).sampleHolderID != Constants.NONE){
+				 if((cell_id != Constants.CELL2)&&(model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure >= model.rvp.uTimeToFail(cell_id)))
+					 retValue = true;
+			 }
+		 }
+		 return retValue;
+	 }
+	 
+	 protected boolean canStartTest(int cell_id, int machine_id){
+		 boolean retValue = false;
+		 if(model.testMachine.get(cell_id).get(machine_id).state.equals(TestMachine.State.AVAILABLE)){
+			 if(model.qTestCellWaitingLine[cell_id].testCellWaitingLine.isEmpty() || 
+					 model.testMachine.get(cell_id).get(machine_id).sampleHolderID != Constants.NONE){
+				 if((cell_id != Constants.CELL2)&&(cell_id != Constants.LUA)&&(model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure < model.rvp.uTimeToFail(cell_id)))
+					 retValue = true;
+			 }
+		 }
+		 return retValue;
+	 }
+	 
+	 protected boolean canRepairTester(int cell_id, int machine_id){
+		 boolean retValue = false;
+		 if(model.maintenanceEmployee.testMachineID.equals(Constants.NONE)){
+			 if(!(model.qMaintenanceWaitingLine.isEmpty())){
+				 Integer[] TMID = model.qMaintenanceWaitingLine.get(0);
+				 if((TMID[0] != Constants.CELL2)&&(TMID[0] != Constants.LUA))
+					 retValue = true;
+			 }
+		 }
+		 return retValue;
+	 }
 	
+	 protected boolean canCleanTester(int cell_id, int machine_id){
+		 boolean retValue = false;
+		 if(model.maintenanceEmployee.testMachineID.equals(Constants.NONE)){
+			 if(!(model.qMaintenanceWaitingLine.isEmpty())){
+				 Integer[] TMID = model.qMaintenanceWaitingLine.get(0);
+				 if(TMID[0] == Constants.CELL2)
+					 retValue = true;
+			 }
+		 }
+		 return retValue;
+	 }
+	 
+	 protected int nextTestInSequence(Sample sampleRef){
+		 int nextCell;
+		 if(sampleRef.testSequence.isEmpty())
+			 nextCell = Constants.LUA;
+		 else nextCell = sampleRef.testSequence.get(0) - 1;
+		 
+		 return nextCell;
+	 }
+	 
+	 protected void PopTestFromSequence(Sample sampleRef){
+		 sampleRef.testSequence.remove(0);
+	 }
+	 
+	 protected 
 }
