@@ -55,20 +55,14 @@ public class SMLabTesting extends AOSimulationModel
 	
 	// Output values - define the public methods that return values
 	// required for experimentation.
-	public double getNormalTestingTime(){
-		return output.normalTestingTime;
-	}
-	public double getRushTestingTime(){
-		return output.rushTestingTime;
-	}
-	public double getPctUnsuccessfulEntry(){
+	public double[] getPctUnsuccessfulEntry(){
 		return output.pctUnsuccessfulEntry;
 	}
 	public double getPctNormalSamplesCompleted(){
-		return output.pctNormalSamplesCompleted;
+		return output.pctNormalSamplesCompleted();
 	}
 	public double getPctRushSamplesCompleted(){
-		return output.pctRushSamplesCompleted;
+		return output.pctRushSamplesCompleted();
 	}
 
 	// Constructor
