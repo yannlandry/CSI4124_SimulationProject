@@ -33,7 +33,7 @@ public class SMLabTesting extends AOSimulationModel
 	protected Queue<Sample>[] qInputQueue = (ArrayDeque<Sample>[]) new ArrayDeque[2];
 	protected Queue<Integer>[] qTestCellWaitingLine = (ArrayDeque<Integer>[]) new ArrayDeque[5];
    	protected LoadUnloadWaitingLine qLoadUnloadWaitingLine = new LoadUnloadWaitingLine();
-	protected Queue<Integer>[] qExitLine = (ArrayDeque<Integer>[])new ArrayDeque[6];
+	protected Queue<Integer>[] qExitLine = (ArrayDeque<Integer>[]) new ArrayDeque[6];
 
 	protected Queue<Integer[]> qMaintenanceWaitingLine = new ArrayDeque<Integer[]>();
 
@@ -113,9 +113,56 @@ public class SMLabTesting extends AOSimulationModel
 	protected void testPreconditions(Behaviour behObj)
 	{
 		reschedule (behObj);
+		
 		// Check preconditions of Conditional Activities
+		while(scanPreconditions() == true)/*--repeat--*/;
+	}
 
-		// Check preconditions of Interruptions in Extended Activities
+	private boolean scanPreconditions() {
+		boolean statusChanged = false;
+
+		if(CleanTester.precondition() == true) {
+			CleanTester act = new CleanTester(this);
+			act.startingEvent();
+			scheduleActivity(act);
+			statusChanged = true;
+		}
+		if(RepairTester.precondition() == true) {
+			RepairTester act = new RepairTester(this);
+			act.startingEvent();
+			scheduleActivity(act);
+			statusChanged = true;
+		}
+		if(LoadUnload.precondition(this) == true) {
+			LoadUnload act = new LoadUnload(this);
+			act.startingEvent();
+			scheduleActivity(act);
+			statusChanged = true;
+		}
+
+		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; ++cell_id) {
+			for(int machine_id = 0; machine_id < testMachine.get(cell_id).size(); ++machine_id) {
+
+				if(PerformTest.precondition(cell_id, machine_id) == true) {
+					Integer[] tmid = {cell_id, machine_id};
+					PerformTest act = new PerformTest(this, tmid);
+					act.startingEvent();
+					scheduleActivity(act);
+					statusChanged = true;
+				}
+				if(StartTest.precondition(cell_id, machine_id) == true) {
+					Integer[] tmid = {cell_id, machine_id};
+					StartTest act = new StartTest(this, tmid);
+					act.startingEvent();
+					scheduleActivity(act);
+					statusChanged = true;
+				}
+			
+			}
+		}
+
+		return statusChanged;
+
 	}
 	
 	public void eventOccured()
