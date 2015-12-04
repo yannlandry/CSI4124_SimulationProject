@@ -11,14 +11,14 @@ class UDPs
 	// Constructor
 	protected UDPs(SMLabTesting model) { this.model = model; }
 
-	protected void updateSuccessfulSSOV(int cell_id){
+	protected void updateSuccessfulEntries(int cell_id){
 		model.output.totalEntryAttempts[cell_id]++;
 		
 		model.output.pctUnsuccessfulEntry[cell_id]
 			= model.output.unsuccessfulEntry[cell_id] / model.output.totalEntryAttempts[cell_id];
 	}
 	 
-	protected void updateUnsuccessfulSSOV(int cell_id){
+	protected void updateUnsuccessfulEntries(int cell_id){
 		model.output.totalEntryAttempts[cell_id]++;
 		model.output.unsuccessfulEntry[cell_id]++;
 		
@@ -36,11 +36,11 @@ class UDPs
 
 			// try to push in line
 			if(model.qTestCellWaitingLine[cell_id].offer(shIndex)) {
-				 updateSuccessfulSSOV(cell_id);
+				 updateSuccessfulEntries(cell_id);
 				 popTestFromSequence(model.sampleHolder[shIndex].sampleRef);
 			}
 			else {
-				 updateUnsuccessfulSSOV(cell_id);
+				 updateUnsuccessfulEntries(cell_id);
 			}
 		}
 	}
