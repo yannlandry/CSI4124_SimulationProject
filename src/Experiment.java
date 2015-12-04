@@ -3,7 +3,7 @@
 
 import simModel.*;
 import cern.jet.random.engine.*;
-import librarySimModel.Seeds;
+import simModel.Seeds;
 
 // Main Method: Experiments
 // 
@@ -12,7 +12,7 @@ class Experiment
    public static void main(String[] args)
    {
        int i = 0; 
-       int maxNumSampleHolders;
+       int maxSampleHoldersWaiting;
        double startTime=0.0, endTime=1440.0;
        SMLabTesting labTesting;  // Simulation object
 
@@ -20,8 +20,8 @@ class Experiment
        RandomSeedGenerator rsg = new RandomSeedGenerator();
        Seeds sds = new Seeds(rsg);
        
-       /* Case 1 (base case): maxNumSampleHolders = 0 */
-       maxNumSampleHolders = 0;
+       /* Case 1 (base case): maxNumSampleHolders = 5 */
+       maxSampleHoldersWaiting = 5;
        labTesting = new SMLabTesting(startTime,endTime,sds);
        labTesting.runSimulation();
        
@@ -35,9 +35,26 @@ class Experiment
     	   System.out.print("Test Cell " + (j+1) + " PctUnsuccesfulEntry = " + labTesting.getPctUnsuccessfulEntry()[j]);
        System.out.println();
        
-       /* Case 2 */
+       /* Case 2: maxSampleHoldersWaiting = 4 */
+       maxSampleHoldersWaiting = 4;
+       labTesting = new SMLabTesting(startTime,endTime,sds);
+       labTesting.runSimulation();
        
-       /* Case 3 */
+       /* Case 3: maxSampleHoldersWaiting = 3 */
+       maxSampleHoldersWaiting = 3;
+       labTesting = new SMLabTesting(startTime,endTime,sds);
+       labTesting.runSimulation();
+
+       /* Case 4: maxSampleHoldersWaiting = 2 */
+       maxSampleHoldersWaiting = 2;
+       labTesting = new SMLabTesting(startTime,endTime,sds);
+       labTesting.runSimulation();
+       
+       /* Case 5: maxSampleHoldersWaiting = 1 */
+       maxSampleHoldersWaiting = 1;
+       labTesting = new SMLabTesting(startTime,endTime,sds);
+       labTesting.runSimulation();
+
 
    }
 }
