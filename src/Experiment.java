@@ -33,8 +33,7 @@ class Experiment
            
            // Display output
            // Display percent normal and rush samples completed
-           System.out.print("Case " + (maxSampleHoldersWaiting-i+1) + "\tPctNormalSamplesCompleted = " + labTesting.getPctNormalSamplesCompleted()
-           + "\tPctRushSamplesCompleted = " + labTesting.getPctRushSamplesCompleted());
+           System.out.print("Case " + (maxSampleHoldersWaiting-i+1) + "\tPctCompletedInTime = " + labTesting.getPctCompletedInTime());
            
            // Display percent unsuccessful entry for each test cell
            for(int j = 0; j < 5; j++)
