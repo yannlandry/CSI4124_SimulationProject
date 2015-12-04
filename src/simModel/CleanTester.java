@@ -8,7 +8,6 @@ public class CleanTester extends ConditionalActivity{
 	// Constructor
 	protected CleanTester(SMLabTesting model) {
 		this.model = model;
-		this.testMachineID = testMachineID.clone();
 	}
 	
 	// Precondition

@@ -9,7 +9,6 @@ public class RepairTester extends ConditionalActivity {
 	// Constructor
 	protected RepairTester(SMLabTesting model) {
 		this.model = model;
-		this.testMachineID = testMachineID.clone();
 	}
 	
 	// Precondition
