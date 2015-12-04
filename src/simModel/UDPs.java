@@ -101,7 +101,7 @@ class UDPs
 
 		// distribute among remaining cells
 		for(int i = Constants.CELL1; sh < total; i = (i + 1) % 5)
-			model.qExitLine.add(sh++);
+			model.qExitLine[i].add(sh++);
 
 	}
 	 
