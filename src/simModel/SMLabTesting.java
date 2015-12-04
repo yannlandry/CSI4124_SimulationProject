@@ -61,13 +61,9 @@ public class SMLabTesting extends AOSimulationModel
 	public double[] getPctUnsuccessfulEntry(){
 		return output.pctUnsuccessfulEntry;
 	}
-	public double getPctNormalSamplesCompleted(){
-		return output.pctNormalSamplesCompleted();
+	public double getPctCompletedInTime(){
+		return output.pctCompletedInTime;
 	}
-	public double getPctRushSamplesCompleted(){
-		return output.pctRushSamplesCompleted();
-	}
-
 	
 	/*----------Constructor----------*/
 	public SMLabTesting(double t0time, double tftime, int maxSHWaiting, Seeds sd)
