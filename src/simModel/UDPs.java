@@ -109,6 +109,12 @@ class UDPs
 	}
 	 
 	protected void testMachineInitialization() {
+		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; cell_id++){
+			for(int num = 0; num < model.numTestMachines[cell_id]; num++){
+				model.testMachine.get(cell_id).add(new TestMachine());
+			}
+		}
+		
 		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; cell_id++) {
 			for(int machine_id = 0; machine_id < model.testMachine.get(cell_id).size(); machine_id++) {
 				

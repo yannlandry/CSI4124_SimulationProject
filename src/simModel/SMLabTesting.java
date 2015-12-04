@@ -161,13 +161,29 @@ public class SMLabTesting extends AOSimulationModel
 		return statusChanged;
 
 	}
-	
+
+	boolean traceFlag = true;
 	public void eventOccured()
 	{
 		//this.showSBL();
 		// Can add other debug code to monitor the status of the system
 		// See examples for suggestions on setup logging
 
+		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; ++cell_id) {
+			for(int machine_id = 0; machine_id < testMachine.get(cell_id).size(); ++machine_id) {
+				if(traceFlag) {
+					System.out.println("Clock: " + getClock() + 
+										" cell_id " + cell_id +
+										" machine_id " + machine_id +
+										" sampleHolderID " + testMachine.get(cell_id).get(machine_id).sampleHolderID +
+										" state " + testMachine.get(cell_id).get(machine_id).state + 
+										" timeLeftToFailure " + testMachine.get(cell_id).get(machine_id).timeLeftToFailure +
+										" testLeftBeforeCleaning " + testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning);
+					showSBL();
+				}
+			}
+		}
+		
 		// Setup an updateTrjSequences() method in the Output class
 		// and call here if you have Trajectory Sets
 		// updateTrjSequences() 
