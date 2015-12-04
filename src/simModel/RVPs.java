@@ -39,14 +39,14 @@ class RVPs
 	
 	//RVP for sample arrivals
 	private Exponential interArrDist;  // Exponential distribution for interarrival times
-	private final double MEAN1=60/119, MEAN2=60/107, MEAN3=60/100,
-						 MEAN4=60/113, MEAN5=60/123, MEAN6=60/116,
-						 MEAN7=60/107, MEAN8=60/121, MEAN9=60/131,
-						 MEAN10=60/152, MEAN11=60/171, MEAN12=60/191,
-						 MEAN13=60/200, MEAN14=60/178, MEAN15=60/171,
-						 MEAN16=60/152, MEAN17=60/134, MEAN18=60/147,
-						 MEAN19=60/165, MEAN20=60/155, MEAN21=60/149,
-						 MEAN22=60/134, MEAN23=60/119, MEAN24=60/116;
+	private final double MEAN1=60.0/119.0, MEAN2=60.0/107.0, MEAN3=60.0/100.0,
+						 MEAN4=60.0/113.0, MEAN5=60.0/123.0, MEAN6=60.0/116.0,
+						 MEAN7=60.0/107.0, MEAN8=60.0/121.0, MEAN9=60.0/131.0,
+						 MEAN10=60.0/152.0, MEAN11=60.0/171.0, MEAN12=60.0/191.0,
+						 MEAN13=60.0/200.0, MEAN14=60.0/178.0, MEAN15=60.0/171.0,
+						 MEAN16=60.0/152.0, MEAN17=60.0/134.0, MEAN18=60.0/147.0,
+						 MEAN19=60.0/165.0, MEAN20=60.0/155.0, MEAN21=60.0/149.0,
+						 MEAN22=60.0/134.0, MEAN23=60.0/119.0, MEAN24=60.0/116.0;
 	
 	protected double duSampleInput()  // for getting next value of duInput
 	{
