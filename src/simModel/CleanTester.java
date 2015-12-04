@@ -11,8 +11,8 @@ public class CleanTester extends ConditionalActivity{
 	}
 	
 	// Precondition
-	protected static boolean precondition() {
-		return SMLabTesting.udp.canCleanTester();
+	protected static boolean precondition(SMLabTesting model) {
+		return model.udp.canCleanTester();
 	}
 	
 	// Starting Event SCS

@@ -15,8 +15,8 @@ public class StartTest extends ConditionalActivity {
 	}
 	
 	// Precondition
-	protected static boolean precondition(int cell_id, int machine_id) {
-		return SMLabTesting.udp.canStartTest(cell_id, machine_id);
+	protected static boolean precondition(SMLabTesting model, int cell_id, int machine_id) {
+		return model.udp.canStartTest(cell_id, machine_id);
 	}
 	
 	// Starting Event SCS

@@ -27,7 +27,7 @@ public class LoadUnload extends ConditionalActivity {
 		
 		// unload sample holder
 		if(model.sampleHolder[ident].sampleRef != Constants.NO_SAMPLE){
-			SMLabTesting.udp.sampleOutput(model.sampleHolder[ident].sampleRef);
+			model.udp.sampleOutput(model.sampleHolder[ident].sampleRef);
 			model.sampleHolder[ident].sampleRef = Constants.NO_SAMPLE; // BURN IN HELL SAMPLE
 		}
 

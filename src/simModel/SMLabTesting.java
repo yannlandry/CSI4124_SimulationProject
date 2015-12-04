@@ -50,7 +50,7 @@ public class SMLabTesting extends AOSimulationModel
 	/*----------Inputs----------*/
 	protected RVPs rvp;  // Reference to rvp object - object created in constructor
 	protected DVPs dvp = new DVPs(this);  // Reference to dvp object
-	protected static UDPs udp;
+	protected UDPs udp = new UDPs(this);
 
 	
 	/*----------Outputs----------*/
@@ -118,13 +118,13 @@ public class SMLabTesting extends AOSimulationModel
 	private boolean scanPreconditions() {
 		boolean statusChanged = false;
 
-		if(CleanTester.precondition() == true) {
+		if(CleanTester.precondition(this) == true) {
 			CleanTester act = new CleanTester(this);
 			act.startingEvent();
 			scheduleActivity(act);
 			statusChanged = true;
 		}
-		if(RepairTester.precondition() == true) {
+		if(RepairTester.precondition(this) == true) {
 			RepairTester act = new RepairTester(this);
 			act.startingEvent();
 			scheduleActivity(act);
@@ -140,14 +140,14 @@ public class SMLabTesting extends AOSimulationModel
 		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; ++cell_id) {
 			for(int machine_id = 0; machine_id < testMachine.get(cell_id).size(); ++machine_id) {
 
-				if(PerformTest.precondition(cell_id, machine_id) == true) {
+				if(PerformTest.precondition(this, cell_id, machine_id) == true) {
 					Integer[] tmid = {cell_id, machine_id};
 					PerformTest act = new PerformTest(this, tmid);
 					act.startingEvent();
 					scheduleActivity(act);
 					statusChanged = true;
 				}
-				if(StartTest.precondition(cell_id, machine_id) == true) {
+				if(StartTest.precondition(this, cell_id, machine_id) == true) {
 					Integer[] tmid = {cell_id, machine_id};
 					StartTest act = new StartTest(this, tmid);
 					act.startingEvent();

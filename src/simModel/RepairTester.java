@@ -12,8 +12,8 @@ public class RepairTester extends ConditionalActivity {
 	}
 	
 	// Precondition
-	protected static boolean precondition() {
-		return SMLabTesting.udp.canRepairTester();
+	protected static boolean precondition(SMLabTesting model) {
+		return model.udp.canRepairTester();
 	}
 	
 	// Starting Event SCS

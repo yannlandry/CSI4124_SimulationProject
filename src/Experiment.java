@@ -33,11 +33,12 @@ class Experiment
            
            // Display output
            // Display percent normal and rush samples completed
-           System.out.print("Case " + (maxSampleHoldersWaiting-i+1) + "\tPctCompletedInTime = " + labTesting.getPctCompletedInTime());
+           System.out.print("Case " + (maxSampleHoldersWaiting-i+1)
+        		   + "\n\tPctCompletedInTime = " + labTesting.getPctCompletedInTime());
            
            // Display percent unsuccessful entry for each test cell
            for(int j = 0; j < 5; j++)
-        	   System.out.print("Test Cell " + (j+1) + "\tPctUnsuccesfulEntry = " + labTesting.getPctUnsuccessfulEntry()[j]);
+        	   System.out.print("\n\t\tTest Cell " + (j+1) + "\tPctUnsuccesfulEntry = " + labTesting.getPctUnsuccessfulEntry()[j]);
            System.out.println();
        }
        

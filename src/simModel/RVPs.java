@@ -88,7 +88,7 @@ class RVPs
 	//RVP for SampleType
 	private final double PCT_N = 0.93;
 	// PROPN_RUSH = 7%, but not needed for calculation
-	MersenneTwister typeRandGen;
+	MersenneTwister typeRandGen = new MersenneTwister();
 	public Sample.Type sampleType(){
 		double randNum = typeRandGen.nextDouble();
 		Sample.Type type;
