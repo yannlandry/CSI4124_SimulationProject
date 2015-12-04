@@ -31,8 +31,8 @@ public class RepairTester extends ConditionalActivity {
 		int cell_id = testMachineID[0];
 		int machine_id = testMachineID[1];
 				
-		model.testMachine[cell_id][machine_id].timeLeftToFailure = model.rvp.uTimeToFail(cell_id);
-		model.testMachine[cell_id][machine_id].state = TestMachine.State.AVAILABLE;
+		model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure = model.rvp.uTimeToFail(cell_id);
+		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.AVAILABLE;
 		
 		model.maintenanceEmployee.testMachineID = Constants.TM_NONE;	
 	}

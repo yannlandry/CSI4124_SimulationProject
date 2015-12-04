@@ -2,6 +2,7 @@ package simModel;
 
 import hep.aida.ref.Test;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -29,10 +30,9 @@ public class SMLabTesting extends AOSimulationModel
 	
 	/*----------Entities----------*/
 	/* Queues */
-	protected Queue<Sample>[] qInputQueue = new ArrayList<Sample>[2];
-
-	protected Queue<Integer>[] qTestCellWaitingLine = new ArrayBlockingQueue<Integer>[5]; // init in constructor
-	protected LoadUnloadWaitingLine qLoadUnloadWaitingLine = new LoadUnloadWaitingLine();
+	protected Queue<Sample>[] qInputQueue = (ArrayDeque<Sample>[]) new ArrayDeque[2];
+	protected Queue<Integer>[] qTestCellWaitingLine = (ArrayDeque<Integer>[]) new ArrayDeque[5];
+   	protected LoadUnloadWaitingLine qLoadUnloadWaitingLine = new LoadUnloadWaitingLine();
 	protected Queue<Integer> qExitLine = new ArrayList<Integer>[6];
 
 	protected Queue<Integer[]> qMaintenanceWaitingLine = new ArrayList<Integer[]>();
