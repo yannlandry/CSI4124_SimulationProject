@@ -30,9 +30,10 @@ public class SMLabTesting extends AOSimulationModel
 	
 	/*----------Entities----------*/
 	/* Queues */
+	// use ArrayBlockingQueues for limited-length queues
 	protected Queue<Sample>[] qInputQueue = (ArrayDeque<Sample>[]) new ArrayDeque[2];
-	protected Queue<Integer>[] qTestCellWaitingLine = (ArrayDeque<Integer>[]) new ArrayDeque[5];
-   	protected LoadUnloadWaitingLine qLoadUnloadWaitingLine = new LoadUnloadWaitingLine();
+	protected Queue<Integer>[] qTestCellWaitingLine = (ArrayBlockingQueue<Integer>[]) new ArrayBlockingQueue[5];
+   	protected Queue<Integer> qLoadUnloadWaitingLine = new ArrayBlockingQueue<Integer>(Constants.LUA_Q_LEN);
 	protected Queue<Integer>[] qExitLine = (ArrayDeque<Integer>[]) new ArrayDeque[6];
 
 	protected Queue<Integer[]> qMaintenanceWaitingLine = new ArrayDeque<Integer[]>();

@@ -22,16 +22,13 @@ public class LoadUnload extends ConditionalActivity {
 		Output output = model.output;
 		
 		// dequeue & assign to machine
-		int ident = model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.remove();
+		int ident = model.qLoadUnloadWaitingLine.remove();
 		model.loadUnloadMachine.sampleHolderID = ident;
 		
 		// unload sample holder
 		if(model.sampleHolder[ident].sampleRef != Constants.NO_SAMPLE){
-			SMLabTesting.udp.SampleOutput(model.sampleHolder[ident].sampleRef);
-			model.sampleHolder[ident].sampleRef = Constants.NO_SAMPLE;
-		}
-		else {
-			model.qLoadUnloadWaitingLine.numEmptyHolders--; // decrease empty holders count
+			SMLabTesting.udp.sampleOutput(model.sampleHolder[ident].sampleRef);
+			model.sampleHolder[ident].sampleRef = Constants.NO_SAMPLE; // BURN IN HELL SAMPLE
 		}
 
 		// load from rush line in priority

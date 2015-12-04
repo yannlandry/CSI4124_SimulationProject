@@ -11,22 +11,27 @@ class UDPs
 	// Constructor
 	protected UDPs(SMLabTesting model) { this.model = model; }
 
-	protected void updateSuccessfulEntries(int cell_id){
-		model.output.totalEntryAttempts[cell_id]++;
-		
+	protected void updateSuccessfulEntries(int cell_id) {
 		model.output.pctUnsuccessfulEntry[cell_id]
-			= model.output.unsuccessfulEntry[cell_id] / model.output.totalEntryAttempts[cell_id];
+			= model.output.unsuccessfulEntry[cell_id] / ++model.output.totalEntryAttempts[cell_id];
 	}
-	 
-	protected void updateUnsuccessfulEntries(int cell_id){
-		model.output.totalEntryAttempts[cell_id]++;
-		model.output.unsuccessfulEntry[cell_id]++;
-		
+	
+	protected void updateUnsuccessfulEntries(int cell_id) {
 		model.output.pctUnsuccessfulEntry[cell_id]
-			= model.output.unsuccessfulEntry[cell_id] / model.output.totalEntryAttempts[cell_id];
+			= (double)(++model.output.unsuccessfulEntry[cell_id]) / (double)(++model.output.totalEntryAttempts[cell_id]);
 	}
-	 
-	protected void moveOffToCell(int index, int cell_id){
+
+	protected void updateSuccessfulCompletions() {
+		model.output.pctCompletedInTime =
+			(double)(++model.output.completedInTime) / (double)(++model.output.completedTotal);
+	}
+
+	protected void updateUnsuccessfulCompletions() {
+		model.output.pctCompletedInTime =
+			(double)(model.output.completedInTime) / (double)(++model.output.completedTotal);
+	}
+	
+	protected void moveOffToCell(int index, int cell_id) {
 		int shIndex = model.rqTransportationLoop.positions[index];
 		 
 		if(shIndex != Constants.NONE
@@ -45,7 +50,7 @@ class UDPs
 		}
 	}
 	 
-	protected void moveOffToLoadUnload(int index){
+	protected void moveOffToLoadUnload(int index) {
 		int shIndex = model.rqTransportationLoop.positions[index];
 		 
 		// sample holder at position?
@@ -53,18 +58,18 @@ class UDPs
 			
 			// loaded with finished sample?
 			if(model.sampleHolder[shIndex].sampleRef != Constants.NO_SAMPLE
-				&& model.sampleHolder[shIndex].sampleRef.testSequence.isEmpty() // needs a udp here, nah?
-				&& model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.offer(shIndex)) {
+				&& nextTestInSequence(model.sampleHolder[shIndex].sampleRef) == Constants.LUA
+				&& model.qLoadUnloadWaitingLine.offer(shIndex)) {
 					
 					model.rqTransportationLoop.positions[index] = Constants.NONE;
 			}
 			
 			// unloaded, can we still insert?
-			else if(model.qLoadUnloadWaitingLine.numEmptyHolders < model.maxSampleHoldersWaiting
-				&& model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.offer(shIndex)) {
+			else if(model.sampleHolder[shIndex].sampleRef == Constants.NO_SAMPLE
+				&& model.qLoadUnloadWaitingLine.size() < model.maxSampleHoldersWaiting
+				&& model.qLoadUnloadWaitingLine.offer(shIndex)) {
 				
 					model.rqTransportationLoop.positions[index] = Constants.NONE;
-					model.qLoadUnloadWaitingLine.numEmptyHolders++;
 			}
 		}
 	}
@@ -95,9 +100,7 @@ class UDPs
 		int total = model.numSampleHolders;
 
 		// fill load/unload waiting line with empty sample holders
-		while(sh < total && model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.offer(sh++));
-		// adjust count, ALWAYS adjust count
-		model.qLoadUnloadWaitingLine.numEmptyHolders = model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.size();
+		while(sh < total && model.qLoadUnloadWaitingLine.offer(sh++));
 
 		// distribute among remaining cells
 		for(int i = Constants.CELL1; sh < total; i = (i + 1) % 5)
@@ -105,9 +108,9 @@ class UDPs
 
 	}
 	 
-	protected void testMachineInitialization(){
-		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; cell_id++){
-			for(int machine_id = 0; machine_id < model.testMachine.get(cell_id).size(); machine_id++){
+	protected void testMachineInitialization() {
+		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; cell_id++) {
+			for(int machine_id = 0; machine_id < model.testMachine.get(cell_id).size(); machine_id++) {
 				
 				model.testMachine.get(cell_id).get(machine_id).sampleHolderID = Constants.NONE;
 				model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.AVAILABLE;
@@ -120,7 +123,7 @@ class UDPs
 		}
 	}
 	 
-	protected boolean canPerformTest(int cell_id, int machine_id){
+	protected boolean canPerformTest(int cell_id, int machine_id) {
 		TestMachine tm = model.testMachine.get(cell_id).get(machine_id);
 
 		return tm.state == TestMachine.State.AVAILABLE
@@ -128,7 +131,7 @@ class UDPs
 			&& (cell_id == Constants.CELL2 || tm.timeLeftToFailure >= model.dvp.getUCycleTime(cell_id));
 	}
 	 
-	protected boolean canStartTest(int cell_id, int machine_id){
+	protected boolean canStartTest(int cell_id, int machine_id) {
 		TestMachine tm = model.testMachine.get(cell_id).get(machine_id);
 
 		return tm.state == TestMachine.State.AVAILABLE
@@ -136,26 +139,36 @@ class UDPs
 			&& cell_id != Constants.CELL2 && tm.timeLeftToFailure < model.dvp.getUCycleTime(cell_id);
 	}
 	 
-	protected boolean canRepairTester(){
+	protected boolean canRepairTester() {
 		return model.maintenanceEmployee.testMachineID == Constants.TM_NONE
 			&& model.qMaintenanceWaitingLine.size() != Constants.NONE_WAITING
 			&& model.qMaintenanceWaitingLine.peek()[0] != Constants.CELL2;
 	}
 	 
-	protected boolean canCleanTester(){
+	protected boolean canCleanTester() {
 		return model.maintenanceEmployee.testMachineID == Constants.TM_NONE
 			&& model.qMaintenanceWaitingLine.size() != Constants.NONE_WAITING
 			&& model.qMaintenanceWaitingLine.peek()[0] == Constants.CELL2;
 	}
 	 
-	protected int nextTestInSequence(Sample sampleRef){
+	protected int nextTestInSequence(Sample sampleRef) {
 		if(sampleRef.testSequence.isEmpty())
 			return Constants.LUA;
 		else
 			return sampleRef.testSequence.peek() - 1;
 	}
 	 
-	protected void popTestFromSequence(Sample sampleRef){
+	protected void popTestFromSequence(Sample sampleRef) {
 		sampleRef.testSequence.poll();
+	}
+
+	protected void sampleOutput(Sample sampleRef) {
+		double time = model.clock - sampleRef.startTime + Constants.MANUAL_PREP_TIME;
+
+		if((sampleRef.type == Sample.Type.NORMAL && time <= Constants.NORMAL_TIME_LIMIT)
+			|| (sampleRef.type == Sample.Type.RUSH && time <= Constants.RUSH_TIME_LIMIT))
+			updateSuccessfulCompletions();
+		else
+			updateUnsuccessfulCompletions();
 	}
 }

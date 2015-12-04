@@ -30,6 +30,10 @@ class Constants
 	protected final static int NONE_WAITING = 0;
 	//Value to indicate the number of test that can be performed by the machine tester in CELL2 in between each cleaning.
 	protected final static int NUM_TEST_BEFORE = 300;
+	//Manual prep time for every sample
+	protected final static int MANUAL_PREP_TIME = 5;
+	//Maximum acceptable time for NORMAL & RUSH
+	protected final static int NORMAL_TIME_LIMIT = 60, RUSH_TIME_LIMIT = 30;
 	
 	//Not yet decided by CM team:
 	//EMPTY_SEQ, NONE_WAITING
