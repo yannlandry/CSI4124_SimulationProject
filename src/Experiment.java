@@ -3,7 +3,7 @@
 
 import simModel.*;
 import cern.jet.random.engine.*;
-import simModel.Seeds;
+import librarySimModel.Seeds;
 
 // Main Method: Experiments
 // 
