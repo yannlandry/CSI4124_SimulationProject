@@ -1,5 +1,9 @@
 package simModel;
 
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+
 class UDPs 
 {
 	SMLabTesting model;  // for accessing the clock
@@ -74,7 +78,7 @@ class UDPs
 	}
 	 
 	protected void moveOn(int index, int cell_id) {
-		if(model.qExitLine[cell_id].size() != NONE_WAITING
+		if(model.qExitLine[cell_id].size() != Constants.NONE_WAITING
 		 	&& model.rqTransportationLoop.positions[index] == Constants.NONE) {
 			
 				model.rqTransportationLoop.positions[index] = model.qExitLine[cell_id].remove();
@@ -96,52 +100,52 @@ class UDPs
 		model.qLoadUnloadWaitingLine.numEmptyHolders = model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.size();
 
 		// distribute among remaining cells
-		for(int i = CELL1; sh < total; i = (i + 1) % 5)
+		for(int i = Constants.CELL1; sh < total; i = (i + 1) % 5)
 			model.qExitLine.add(sh++);
 
 	}
 	 
 	protected void testMachineInitialization(){
 		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; cell_id++){
-			for(int machine_id = 0; machine_id < model.testMachine[cell_id].size(); machine_id++){
+			for(int machine_id = 0; machine_id < model.testMachine.get(cell_id).size(); machine_id++){
 				
-				model.testMachine[cell_id][machine_id].sampleHolderID = Constants.NONE;
-				model.testMachine[cell_id][machine_id].state = TestMachine.State.AVAILABLE;
+				model.testMachine.get(cell_id).get(machine_id).sampleHolderID = Constants.NONE;
+				model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.AVAILABLE;
 				
 				if(cell_id == Constants.CELL2)
-					model.testMachine[cell_id][machine_id].testsLeftBeforeCleaning = Constants.NUM_TEST_BEFORE;
+					model.testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning = Constants.NUM_TEST_BEFORE;
 				else
-					model.testMachine[cell_id][machine_id].timeLeftToFailure = model.rvp.uTimeToFail(cell_id);
+					model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure = model.rvp.uTimeToFail(cell_id);
 			}
 		}
 	}
 	 
 	protected boolean canPerformTest(int cell_id, int machine_id){
-		TestMachine tm = model.testMachine[cell_id][machine_id];
+		TestMachine tm = model.testMachine.get(cell_id).get(machine_id);
 
 		return tm.state == TestMachine.State.AVAILABLE
-			&& (model.qTestCellWaitingLine[cell_id].size() != NONE_WAITING || tm.sampleHolderID != Constants.NONE)
-			&& (cell_id == CELL2 || tm.timeLeftToFailure >= model.dvp.uCycleTime(cell_id));
+			&& (model.qTestCellWaitingLine[cell_id].size() != Constants.NONE_WAITING || tm.sampleHolderID != Constants.NONE)
+			&& (cell_id == Constants.CELL2 || tm.timeLeftToFailure >= model.dvp.getUCycleTime(cell_id));
 	}
 	 
 	protected boolean canStartTest(int cell_id, int machine_id){
-		TestMachine tm = model.testMachine[cell_id][machine_id];
+		TestMachine tm = model.testMachine.get(cell_id).get(machine_id);
 
 		return tm.state == TestMachine.State.AVAILABLE
 			&& (model.qTestCellWaitingLine[cell_id].size() != NONE_WAITING || tm.sampleHolderID != Constants.NONE)
-			&& cell_id != CELL2 && tm.timeLeftToFailure < model.dvp.uCycleTime(cell_id));
+			&& cell_id != Constants.CELL2 && tm.timeLeftToFailure < model.dvp.getUCycleTime(cell_id));
 	}
 	 
 	protected boolean canRepairTester(){
 		return model.maintenanceEmployee.testMachineID == Constants.TM_NONE
-			&& model.qMaintenanceWaitingLine.size() != NONE_WAITING
-			&& model.qMaintenanceWaitingLine.peek()[0] != CELL2;
+			&& model.qMaintenanceWaitingLine.size() != Constants.NONE_WAITING
+			&& model.qMaintenanceWaitingLine.peek()[0] != Constants.CELL2;
 	}
 	 
 	protected boolean canCleanTester(){
 		return model.maintenanceEmployee.testMachineID == Constants.TM_NONE
-			&& model.qMaintenanceWaitingLine.size() != NONE_WAITING
-			&& model.qMaintenanceWaitingLine.peek()[0] == CELL2;
+			&& model.qMaintenanceWaitingLine.size() != Constants.NONE_WAITING
+			&& model.qMaintenanceWaitingLine.peek()[0] == Constants.CELL2;
 	}
 	 
 	protected int nextTestInSequence(Sample sampleRef){

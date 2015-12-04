@@ -24,7 +24,7 @@ class Initialise extends ScheduledAction
 		model.loadUnloadMachine.sampleHolderID = Constants.NONE;
 		
 		// init transportation loop
-		for(int i; i < Constants.TLOOP_LEN; ++i)
+		for(int i = 0; i < Constants.TLOOP_LEN; ++i)
 			model.rqTransportationLoop.positions[i] = Constants.NONE;
 		model.rqTransportationLoop.offset = 0;
 
