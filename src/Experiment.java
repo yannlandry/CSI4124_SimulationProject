@@ -22,7 +22,7 @@ class Experiment
        
        /* Case 1 (base case): maxNumSampleHolders = 5 */
        maxSampleHoldersWaiting = 5;
-       labTesting = new SMLabTesting(startTime,endTime,sds);
+       labTesting = new SMLabTesting(startTime,endTime,maxSampleHoldersWaiting,sds);
        labTesting.runSimulation();
        
        // Display output
@@ -37,22 +37,22 @@ class Experiment
        
        /* Case 2: maxSampleHoldersWaiting = 4 */
        maxSampleHoldersWaiting = 4;
-       labTesting = new SMLabTesting(startTime,endTime,sds);
+       labTesting = new SMLabTesting(startTime,endTime,maxSampleHoldersWaiting,sds);
        labTesting.runSimulation();
        
        /* Case 3: maxSampleHoldersWaiting = 3 */
        maxSampleHoldersWaiting = 3;
-       labTesting = new SMLabTesting(startTime,endTime,sds);
+       labTesting = new SMLabTesting(startTime,endTime,maxSampleHoldersWaiting,sds);
        labTesting.runSimulation();
 
        /* Case 4: maxSampleHoldersWaiting = 2 */
        maxSampleHoldersWaiting = 2;
-       labTesting = new SMLabTesting(startTime,endTime,sds);
+       labTesting = new SMLabTesting(startTime,endTime,maxSampleHoldersWaiting,sds);
        labTesting.runSimulation();
        
        /* Case 5: maxSampleHoldersWaiting = 1 */
        maxSampleHoldersWaiting = 1;
-       labTesting = new SMLabTesting(startTime,endTime,sds);
+       labTesting = new SMLabTesting(startTime,endTime,maxSampleHoldersWaiting,sds);
        labTesting.runSimulation();
 
 

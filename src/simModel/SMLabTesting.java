@@ -69,16 +69,16 @@ public class SMLabTesting extends AOSimulationModel
 
 	
 	/*----------Constructor----------*/
-	public SMLabTesting(double t0time, double tftime, /* define other args,*/ Seeds sd)
+	public SMLabTesting(double t0time, double tftime, int maxSHWaiting, Seeds sd)
 	{
 		// init TestCellWaitingLines
 		for(int i = 0; i < 4; ++i)
 			qTestCellWaitingLine[i] = new ArrayBlockingQueue<Integer>(Constants.TEST_Q_LEN);
 
 		// Initialize parameters here
+		maxSampleHoldersWaiting = maxSHWaiting;
 		numTestMachines = new int[] {1,1,1,1,1};
 		numSampleHolders = 5;
-		//maxNumSampleHolders
 		
 		// Create RVP object with given seed
 		rvp = new RVPs(this,sd);
