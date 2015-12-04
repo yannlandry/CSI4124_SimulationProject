@@ -32,7 +32,7 @@ class UDPs
 		if(shIndex != Constants.NONE
 			&& model.sampleHolder[shIndex].sampleRef != Constants.NO_SAMPLE
 			&& model.sampleHolder[shIndex].sampleRef.testSequence.size() > 0
-			&& model.sampleHolder[shIndex].sampleRef.testSequence[0] == cell_id) {
+			&& model.sampleHolder[shIndex].sampleRef.testSequence.peek() == cell_id) {
 
 			// try to push in line
 			if(model.qTestCellWaitingLine[cell_id].offer(shIndex)) {
@@ -60,7 +60,7 @@ class UDPs
 			}
 			
 			// unloaded, can we still insert?
-			else if(model.qLoadUnloadWaitingLine.numEmptyHolders < model.maxEmptyHolders
+			else if(model.qLoadUnloadWaitingLine.numEmptyHolders < model.maxSampleHoldersWaiting
 				&& model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.offer(shIndex)) {
 				
 					model.rqTransportationLoop.positions[index] = Constants.NONE;
@@ -132,8 +132,8 @@ class UDPs
 		TestMachine tm = model.testMachine.get(cell_id).get(machine_id);
 
 		return tm.state == TestMachine.State.AVAILABLE
-			&& (model.qTestCellWaitingLine[cell_id].size() != NONE_WAITING || tm.sampleHolderID != Constants.NONE)
-			&& cell_id != Constants.CELL2 && tm.timeLeftToFailure < model.dvp.getUCycleTime(cell_id));
+			&& (model.qTestCellWaitingLine[cell_id].size() != Constants.NONE_WAITING || tm.sampleHolderID != Constants.NONE)
+			&& cell_id != Constants.CELL2 && tm.timeLeftToFailure < model.dvp.getUCycleTime(cell_id);
 	}
 	 
 	protected boolean canRepairTester(){

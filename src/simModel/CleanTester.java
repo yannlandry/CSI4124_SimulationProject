@@ -4,19 +4,21 @@ import simulationModelling.ConditionalActivity;
 
 public class CleanTester extends ConditionalActivity{
 	SMLabTesting model;
+	Integer[] testMachineID;
 	
 	// Constructor
-	protected CleanTester(SMLabTesting model) {
+	protected CleanTester(SMLabTesting model, Integer[] testMachineID) {
 		this.model = model;
+		this.testMachineID = testMachineID.clone();
 	}
 	
 	// Precondition
 	protected static boolean precondition() {
-		return model.udp.canCleanTester();
+		return SMLabTesting.udp.canCleanTester();
 	}
 	
 	// Starting Event SCS
-	public void startingEvent(Integer[] testMachineID) {
+	public void startingEvent() {
 		model.maintenanceEmployee.testMachineID = model.qMaintenanceWaitingLine.remove();		
 	}
 	
@@ -26,7 +28,7 @@ public class CleanTester extends ConditionalActivity{
 	}
 		
 	// Terminating Event SCS
-	public void terminatingEvent(Integer[] testMachineID){
+	public void terminatingEvent(){
 		int cell_id = testMachineID[0];
 		int machine_id = testMachineID[1];
 				

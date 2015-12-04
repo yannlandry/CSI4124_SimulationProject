@@ -22,25 +22,25 @@ public class LoadUnload extends ConditionalActivity {
 		Output output = model.output;
 		
 		// dequeue & assign to machine
-		int ident = model.qLoadUnloadWaitingLine.remove();
+		int ident = model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.remove();
 		model.loadUnloadMachine.sampleHolderID = ident;
 		
 		// unload sample holder
 		if(model.sampleHolder[ident].sampleRef != Constants.NO_SAMPLE){
-			model.udp.SampleOutput(model.sampleHolder[ident].sampleRef);
+			SMLabTesting.udp.SampleOutput(model.sampleHolder[ident].sampleRef);
 			model.sampleHolder[ident].sampleRef = Constants.NO_SAMPLE;
 		}
 		else {
-			model.loadUnloadWaitingLine.numEmptyHolders--; // decrease empty holders count
+			model.qLoadUnloadWaitingLine.numEmptyHolders--; // decrease empty holders count
 		}
 
 		// load from rush line in priority
 		if(model.qInputQueue[Constants.RUSH].size() != Constants.NONE_WAITING)	
-			model.sampleHolder[ident].sampleRef = model.qInputQueue[Constants.RUSH].inputQueue.remove();
+			model.sampleHolder[ident].sampleRef = model.qInputQueue[Constants.RUSH].remove();
 		
 		// otherwise load from normal line
 		else if(model.qInputQueue[Constants.NORMAL].size() != Constants.NONE_WAITING)
-			model.sampleHolder[ident].sampleRef = model.qInputQueue[Constants.NORMAL].inputQueue.remove();
+			model.sampleHolder[ident].sampleRef = model.qInputQueue[Constants.NORMAL].remove();
 	}
 	
 	//Duration

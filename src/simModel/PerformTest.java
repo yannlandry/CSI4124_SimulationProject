@@ -1,21 +1,26 @@
 package simModel;
 
-public class PerformTest {
+import simulationModelling.ConditionalActivity;
+
+public class PerformTest extends ConditionalActivity {
 
 	SMLabTesting model;
+	Integer[] testMachineID;
 	
 	// Constructor
-	protected PerformTest(SMLabTesting model) {
+	protected PerformTest(SMLabTesting model, Integer[] testMachineID) {
 		this.model = model;
+		this.testMachineID = testMachineID.clone();
+		
 	}
 	
 	// Precondition
-	protected static boolean precondition(Integer[] testMachineID){ // how can I add cell_id and machine_id parameters?
-		return model.udp.CanPerformTest(testMachineID[0], testMachineID[1]);
+	protected static boolean precondition(){ // how can I add cell_id and machine_id parameters?
+		return SMLabTesting.udp.canPerformTest(testMachineID[0], testMachineID[1]);
 	}
 	
 	// Starting Event SCS
-	public void startingEvent(Integer[] testMachineID) {
+	public void startingEvent() {
 		Output output = model.output;
 		
 		int cell_id = testMachineID[0];
@@ -28,17 +33,17 @@ public class PerformTest {
 	}
 	
 	// Duration
-	public double duration(Integer[] testMachineID) {
+	public double duration() {
 		return model.dvp.getUCycleTime(testMachineID[0]);
 	}
 	
 	// Terminating Event SCS
-	public void terminatingEvent(Integer[] testMachineID) {
+	public void terminatingEvent() {
 		int cell_id = testMachineID[0];
 		int machine_id = testMachineID[1];
 		
 		// ship to exit line
-		model.qExitLine[cell_id].exitLine.add(model.testMachine.get(cell_id).get(machine_id).sampleHolderID);
+		model.qExitLine[cell_id].add(model.testMachine.get(cell_id).get(machine_id).sampleHolderID);
 		model.testMachine.get(cell_id).get(machine_id).sampleHolderID = Constants.NONE;
 		
 		// decrease cell 2 tests before cleaning

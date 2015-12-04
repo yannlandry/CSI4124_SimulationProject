@@ -1,5 +1,6 @@
 package simModel;
 
+import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class LoadUnloadWaitingLine {

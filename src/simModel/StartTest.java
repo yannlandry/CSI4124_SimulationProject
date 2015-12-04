@@ -1,22 +1,26 @@
 package simModel;
 
 import simModel.TestMachine.State;
+import simulationModelling.ConditionalActivity;
 
-public class StartTest {
+public class StartTest extends ConditionalActivity {
+	
 	SMLabTesting model;
+	Integer[] testMachineID;
 	
 	// Constructor
-	protected StartTest(SMLabTesting model) {
+	protected StartTest(SMLabTesting model, Integer[] testMachineID) {
 		this.model = model;
+		this.testMachineID = testMachineID.clone();
 	}
 	
 	// Precondition
-	protected static boolean precondition(int[] testMachineID) {
-		return model.udp.canStartTest(testMachineID[0], testMachineID[1]);
+	protected static boolean precondition() {
+		return SMLabTesting.udp.canStartTest(testMachineID[0], testMachineID[1]);
 	}
 	
 	// Starting Event SCS
-	public void startingEvent(Integer[] testMachineID) {
+	public void startingEvent() {
 		int cell_id = testMachineID[0];
 		int machine_id = testMachineID[1];
 		
@@ -27,13 +31,13 @@ public class StartTest {
 	}
 	
 	// Duration
-	public double duration(Integer[] testMachineID) {
+	public double duration() {
 		return model.testMachine.get(testMachineID[0]).get(testMachineID[1]).timeLeftToFailure;
 	}
 	
 	// Terminating Event SCS
-	public void terminatingEvent(Integer[] testMachineID) {
+	public void terminatingEvent() {
 		model.qMaintenanceWaitingLine.add(testMachineID);
-		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.MAINTENANCE;
+		model.testMachine.get(testMachineID[0]).get(testMachineID[1]).state = TestMachine.State.MAINTENANCE;
 	}
 }

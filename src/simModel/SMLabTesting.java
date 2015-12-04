@@ -25,7 +25,7 @@ public class SMLabTesting extends AOSimulationModel
 	/*----------Parameters----------*/
 	protected int numTestMachines[];
 	protected int numSampleHolders;
-	protected int maxEmptySampleHolders;
+	protected int maxSampleHoldersWaiting;
 	
 	
 	/*----------Entities----------*/
@@ -33,9 +33,9 @@ public class SMLabTesting extends AOSimulationModel
 	protected Queue<Sample>[] qInputQueue = (ArrayDeque<Sample>[]) new ArrayDeque[2];
 	protected Queue<Integer>[] qTestCellWaitingLine = (ArrayDeque<Integer>[]) new ArrayDeque[5];
    	protected LoadUnloadWaitingLine qLoadUnloadWaitingLine = new LoadUnloadWaitingLine();
-	protected Queue<Integer> qExitLine = new ArrayList<Integer>[6];
+	protected Queue<Integer>[] qExitLine = (ArrayDeque<Integer>[])new ArrayDeque[6];
 
-	protected Queue<Integer[]> qMaintenanceWaitingLine = new ArrayList<Integer[]>();
+	protected Queue<Integer[]> qMaintenanceWaitingLine = new ArrayDeque<Integer[]>();
 
 	/* Not queues */
 	// Objects can be created here or in the Initialise Action
@@ -49,7 +49,7 @@ public class SMLabTesting extends AOSimulationModel
 	/*----------Inputs----------*/
 	protected RVPs rvp;  // Reference to rvp object - object created in constructor
 	protected DVPs dvp = new DVPs(this);  // Reference to dvp object
-	protected UDPs udp = new UDPs(this);
+	protected static UDPs udp;
 
 	
 	/*----------Outputs----------*/

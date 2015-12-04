@@ -1,7 +1,9 @@
 package simModel;
 
 import java.security.KeyStore.LoadStoreParameter;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Queue;
 
 import cern.jet.random.Exponential;
 import cern.jet.random.Normal;
@@ -106,9 +108,9 @@ class RVPs
 	private final double PCT_8 = 0.06;
 	private final double PCT_9 = 0.59;
 	
-	public ArrayList<Integer> sampleSequence(){
+	public Queue<Integer> sampleSequence(){
 		double randNum = typeRandGen.nextDouble();
-		ArrayList<Integer> sequence = new ArrayList<Integer>();
+		Queue<Integer> sequence = new ArrayDeque<Integer>();
 		if(randNum<PCT_8){
 			sequence.add(5);
 			sequence.add(3);
