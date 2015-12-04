@@ -21,6 +21,9 @@ public class MoveLoop extends ScheduledAction {
 		model.rqTransportationLoop.offset = (model.rqTransportationLoop.offset + 1) % (Constants.TLOOP_LEN);
 		model.udp.moveOffLoop();
 		model.udp.moveOnLoop();
+		
+		System.out.println("MoveLoop finished.");
+		model.rqTransportationLoop.debug();
 	}
 	
 }

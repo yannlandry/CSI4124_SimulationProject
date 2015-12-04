@@ -13,16 +13,23 @@ public class LoadUnload extends ConditionalActivity {
 	
 	// Precondition
 	protected static boolean precondition(SMLabTesting model){
-		return model.qLoadUnloadWaitingLine.size() != Constants.NONE_WAITING
-			&& model.loadUnloadMachine.sampleHolderID == Constants.NONE;
+		boolean inline = model.qLoadUnloadWaitingLine.size() != Constants.NONE_WAITING;
+		boolean available = model.loadUnloadMachine.sampleHolderID == Constants.NONE;
+		
+		System.out.println("Shs in line: " + inline + "; Machine available: " + available);
+		
+		return inline
+			&& available;
 	}
 	
 	// Starting Event SCS
 	public void startingEvent(){
-		Output output = model.output;
+		System.out.println("Launch load/unload!!!!");
+		System.out.println(model.qLoadUnloadWaitingLine.size() + " shs in line");
 		
 		// dequeue & assign to machine
 		int ident = model.qLoadUnloadWaitingLine.remove();
+		System.out.println(model.qLoadUnloadWaitingLine.size() + " shs in line");
 		model.loadUnloadMachine.sampleHolderID = ident;
 		
 		// unload sample holder
@@ -48,7 +55,9 @@ public class LoadUnload extends ConditionalActivity {
 	
 	//Terminating Event SCS
 	public void terminatingEvent(){
+		System.out.println("lua xline: "+model.qExitLine[Constants.LUA].size());
 		model.qExitLine[Constants.LUA].add(model.loadUnloadMachine.sampleHolderID);
+		System.out.println("lua xline: "+model.qExitLine[Constants.LUA].size());
 		model.loadUnloadMachine.sampleHolderID = Constants.NONE;
 	}
 	

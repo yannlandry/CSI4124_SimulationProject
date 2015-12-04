@@ -101,6 +101,9 @@ public class SMLabTesting extends AOSimulationModel
 		// Schedule other scheduled actions and activities here
 		SampleArrivals sampleArrivals = new SampleArrivals(this);
 		scheduleAction(sampleArrivals);
+		// too lazy to write desc
+		MoveLoop moveloop = new MoveLoop(this);
+		scheduleAction(moveloop);
 	}
 
 	/************  Implementation of Data Modules***********/	

@@ -76,9 +76,9 @@ class UDPs
 	 
 	protected void moveOffLoop() {
 		for(int i = Constants.CELL1; i < Constants.LUA; i++)
-			moveOffToCell(Constants.TLOOP_LEN - ((model.rqTransportationLoop.offset + Constants.TLOOP_LEN - (i + 1) * Constants.STN_SPACING) % Constants.TLOOP_LEN), i);
+			moveOffToCell(Constants.TLOOP_LEN - ((model.rqTransportationLoop.offset + Constants.TLOOP_LEN - (i + 1) * Constants.STN_SPACING) % Constants.TLOOP_LEN) - 1, i);
 		 
-		moveOffToLoadUnload(Constants.TLOOP_LEN - model.rqTransportationLoop.offset);
+		moveOffToLoadUnload(Constants.TLOOP_LEN - model.rqTransportationLoop.offset - 1);
 		 
 	}
 	 
@@ -92,7 +92,7 @@ class UDPs
 	 
 	protected void moveOnLoop() {
 		for(int i = Constants.CELL1; i <= Constants.LUA; i++)
-			moveOn((Constants.TLOOP_LEN - ((model.rqTransportationLoop.offset + Constants.TLOOP_LEN - (i + 1) * Constants.STN_SPACING) % Constants.TLOOP_LEN) + 3) % Constants.TLOOP_LEN, i);
+			moveOn((Constants.TLOOP_LEN - ((model.rqTransportationLoop.offset + Constants.TLOOP_LEN - (i + 1) * Constants.STN_SPACING) % Constants.TLOOP_LEN) + 3) % Constants.TLOOP_LEN - 1, i);
 	}
 
 	protected void sampleHoldersInitialPositions() {

@@ -24,10 +24,12 @@ public class SampleArrivals extends ScheduledAction {
 		icSample.testSequence = model.rvp.sampleSequence();
 		icSample.startTime = model.getClock();
 		
-		if(icSample.type == Sample.Type.NORMAL)
+		if(icSample.type == Sample.Type.NORMAL) 
 			model.qInputQueue[Constants.NORMAL].add(icSample);
 		else
 			model.qInputQueue[Constants.RUSH].add(icSample);
+		
+		
 	}
 	
 }
