@@ -13,7 +13,7 @@ public class LoadUnload extends ConditionalActivity {
 	
 	// Precondition
 	protected static boolean precondition(SMLabTesting model){
-		return model.qLoadUnloadWaitingLine.loadUnloadWaitingLine.size() != Constants.NONE_WAITING
+		return model.qLoadUnloadWaitingLine.size() != Constants.NONE_WAITING
 			&& model.loadUnloadMachine.sampleHolderID == Constants.NONE;
 	}
 	
