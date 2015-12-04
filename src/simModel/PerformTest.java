@@ -15,8 +15,8 @@ public class PerformTest extends ConditionalActivity {
 	}
 	
 	// Precondition
-	protected static boolean precondition(){ // how can I add cell_id and machine_id parameters?
-		return SMLabTesting.udp.canPerformTest(testMachineID[0], testMachineID[1]);
+	protected static boolean precondition(int cell_id, int machine_id) {
+		return SMLabTesting.udp.canPerformTest(cell_id, machine_id);
 	}
 	
 	// Starting Event SCS
