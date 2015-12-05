@@ -111,9 +111,7 @@ public class SMLabTesting extends AOSimulationModel
 	 * Testing preconditions
 	 */
 	protected void testPreconditions(Behaviour behObj)
-	{
-		reschedule (behObj);
-		
+	{		
 		// Check preconditions of Conditional Activities
 		while(scanPreconditions() == true)/*--repeat--*/;
 	}
