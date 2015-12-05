@@ -104,6 +104,7 @@ public class SMLabTesting extends AOSimulationModel
 		// too lazy to write desc
 		MoveLoop moveloop = new MoveLoop(this);
 		scheduleAction(moveloop);
+		
 	}
 
 	/************  Implementation of Data Modules***********/	
@@ -111,7 +112,8 @@ public class SMLabTesting extends AOSimulationModel
 	 * Testing preconditions
 	 */
 	protected void testPreconditions(Behaviour behObj)
-	{		
+	{	
+		reschedule(behObj);
 		// Check preconditions of Conditional Activities
 		while(scanPreconditions() == true)/*--repeat--*/;
 	}

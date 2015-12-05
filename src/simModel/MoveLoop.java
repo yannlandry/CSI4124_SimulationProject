@@ -9,11 +9,17 @@ public class MoveLoop extends ScheduledAction {
 	//constructor
 	public MoveLoop(SMLabTesting model){
 		this.model = model;
+		this.move = model.dvp.moveOnePosTime();
 	}
 	
 	//time sequence
+	private int moveTimes = 1440 * 60;
+	private double[] move = new double[moveTimes+1];
+	private int i = 0;
+	
 	public double timeSequence(){
-		return model.dvp.moveOnePosTime();
+		//move = model.dvp.moveOnePosTime();
+		return move[i++];
 	}
 	
 	//event SCS

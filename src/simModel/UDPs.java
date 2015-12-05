@@ -92,7 +92,7 @@ class UDPs
 	 
 	protected void moveOnLoop() {
 		for(int i = Constants.CELL1; i <= Constants.LUA; i++)
-			moveOn((Constants.TLOOP_LEN - ((model.rqTransportationLoop.offset + Constants.TLOOP_LEN - (i + 1) * Constants.STN_SPACING) % Constants.TLOOP_LEN) + 3) % Constants.TLOOP_LEN - 1, i);
+			moveOn((Constants.TLOOP_LEN - ((model.rqTransportationLoop.offset + Constants.TLOOP_LEN - (i + 1) * Constants.STN_SPACING) % Constants.TLOOP_LEN) + 3) % Constants.TLOOP_LEN, i);
 	}
 
 	protected void sampleHoldersInitialPositions() {
