@@ -8,7 +8,7 @@ import simModel.Seeds;
 
 // Main Method: Experiments
 class Experiment {
-	private static double startTime = 0.0, endTime = 10.0/*1440.0*/;
+	private static double startTime = 0.0, endTime = 1440.0;
 	private static int i;
 	private static int maxSampleHoldersWaiting = 5;
 	private static int numSampleHolders;
@@ -22,11 +22,12 @@ class Experiment {
 	public static void main(String[] args) {
 
 		/*
-		 * For each case, run simulation and display the output Case 1 (base
-		 * case): maxNumSampleHolders = 5 , numTestMachines = {1,1,1,1,1} Case
-		 * 2: maxSampleHoldersWaiting = 4, numTestMachines = {5,5,5,5,5} Case 3:
-		 * maxSampleHoldersWaiting = 3 Case 4: maxSampleHoldersWaiting = 2 Case
-		 * 5: maxSampleHoldersWaiting = 1
+		 * For each case, run simulation and display the output
+		 * Case 1 (base case): maxNumSampleHolders = 5 , numTestMachines = {1,1,1,1,1}
+		 * Case 2: maxSampleHoldersWaiting = 4, numTestMachines = {5,5,5,5,5}
+		 * Case 3: maxSampleHoldersWaiting = 3
+		 * Case 4: maxSampleHoldersWaiting = 2
+		 * Case 5: maxSampleHoldersWaiting = 1
 		 */
 
 		for (i = maxSampleHoldersWaiting; i > 0; i--) {
@@ -35,7 +36,7 @@ class Experiment {
 
 			// Run the simulation until the optimal number of sample holders is
 			// achieved
-			/*while (true) {
+			while (true) {
 				runSim();
 				if (labTesting.getPctCompletedInTime() >= 0.9)
 					numSampleHolders++;
@@ -59,8 +60,8 @@ class Experiment {
 
 				if (labTesting.getPctCompletedInTime() >= 0.9)
 					break;
-			}*/
-			runSim();
+			}
+
 			// Display output
 			// Display percent normal and rush samples completed
 			System.out.print("Case " + (maxSampleHoldersWaiting - i + 1) + "\n\tnumSampleHolders = " + numSampleHolders
@@ -80,7 +81,7 @@ class Experiment {
 		labTesting.runSimulation();
 	}
 	
-	public static String testMachinesToString() { 
+	private static String testMachinesToString() { 
 	    String str = "";
 
 		for(int i = 0; i < numTestMachines.length; i++)
