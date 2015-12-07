@@ -43,6 +43,7 @@ class UDPs
 			if(model.qTestCellWaitingLine[cell_id].offer(shIndex)) {
 				 updateSuccessfulEntries(cell_id);
 				 popTestFromSequence(model.sampleHolder[shIndex].sampleRef);
+				 model.rqTransportationLoop.positions[index] = Constants.NONE;
 			}
 			else {
 				 updateUnsuccessfulEntries(cell_id);
