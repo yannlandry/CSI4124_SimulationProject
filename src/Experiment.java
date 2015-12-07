@@ -1,3 +1,4 @@
+
 // File: Experiment.java
 // Description:
 
@@ -6,51 +7,85 @@ import cern.jet.random.engine.*;
 import simModel.Seeds;
 
 // Main Method: Experiments
-// 
-class Experiment
-{
-   public static void main(String[] args)
-   {
-       int i = 0; 
-       int maxSampleHoldersWaiting = 5;
-       int numSampleHolders = 5;
-       int[] numTestMachines = {1,1,1,1,1};
-       double startTime=0.0, endTime=1440.0;
-       SMLabTesting labTesting;  // Simulation object
+class Experiment {
+	private static double startTime = 0.0, endTime = 10.0/*1440.0*/;
+	private static int i;
+	private static int maxSampleHoldersWaiting = 5;
+	private static int numSampleHolders;
+	private static int[] numTestMachines;
+	private static SMLabTesting labTesting; // Simulation object
 
-       // Seeds
-       RandomSeedGenerator rsg = new RandomSeedGenerator();
-       Seeds sds = new Seeds(rsg);
+	// Seeds
+	private static RandomSeedGenerator rsg = new RandomSeedGenerator();
+	private static Seeds sds = new Seeds(rsg);
 
-       /* For each case, run simulation and display the output
-       Case 1 (base case): maxNumSampleHolders = 5 , numTestMachines = {1,1,1,1,1}
-       Case 2: maxSampleHoldersWaiting = 4, numTestMachines = {5,5,5,5,5}
-       Case 3: maxSampleHoldersWaiting = 3
-       Case 4: maxSampleHoldersWaiting = 2
-       Case 5: maxSampleHoldersWaiting = 1
-       */
-       for(i = maxSampleHoldersWaiting; i > 0; i--) {
-    	   //Run the simulation until the optimal number of sample holders is achieved
-    	   while(true) {
-    		   labTesting = new SMLabTesting(startTime,endTime,i,numSampleHolders,numTestMachines,sds);
-               labTesting.runSimulation();
+	public static void main(String[] args) {
 
-               // Display output
-               // Display percent normal and rush samples completed
-               System.out.print("Case " + (maxSampleHoldersWaiting-i+1)
-            		   + "\n\tnumSampleHolders = " + numSampleHolders
-            		   + "\n\tPctCompletedInTime = " + labTesting.getPctCompletedInTime());
+		/*
+		 * For each case, run simulation and display the output Case 1 (base
+		 * case): maxNumSampleHolders = 5 , numTestMachines = {1,1,1,1,1} Case
+		 * 2: maxSampleHoldersWaiting = 4, numTestMachines = {5,5,5,5,5} Case 3:
+		 * maxSampleHoldersWaiting = 3 Case 4: maxSampleHoldersWaiting = 2 Case
+		 * 5: maxSampleHoldersWaiting = 1
+		 */
 
-               // Display percent unsuccessful entry for each test cell
-               for(int j = 0; j < 5; j++)
-            	   System.out.print("\n\t\tTest Cell " + (j+1) + "\tPctUnsuccesfulEntry = " + labTesting.getPctUnsuccessfulEntry()[j]);
-               System.out.println();
+		for (i = maxSampleHoldersWaiting; i > 0; i--) {
+			numSampleHolders = 5;
+			numTestMachines = new int[] { 5, 5, 5, 5, 5 };
 
-               if(labTesting.getPctCompletedInTime() == 1.0)
-            	   numSampleHolders++;
-               else
-            	   break;
-    	   }
-       }
-   }
+			// Run the simulation until the optimal number of sample holders is
+			// achieved
+			/*while (true) {
+				runSim();
+				if (labTesting.getPctCompletedInTime() >= 0.9)
+					numSampleHolders++;
+				else
+					break;
+			}
+
+			numTestMachines = new int[] { 1, 1, 1, 1, 1 };
+			// Run the simulation until the optimal number of test machines in
+			// each cell
+			while (true) {
+				int mostCrowded = 0;
+
+				for (int j = 1; j < 5; j++) {
+					if (labTesting.getPctUnsuccessfulEntry()[mostCrowded] < labTesting.getPctUnsuccessfulEntry()[j])
+						mostCrowded = j;
+				}
+
+				numTestMachines[mostCrowded] += 1;
+				runSim();
+
+				if (labTesting.getPctCompletedInTime() >= 0.9)
+					break;
+			}*/
+			runSim();
+			// Display output
+			// Display percent normal and rush samples completed
+			System.out.print("Case " + (maxSampleHoldersWaiting - i + 1) + "\n\tnumSampleHolders = " + numSampleHolders
+					+ "\n\tnumTestMachines = " + testMachinesToString() + "\n\tPctCompletedInTime = "
+					+ labTesting.getPctCompletedInTime());
+
+			// Display percent unsuccessful entry for each test cell
+			for (int j = 0; j < 5; j++)
+				System.out.print("\n\t\tTest Cell " + (j + 1) + "\tPctUnsuccesfulEntry = "
+						+ labTesting.getPctUnsuccessfulEntry()[j]);
+			System.out.println();
+		}
+	}
+
+	private static void runSim() {
+		labTesting = new SMLabTesting(startTime, endTime, i, numSampleHolders, numTestMachines, sds);
+		labTesting.runSimulation();
+	}
+	
+	public static String testMachinesToString() { 
+	    String str = "";
+
+		for(int i = 0; i < numTestMachines.length; i++)
+			str = str + numTestMachines[i] + ", ";
+
+		return str;
+	} 
 }
