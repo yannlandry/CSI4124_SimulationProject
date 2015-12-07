@@ -11,7 +11,7 @@ class Output
 	protected double[] pctUnsuccessfulEntry = new double[6];
 	
 	protected int completedInTime = 0;
-	protected int completedTotal = 0;
+	protected int sampleTotal = 0;
 	protected double pctCompletedInTime = 0.0;
 	
 	protected Output(SMLabTesting md) {

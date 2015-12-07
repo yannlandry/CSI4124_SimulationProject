@@ -29,6 +29,7 @@ public class SampleArrivals extends ScheduledAction {
 		else
 			model.qInputQueue[Constants.RUSH].add(icSample);
 		
+		model.output.sampleTotal += 1;
 		
 	}
 	

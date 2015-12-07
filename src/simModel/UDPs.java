@@ -23,12 +23,12 @@ class UDPs
 
 	protected void updateSuccessfulCompletions() {
 		model.output.pctCompletedInTime =
-			(double)(++model.output.completedInTime) / (double)(++model.output.completedTotal);
+			(double)(++model.output.completedInTime) / (double)model.output.sampleTotal;
 	}
 
 	protected void updateUnsuccessfulCompletions() {
 		model.output.pctCompletedInTime =
-			(double)(model.output.completedInTime) / (double)(++model.output.completedTotal);
+			(double)(model.output.completedInTime) / (double)model.output.sampleTotal;
 	}
 	
 	protected void moveOffToCell(int index, int cell_id) {
