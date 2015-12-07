@@ -13,6 +13,8 @@ class Experiment
    {
        int i = 0; 
        int maxSampleHoldersWaiting = 5;
+       int numSampleHolders = 5;
+       int[] numTestMachines = {1,1,1,1,1};
        double startTime=0.0, endTime=1440.0;
        SMLabTesting labTesting;  // Simulation object
 
@@ -21,14 +23,15 @@ class Experiment
        Seeds sds = new Seeds(rsg);
        
        /* For each case, run simulation and display the output
-       Case 1 (base case): maxNumSampleHolders = 5 
-       Case 2: maxSampleHoldersWaiting = 4
+       Case 1 (base case): maxNumSampleHolders = 5 , numTestMachines = {1,1,1,1,1}
+       Case 2: maxSampleHoldersWaiting = 4, numTestMachines = {5,5,5,5,5}
        Case 3: maxSampleHoldersWaiting = 3
        Case 4: maxSampleHoldersWaiting = 2
        Case 5: maxSampleHoldersWaiting = 1
        */
        for(i = maxSampleHoldersWaiting; i > 0; i--) {
-    	   labTesting = new SMLabTesting(startTime,endTime,i,sds);
+    	   
+		   labTesting = new SMLabTesting(startTime,endTime,i,numSampleHolders,numTestMachines,sds);
            labTesting.runSimulation();
            
            // Display output

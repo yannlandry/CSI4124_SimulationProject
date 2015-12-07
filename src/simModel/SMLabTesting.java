@@ -66,7 +66,7 @@ public class SMLabTesting extends AOSimulationModel
 	}
 	
 	/*----------Constructor----------*/
-	public SMLabTesting(double t0time, double tftime, int maxSHWaiting, Seeds sd)
+	public SMLabTesting(double t0time, double tftime, int maxSHWaiting, int numSH, int[] numTM, Seeds sd)
 	{
 		// init TestCellWaitingLines
 		for(int i = 0; i < 4; ++i)
@@ -74,8 +74,8 @@ public class SMLabTesting extends AOSimulationModel
 
 		// Initialize parameters here
 		maxSampleHoldersWaiting = maxSHWaiting;
-		numTestMachines = new int[] {1,1,1,1,1};
-		numSampleHolders = 5;
+		numTestMachines = numTM;
+		numSampleHolders = numSH;
 		
 		// Create RVP object with given seed
 		rvp = new RVPs(this,sd);
