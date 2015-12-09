@@ -60,6 +60,10 @@ public class SMLabTesting extends AOSimulationModel
 	public double getPctCompletedInTime(){ return output.pctCompletedInTime; }
 	
 	
+	/*----------Debug----------*/
+	protected Debug debug;
+	
+	
 	/*----------Constructor----------*/
 	@SuppressWarnings("unchecked")
 	public SMLabTesting(double t0time, double tftime, int maxSHWaiting, int numSH, int[] numTM, Seeds sd)
@@ -96,7 +100,7 @@ public class SMLabTesting extends AOSimulationModel
 		
 		for(int i = 0; i < 5; ++i) {
 			testMachine.put(i, new ArrayList<TestMachine>());
-			for(int j = 0; j < testMachine.get(i).size(); ++j)
+			for(int j = 0; j < numTestMachines[i]; ++j)
 				testMachine.get(i).add(new TestMachine());
 		}
 		
@@ -116,6 +120,9 @@ public class SMLabTesting extends AOSimulationModel
 		
 		// the mighty outputs
 		output = new Output(this);
+		
+		// debug
+		debug = new Debug(this);
 		
 		// init this thing with a weird name
 		initAOSimulModel(t0time,tftime);
@@ -190,7 +197,7 @@ public class SMLabTesting extends AOSimulationModel
 
 	}
 
-	boolean traceFlag = true;
+	boolean traceFlag = false;
 	public void eventOccured()
 	{
 		//this.showSBL();

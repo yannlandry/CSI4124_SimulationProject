@@ -21,8 +21,6 @@ public class PerformTest extends ConditionalActivity {
 	
 	// Starting Event SCS
 	public void startingEvent() {
-		Output output = model.output;
-		
 		int cell_id = testMachineID[0];
 		int machine_id = testMachineID[1];
 		
@@ -30,6 +28,8 @@ public class PerformTest extends ConditionalActivity {
 			model.testMachine.get(cell_id).get(machine_id).sampleHolderID = model.qTestCellWaitingLine[cell_id].remove();
 		
 		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.BUSY;
+		
+		model.debug.testCell(cell_id);
 	}
 	
 	// Duration
@@ -45,6 +45,8 @@ public class PerformTest extends ConditionalActivity {
 		// ship to exit line
 		model.qExitLine[cell_id].add(model.testMachine.get(cell_id).get(machine_id).sampleHolderID);
 		model.testMachine.get(cell_id).get(machine_id).sampleHolderID = Constants.NONE;
+		
+		model.debug.testCell(cell_id);
 		
 		// decrease cell 2 tests before cleaning
 		if(cell_id == Constants.CELL2) {

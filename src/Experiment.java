@@ -30,6 +30,16 @@ class Experiment {
 		 * Case 5: maxSampleHoldersWaiting = 1
 		 */
 
+		// to run the whole thing
+		//runFullExperiment();
+		
+		// to run only one simple test experiment
+		numTestMachines = new int[] {1, 1, 1, 1, 1};
+		runOneExperiment(0.0, 10.0, 5, 2, numTestMachines, sds);
+		
+	}
+	
+	private static void runFullExperiment() {
 		for (i = maxSampleHoldersWaiting; i > 0; i--) {
 			numSampleHolders = 5;
 			numTestMachines = new int[] { 5, 5, 5, 5, 5 };
@@ -77,6 +87,10 @@ class Experiment {
 	}
 
 	private static void runSim() {
+		runOneExperiment(startTime, endTime, i, numSampleHolders, numTestMachines, sds);
+	}
+	
+	private static void runOneExperiment(double startTime, double endTime, int i, int numSampleHolders, int[] numTestMachines, Seeds sds) {
 		labTesting = new SMLabTesting(startTime, endTime, i, numSampleHolders, numTestMachines, sds);
 		labTesting.runSimulation();
 	}

@@ -133,11 +133,6 @@ class RVPs
 			sequence.add(2);
 			sequence.add(3);
 		}
-		else if(randNum<PCT_4){
-			sequence.add(4);
-			sequence.add(3);
-			sequence.add(2);
-		}
 		else if(randNum<PCT_2){
 			sequence.add(3);
 			sequence.add(4);
@@ -147,6 +142,11 @@ class RVPs
 			sequence.add(2);
 			sequence.add(4);
 			sequence.add(5);
+		}
+		else if(randNum<PCT_4){
+			sequence.add(4);
+			sequence.add(3);
+			sequence.add(2);
 		}
 		else if(randNum<PCT_7){
 			sequence.add(1);

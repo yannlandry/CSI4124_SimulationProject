@@ -31,6 +31,7 @@ public class SampleArrivals extends ScheduledAction {
 		
 		model.output.sampleTotal += 1;
 		
+		System.out.println("NEW SAMPLE with type " + (icSample.type == Sample.Type.NORMAL ? "NORMAL" : "RUSH") + " and first test in CELL" + icSample.testSequence.peek());
 	}
 	
 }

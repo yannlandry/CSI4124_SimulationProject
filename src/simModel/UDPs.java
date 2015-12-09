@@ -37,13 +37,14 @@ class UDPs
 		if(shIndex != Constants.NONE
 			&& model.sampleHolder[shIndex].sampleRef != Constants.NO_SAMPLE
 			&& model.sampleHolder[shIndex].sampleRef.testSequence.size() > 0
-			&& model.sampleHolder[shIndex].sampleRef.testSequence.peek() == cell_id) {
+			&& nextTestInSequence(model.sampleHolder[shIndex].sampleRef) == cell_id) {
 
 			// try to push in line
 			if(model.qTestCellWaitingLine[cell_id].offer(shIndex)) {
 				 updateSuccessfulEntries(cell_id);
 				 popTestFromSequence(model.sampleHolder[shIndex].sampleRef);
 				 model.rqTransportationLoop.positions[index] = Constants.NONE;
+				 model.debug.testCell(cell_id);
 			}
 			else {
 				 updateUnsuccessfulEntries(cell_id);
