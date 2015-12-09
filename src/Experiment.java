@@ -38,8 +38,8 @@ class Experiment {
 			// achieved
 			while (true) {
 				runSim();
-				if (labTesting.getPctCompletedInTime() >= 0.9)
-					numSampleHolders++;
+				if (labTesting.getPctCompletedInTime() < 0.9)
+					numSampleHolders+=10;
 				else
 					break;
 			}
@@ -84,8 +84,10 @@ class Experiment {
 	private static String testMachinesToString() { 
 	    String str = "";
 
-		for(int i = 0; i < numTestMachines.length; i++)
+		for(int i = 0; i < numTestMachines.length - 1; i++)
 			str = str + numTestMachines[i] + ", ";
+
+		str += numTestMachines[numTestMachines.length-1];
 
 		return str;
 	} 
