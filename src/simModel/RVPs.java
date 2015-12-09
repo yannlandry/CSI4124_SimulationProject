@@ -1,8 +1,6 @@
 package simModel;
 
-import java.security.KeyStore.LoadStoreParameter;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Queue;
 
 import cern.jet.random.Exponential;
@@ -50,39 +48,36 @@ class RVPs
 	
 	protected double duSampleInput()  // for getting next value of duInput
 	{
-	    double nxtInterArr;
-	    double mean = 0;
-        nxtInterArr = interArrDist.nextDouble();
-	    // Note that interarrival time is added to current
-	    // clock value to get the next arrival time.
-        if(model.getClock()<60) mean = MEAN1;
-        else if (model.getClock()<120) mean = MEAN2;
-        else if (model.getClock()<180) mean = MEAN3;
-        else if (model.getClock()<240) mean = MEAN4;
-        else if (model.getClock()<300) mean = MEAN5;
-        else if (model.getClock()<360) mean = MEAN6;
-        else if (model.getClock()<420) mean = MEAN7;
-        else if (model.getClock()<480) mean = MEAN8;
-        else if (model.getClock()<540) mean = MEAN9;
-        else if (model.getClock()<600) mean = MEAN10;
-        else if (model.getClock()<660) mean = MEAN11;
-        else if (model.getClock()<720) mean = MEAN12;
-        else if (model.getClock()<780) mean = MEAN13;
-        else if (model.getClock()<840) mean = MEAN14;
-        else if (model.getClock()<900) mean = MEAN15;
-        else if (model.getClock()<960) mean = MEAN16;
-        else if (model.getClock()<1020) mean = MEAN17;
-        else if (model.getClock()<1080) mean = MEAN18;
-        else if (model.getClock()<1140) mean = MEAN19;
-        else if (model.getClock()<1200) mean = MEAN20;
-        else if (model.getClock()<1260) mean = MEAN21;
-        else if (model.getClock()<1320) mean = MEAN22;
-        else if (model.getClock()<1380) mean = MEAN23;
-        else if (model.getClock()<1440) mean = MEAN24;
+		// Note that interarrival time is added to current
+		// clock value to get the next arrival time.
+		double mean = 0;
+		
+		if(model.getClock()<60) mean = MEAN1;
+		else if (model.getClock()<120) mean = MEAN2;
+		else if (model.getClock()<180) mean = MEAN3;
+		else if (model.getClock()<240) mean = MEAN4;
+		else if (model.getClock()<300) mean = MEAN5;
+		else if (model.getClock()<360) mean = MEAN6;
+		else if (model.getClock()<420) mean = MEAN7;
+		else if (model.getClock()<480) mean = MEAN8;
+		else if (model.getClock()<540) mean = MEAN9;
+		else if (model.getClock()<600) mean = MEAN10;
+		else if (model.getClock()<660) mean = MEAN11;
+		else if (model.getClock()<720) mean = MEAN12;
+		else if (model.getClock()<780) mean = MEAN13;
+		else if (model.getClock()<840) mean = MEAN14;
+		else if (model.getClock()<900) mean = MEAN15;
+		else if (model.getClock()<960) mean = MEAN16;
+		else if (model.getClock()<1020) mean = MEAN17;
+		else if (model.getClock()<1080) mean = MEAN18;
+		else if (model.getClock()<1140) mean = MEAN19;
+		else if (model.getClock()<1200) mean = MEAN20;
+		else if (model.getClock()<1260) mean = MEAN21;
+		else if (model.getClock()<1320) mean = MEAN22;
+		else if (model.getClock()<1380) mean = MEAN23;
+		else if (model.getClock()<1440) mean = MEAN24;
         
-        nxtInterArr = model.getClock() + interArrDist.nextDouble(mean);
-        //Why do we use model.getClock() twice???????
-	    return(nxtInterArr + model.getClock());
+        return model.getClock() + interArrDist.nextDouble(mean);
 	}
 	
 	//RVP for SampleType

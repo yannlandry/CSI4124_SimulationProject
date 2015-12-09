@@ -1,7 +1,5 @@
 package simModel;
 
-import simulationModelling.OutputSequence;
-
 class Output 
 {
 	SMLabTesting model;
