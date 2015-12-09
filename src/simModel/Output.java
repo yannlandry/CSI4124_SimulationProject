@@ -10,9 +10,9 @@ class Output
 	protected int[] unsuccessfulEntry = new int[6];
 	protected double[] pctUnsuccessfulEntry = new double[6];
 	
-	protected int completedInTime = 0;
-	protected int sampleTotal = 0;
-	protected double pctCompletedInTime = 0.0;
+	protected int completedInTime;
+	protected int sampleTotal;
+	protected double pctCompletedInTime;
 	
 	protected Output(SMLabTesting md) {
 		model = md; 	

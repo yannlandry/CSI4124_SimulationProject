@@ -29,71 +29,96 @@ public class SMLabTesting extends AOSimulationModel
 	
 	
 	/*----------Entities----------*/
-	/* Queues */
+	/* Things that are queues */
+	protected Queue<Sample>[] qInputQueue;
+	protected Queue<Integer>[] qTestCellWaitingLine;
+   	protected Queue<Integer> qLoadUnloadWaitingLine;
+	protected Queue<Integer>[] qExitLine;
+	protected Queue<Integer[]> qMaintenanceWaitingLine;
 	// use ArrayBlockingQueues for limited-length queues
-	protected Queue<Sample>[] qInputQueue = (ArrayDeque<Sample>[]) new ArrayDeque[2];
-	protected Queue<Integer>[] qTestCellWaitingLine = (ArrayBlockingQueue<Integer>[]) new ArrayBlockingQueue[5];
-   	protected Queue<Integer> qLoadUnloadWaitingLine = new ArrayBlockingQueue<Integer>(Constants.LUA_Q_LEN);
-	protected Queue<Integer>[] qExitLine = (ArrayDeque<Integer>[]) new ArrayDeque[6];
 
-	protected Queue<Integer[]> qMaintenanceWaitingLine = new ArrayDeque<Integer[]>();
-
-	/* Not queues */
-	// Objects can be created here or in the Initialise Action
+	/* Things that aren't queues */
 	protected SampleHolder sampleHolder[];
 	protected TransportationLoop rqTransportationLoop;
-	protected HashMap<Integer, ArrayList<TestMachine>> testMachine = new HashMap<Integer, ArrayList<TestMachine>>();
+	protected HashMap<Integer, ArrayList<TestMachine>> testMachine;
 	protected LoadUnloadMachine loadUnloadMachine;
 	protected MaintenanceEmployee maintenanceEmployee;
 
 	
 	/*----------Inputs----------*/
-	protected RVPs rvp;  // Reference to rvp object - object created in constructor
-	protected DVPs dvp = new DVPs(this);  // Reference to dvp object
-	protected UDPs udp = new UDPs(this);
+	protected RVPs rvp;
+	protected DVPs dvp;
+	protected UDPs udp;
 
 	
 	/*----------Outputs----------*/
-	protected Output output = new Output(this);
+	protected Output output;
 	
 	// Output values - define the public methods that return values
 	// required for experimentation.
-	public double[] getPctUnsuccessfulEntry(){
-		return output.pctUnsuccessfulEntry;
-	}
-	public double getPctCompletedInTime(){
-		return output.pctCompletedInTime;
-	}
+	public double[] getPctUnsuccessfulEntry(){ return output.pctUnsuccessfulEntry; }
+	public double getPctCompletedInTime(){ return output.pctCompletedInTime; }
+	
 	
 	/*----------Constructor----------*/
+	@SuppressWarnings("unchecked")
 	public SMLabTesting(double t0time, double tftime, int maxSHWaiting, int numSH, int[] numTM, Seeds sd)
 	{
-		// init TestCellWaitingLines
-		for(int i = 0; i < 4; ++i)
-			qTestCellWaitingLine[i] = new ArrayBlockingQueue<Integer>(Constants.TEST_Q_LEN);
-
-		// Initialize parameters here
+		// parameters
 		maxSampleHoldersWaiting = maxSHWaiting;
 		numTestMachines = numTM;
 		numSampleHolders = numSH;
 		
-		// Create RVP object with given seed
-		rvp = new RVPs(this,sd);
+		// sample holders
+		sampleHolder = new SampleHolder[numSampleHolders];
+		for(int i = 0; i < numSampleHolders; ++i)
+			sampleHolder[i] = new SampleHolder();
 		
-		// rgCounter and qCustLine objects created in Initialize Action
+		// input queues
+		qInputQueue = (Queue<Sample>[]) new Queue[2];
+		qInputQueue[Constants.NORMAL] = new ArrayDeque<Sample>();
+		qInputQueue[Constants.RUSH] = new ArrayDeque<Sample>();
 		
-		// Initialize the simulation model
+		// load unload waiting line
+		loadUnloadMachine = new LoadUnloadMachine();
+		qLoadUnloadWaitingLine = new ArrayBlockingQueue<Integer>(Constants.LUA_Q_LEN);
+		
+		// transportation loop
+		rqTransportationLoop = new TransportationLoop();
+		
+		// test cell waiting line
+		qTestCellWaitingLine = (Queue<Integer>[]) new Queue[5];
+		for(int i = 0; i < 5; ++i)
+			qTestCellWaitingLine[i] = new ArrayBlockingQueue<Integer>(Constants.TEST_Q_LEN);
+
+		// test machines
+		testMachine = new HashMap<Integer, ArrayList<TestMachine>>();
+		
+		for(int i = 0; i < 5; ++i) {
+			testMachine.put(i, new ArrayList<TestMachine>());
+			for(int j = 0; j < testMachine.get(i).size(); ++j)
+				testMachine.get(i).add(new TestMachine());
+		}
+		
+		// exit lines
+		qExitLine = (Queue<Integer>[]) new Queue[6];
+		for(int i = 0; i < 6; ++i)
+			qExitLine[i] = new ArrayDeque<Integer>();
+		
+		// maintenance stuff
+		qMaintenanceWaitingLine = new ArrayDeque<Integer[]>();
+		maintenanceEmployee = new MaintenanceEmployee();
+		
+		// things that end with a P
+		rvp = new RVPs(this, sd);
+		dvp = new DVPs(this);
+		udp = new UDPs(this);
+		
+		// the mighty outputs
+		output = new Output(this);
+		
+		// init this thing with a weird name
 		initAOSimulModel(t0time,tftime);
-		ArrayList<TestMachine> testMachineCell1 = new ArrayList<TestMachine>();
-		ArrayList<TestMachine> testMachineCell2 = new ArrayList<TestMachine>();
-		ArrayList<TestMachine> testMachineCell3 = new ArrayList<TestMachine>();
-		ArrayList<TestMachine> testMachineCell4 = new ArrayList<TestMachine>();
-		ArrayList<TestMachine> testMachineCell5 = new ArrayList<TestMachine>();
-		testMachine.put(Constants.CELL1, testMachineCell1);
-		testMachine.put(Constants.CELL2, testMachineCell2);
-		testMachine.put(Constants.CELL3, testMachineCell3);
-		testMachine.put(Constants.CELL4, testMachineCell4);
-		testMachine.put(Constants.CELL5, testMachineCell5);
 
 		// Schedule the first arrivals and employee scheduling
 		Initialise init = new Initialise(this);
@@ -101,7 +126,7 @@ public class SMLabTesting extends AOSimulationModel
 		// Schedule other scheduled actions and activities here
 		SampleArrivals sampleArrivals = new SampleArrivals(this);
 		scheduleAction(sampleArrivals);
-		// too lazy to write desc
+		// Schedule loopmoving
 		MoveLoop moveloop = new MoveLoop(this);
 		scheduleAction(moveloop);
 		

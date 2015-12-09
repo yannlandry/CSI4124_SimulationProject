@@ -22,50 +22,36 @@ class Initialise extends ScheduledAction
 	protected void actionEvent() 
 	{
 		// init load/unload
-		model.loadUnloadMachine = new LoadUnloadMachine();
 		model.loadUnloadMachine.sampleHolderID = Constants.NONE;
 		
 		// init transportation loop
-		model.rqTransportationLoop = new TransportationLoop();
 		for(int i = 0; i < Constants.TLOOP_LEN; ++i)
 			model.rqTransportationLoop.positions[i] = Constants.NONE;
 		model.rqTransportationLoop.offset = 0;
 
-		// init input queue
-		model.qInputQueue[Constants.RUSH] = new ArrayDeque<Sample>();
-		model.qInputQueue[Constants.NORMAL] = new ArrayDeque<Sample>();
-
-		// init exit lines
-		for(int i = Constants.CELL1; i <= Constants.LUA; ++i){
-			model.qExitLine[i] = new ArrayDeque<Integer>();
-		}
-		
-		// init test cell waiting lines
-		for(int i = Constants.CELL1; i < Constants.LUA; ++i){
-			model.qTestCellWaitingLine[i] = new ArrayBlockingQueue<Integer>(5);
-		}
-
 		// init sample holders
-		model.sampleHolder = new SampleHolder[model.numSampleHolders];
-		for(int i = 0; i < model.numSampleHolders; ++i){
-			model.sampleHolder[i] = new SampleHolder();
+		for(int i = 0; i < model.numSampleHolders; ++i)
 			model.sampleHolder[i].sampleRef = Constants.NO_SAMPLE;
-		}
 		
+		// position sample holders
 		model.udp.sampleHoldersInitialPositions();
 		
 		// init test machines
 		model.udp.testMachineInitialization();
 		
 		// init maintenance employee
-		model.maintenanceEmployee = new MaintenanceEmployee();
 		model.maintenanceEmployee.testMachineID = Constants.TM_NONE;
 		
+		// initialize outputs
 		for(int cid = Constants.CELL1; cid <= Constants.LUA; ++cid) {
 			model.output.unsuccessfulEntry[cid] = 0;
 			model.output.totalEntryAttempts[cid] = 0;
 			model.output.pctUnsuccessfulEntry[cid] = 0;
 		}
+		
+		model.output.completedInTime = 0;
+		model.output.sampleTotal = 0;
+		model.output.pctCompletedInTime = 0.0;
 	}
 
 }

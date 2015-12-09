@@ -23,12 +23,12 @@ class UDPs
 
 	protected void updateSuccessfulCompletions() {
 		model.output.pctCompletedInTime =
-			(double)(++model.output.completedInTime) / (double)model.output.sampleTotal;
+			(double)(++model.output.completedInTime) / (double)(++model.output.sampleTotal);
 	}
 
 	protected void updateUnsuccessfulCompletions() {
 		model.output.pctCompletedInTime =
-			(double)(model.output.completedInTime) / (double)model.output.sampleTotal;
+			(double)(model.output.completedInTime) / (double)(++model.output.sampleTotal);
 	}
 	
 	protected void moveOffToCell(int index, int cell_id) {
@@ -106,15 +106,15 @@ class UDPs
 		// distribute among remaining cells
 		for(int i = Constants.CELL1; sh < total; i = (i + 1) % 5)
 			model.qExitLine[i].add(sh++);
+		
+		System.out.println(sh + " of " + model.numSampleHolders + " shs distributed");
 
 	}
 	 
 	protected void testMachineInitialization() {
-		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; cell_id++){
-			for(int num = 0; num < model.numTestMachines[cell_id]; num++){
-				model.testMachine.get(cell_id).add(new TestMachine());
-			}
-		}
+		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; cell_id++)
+			for(int machine_id = 0; machine_id < model.testMachine.get(cell_id).size(); ++machine_id)
+				model.testMachine.get(cell_id).get(machine_id).sampleHolderID = Constants.NONE;
 		
 		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; cell_id++) {
 			for(int machine_id = 0; machine_id < model.testMachine.get(cell_id).size(); machine_id++) {
