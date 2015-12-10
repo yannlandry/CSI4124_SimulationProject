@@ -20,8 +20,8 @@ public class SampleArrivals extends ScheduledAction {
 	public void actionEvent(){
 		Sample icSample = new Sample();
 		
-		icSample.type = model.rvp.sampleType();
-		icSample.testSequence = model.rvp.sampleSequence();
+		icSample.type = model.rvp.uSampleType();
+		icSample.testSequence = model.rvp.uSampleTestSequence();
 		icSample.startTime = model.getClock();
 		
 		if(icSample.type == Sample.Type.NORMAL) 

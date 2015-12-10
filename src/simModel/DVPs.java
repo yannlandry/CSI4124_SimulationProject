@@ -28,7 +28,7 @@ class DVPs
 	}
 	
 	// The returned value is the rotation time in minute of the transportation loop.
-	protected double[] moveOnePosTime(){
+	protected double[] getMoveOnePosTime(){
 		int moveTimes = 1440 * 60;
 		double[] move = new double[moveTimes + 1];
 		move[0] = 1.0 / 60.0;

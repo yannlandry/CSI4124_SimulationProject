@@ -84,7 +84,7 @@ class RVPs
 	private final double PCT_N = 0.93;
 	// PROPN_RUSH = 7%, but not needed for calculation
 	MersenneTwister typeRandGen = new MersenneTwister();
-	public Sample.Type sampleType(){
+	public Sample.Type uSampleType(){
 		double randNum = typeRandGen.nextDouble();
 		Sample.Type type;
 		if(randNum<PCT_N) type = Sample.Type.NORMAL;
@@ -103,7 +103,7 @@ class RVPs
 	private final double PCT_8 = 0.06;
 	private final double PCT_9 = 0.59;
 	
-	public Queue<Integer> sampleSequence(){
+	public Queue<Integer> uSampleTestSequence(){
 		double randNum = typeRandGen.nextDouble();
 		Queue<Integer> sequence = new ArrayDeque<Integer>();
 		if(randNum<PCT_8){

@@ -9,7 +9,7 @@ public class MoveLoop extends ScheduledAction {
 	//constructor
 	public MoveLoop(SMLabTesting model){
 		this.model = model;
-		this.move = model.dvp.moveOnePosTime();
+		this.move = model.dvp.getMoveOnePosTime();
 	}
 	
 	//time sequence
