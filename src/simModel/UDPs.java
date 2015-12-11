@@ -13,7 +13,7 @@ class UDPs
 
 	protected void updateSuccessfulEntries(int cell_id) {
 		model.output.pctUnsuccessfulEntry[cell_id]
-			= model.output.unsuccessfulEntry[cell_id] / ++model.output.totalEntryAttempts[cell_id];
+			= (double)(model.output.unsuccessfulEntry[cell_id]) / (double)(++model.output.totalEntryAttempts[cell_id]);
 	}
 	
 	protected void updateUnsuccessfulEntries(int cell_id) {
@@ -23,12 +23,12 @@ class UDPs
 
 	protected void updateSuccessfulCompletions() {
 		model.output.pctCompletedInTime =
-			(double)(++model.output.completedInTime) / (double)(++model.output.sampleTotal);
+			(double)(++model.output.completedInTime) / (double)(model.output.sampleTotal);
 	}
 
 	protected void updateUnsuccessfulCompletions() {
 		model.output.pctCompletedInTime =
-			(double)(model.output.completedInTime) / (double)(++model.output.sampleTotal);
+			(double)(model.output.completedInTime) / (double)(model.output.sampleTotal);
 	}
 	
 	protected void moveOffToCell(int index, int cell_id) {
@@ -36,18 +36,16 @@ class UDPs
 		 
 		if(shIndex != Constants.NONE
 			&& model.sampleHolder[shIndex].sampleRef != Constants.NO_SAMPLE
-			&& model.sampleHolder[shIndex].sampleRef.testSequence.size() > 0
 			&& nextTestInSequence(model.sampleHolder[shIndex].sampleRef) == cell_id) {
 
 			// try to push in line
 			if(model.qTestCellWaitingLine[cell_id].offer(shIndex)) {
-				 updateSuccessfulEntries(cell_id);
-				 popTestFromSequence(model.sampleHolder[shIndex].sampleRef);
-				 model.rqTransportationLoop.positions[index] = Constants.NONE;
-				 model.debug.testCell(cell_id);
+				updateSuccessfulEntries(cell_id);
+				popTestFromSequence(model.sampleHolder[shIndex].sampleRef);
+				model.rqTransportationLoop.positions[index] = Constants.NONE;
 			}
 			else {
-				 updateUnsuccessfulEntries(cell_id);
+				updateUnsuccessfulEntries(cell_id);
 			}
 		}
 	}

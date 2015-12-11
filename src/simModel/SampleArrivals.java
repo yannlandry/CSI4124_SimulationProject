@@ -8,7 +8,7 @@ public class SampleArrivals extends ScheduledAction {
 	
 	// constructor
 	public SampleArrivals(SMLabTesting model){
-		this.model = model; // hmmmmm
+		this.model = model;
 	}
 	
 	// time sequence
@@ -29,9 +29,11 @@ public class SampleArrivals extends ScheduledAction {
 		else
 			model.qInputQueue[Constants.RUSH].add(icSample);
 		
-		model.output.sampleTotal += 1;
+		// do not count samples arrived during the last hour as they probably won't leave in time
+		if(model.getClock() < 1380)
+			++model.output.sampleTotal;
 		
-		System.out.println("NEW SAMPLE with type " + (icSample.type == Sample.Type.NORMAL ? "NORMAL" : "RUSH") + " and first test in CELL" + icSample.testSequence.peek());
+		//System.out.println(model.getClock() + ": NEW SAMPLE with type " + (icSample.type == Sample.Type.NORMAL ? "NORMAL" : "RUSH") + " and first test in CELL" + icSample.testSequence.peek());
 	}
 	
 }

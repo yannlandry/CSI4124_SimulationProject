@@ -76,8 +76,12 @@ class RVPs
 		else if (model.getClock()<1320) mean = MEAN22;
 		else if (model.getClock()<1380) mean = MEAN23;
 		else if (model.getClock()<1440) mean = MEAN24;
+		
+		//double gen = interArrDist.nextDouble(mean);
+		//System.out.println("Next mean is " + mean + " and gave " + gen + " minutes" + (gen > mean ? " OVER AVERAGE!" : ""));
+		
         
-        return model.getClock() + interArrDist.nextDouble(mean);
+        return model.getClock() + mean;
 	}
 	
 	//RVP for SampleType
@@ -156,6 +160,8 @@ class RVPs
 			sequence.add(4);
 		}
 		
+		System.out.println("First test will be in cell " + sequence.peek());
+		
 		return sequence;
 	}
 	
@@ -188,38 +194,18 @@ class RVPs
 	private Normal repairTime4;
 	private Normal repairTime5;
 	
-	public double uRepairTime(int cellID){
-		double time = 0;
-//		int key = 0;
-//		
-//		if(model.testMachine.containsValue(tM)){
-//			for(int k : model.testMachine.keySet()){
-//				if(model.testMachine.get(k).contains(tM)){
-//					key = k;
-//					break;
-//				}
-//			}
-//		}
-		
-		switch (cellID){
+	public double uRepairTime(int cell_id){
+		switch (cell_id){
 			case Constants.CELL1:
-				time = repairTime1.nextDouble();
-				break;
+				return repairTime1.nextDouble();
 			case Constants.CELL3:
-				time = repairTime3.nextDouble();
-				break;
+				return repairTime3.nextDouble();
 			case Constants.CELL4:
-				time = repairTime4.nextDouble();
-				break;
+				return repairTime4.nextDouble();
 			case Constants.CELL5:
-				time = repairTime5.nextDouble();
-				break;
 			default:
-				System.out.println("No repairTime information for CELL2.");
-				break;
+				return repairTime5.nextDouble();
 		}
-		
-		return time;	
 	}
 	
 	//RVP for time to fail
@@ -237,38 +223,18 @@ class RVPs
 	private Normal timeToFail4;
 	private Normal timeToFail5;
 	
-	public double uTimeToFail(int cellID){
-		double time = 0;
-//		int key = 0;
-//		
-//		if(model.testMachine.containsValue(tM)){
-//			for(int k : model.testMachine.keySet()){
-//				if(model.testMachine.get(k).contains(tM)){
-//					key = k;
-//					break;
-//				}
-//			}
-//		}
-		
-		switch (cellID){
+	public double uTimeToFail(int cell_id){
+		switch (cell_id){
 			case Constants.CELL1:
-				time = timeToFail1.nextDouble();
-				break;
+				return timeToFail1.nextDouble();
 			case Constants.CELL3:
-				time = timeToFail3.nextDouble();
-				break;
+				return timeToFail3.nextDouble();
 			case Constants.CELL4:
-				time = timeToFail4.nextDouble();
-				break;
+				return timeToFail4.nextDouble();
 			case Constants.CELL5:
-				time = timeToFail5.nextDouble();
-				break;
 			default:
-				System.out.println("No timeToFailure information for CELL2.");
-				break;
+				return timeToFail5.nextDouble();
 		}
-		
-		return time;	
 	}
 	
 	

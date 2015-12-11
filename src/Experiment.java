@@ -35,9 +35,15 @@ class Experiment {
 		//runFullExperiment();
 		
 		// to run only one simple test experiment
-		numTestMachines = new int[] {1, 1, 1, 1, 1};
-		runOneExperiment(0.0, 10.0, 5, 2, numTestMachines, sds);
+		numTestMachines = new int[] {2, 3, 3, 4, 5};
+		runOneExperiment(0.0, 1440.0, 5, 16, numTestMachines, sds);
 		
+		System.out.println("--SIMULATION COMPLETE--");
+		System.out.println(labTesting.getTotalCompleted() + " samples were processed, " + (labTesting.getPctCompletedInTime()) + " were completed in time.");
+		
+		for(int i = 0; i < 5; ++i) {
+			System.out.println("Unsuccessful entries in Test Cell " + (i+1) + " was " + (labTesting.getPctUnsuccessfulEntry()[i]) + " (" + labTesting.getNumUnsuccessfulEntry()[i] + "/" + labTesting.getTotalEntryAttempts()[i] + ").");
+		}
 	}
 	
 	private static void runFullExperiment() {

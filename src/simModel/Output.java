@@ -12,6 +12,9 @@ class Output
 	protected int sampleTotal;
 	protected double pctCompletedInTime;
 	
+	// debug
+	//...
+	
 	protected Output(SMLabTesting md) {
 		model = md; 	
 	}

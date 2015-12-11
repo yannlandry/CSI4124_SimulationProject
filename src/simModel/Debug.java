@@ -30,7 +30,7 @@ public class Debug {
 	}
 	
 	public void testCell(int cell_id) {
-		System.out.println("Test cell " + cell_id + " (" + model.testMachine.get(cell_id).size() + " test machines): " + model.qTestCellWaitingLine[cell_id].size() + " waiting, " + model.qExitLine[cell_id].size() + " in the exit");
+		System.out.println("Test cell " + cell_id + " (" + model.testMachine.get(cell_id).size() + " test machines): " + model.qTestCellWaitingLine[cell_id].size() + " waiting, " + model.qExitLine[cell_id].size() + " in the exit.");
 		System.out.print("Servicing: ");
 		
 		for(int j = 0; j < model.testMachine.get(cell_id).size(); ++j) {

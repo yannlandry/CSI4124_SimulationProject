@@ -1,8 +1,5 @@
 package simModel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 class DVPs 
 {
 	SMLabTesting model;  // for accessing the clock

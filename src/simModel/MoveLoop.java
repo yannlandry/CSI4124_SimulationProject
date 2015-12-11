@@ -28,7 +28,7 @@ public class MoveLoop extends ScheduledAction {
 		model.udp.moveOffLoop();
 		model.udp.moveOnLoop();
 		
-		model.debug.transportationLoop();
+		//model.debug.transportationLoop();
 	}
 	
 }

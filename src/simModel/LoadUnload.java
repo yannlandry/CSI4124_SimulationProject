@@ -24,7 +24,7 @@ public class LoadUnload extends ConditionalActivity {
 		int ident = model.qLoadUnloadWaitingLine.remove();
 		model.loadUnloadMachine.sampleHolderID = ident;
 		
-		model.debug.loadUnloadArea();
+		//model.debug.loadUnloadArea();
 		
 		// unload sample holder
 		if(model.sampleHolder[ident].sampleRef != Constants.NO_SAMPLE){
