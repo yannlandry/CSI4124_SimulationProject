@@ -7,7 +7,7 @@ public class LoadUnload extends ConditionalActivity {
 	SMLabTesting model;
 	
 	// Constructor
-	protected LoadUnload(SMLabTesting model){
+	protected LoadUnload(SMLabTesting model) {
 		this.model = model;
 	}
 	
@@ -18,7 +18,7 @@ public class LoadUnload extends ConditionalActivity {
 	}
 	
 	// Starting Event SCS
-	public void startingEvent(){
+	public void startingEvent() {
 		
 		// dequeue & assign to machine
 		int ident = model.qLoadUnloadWaitingLine.remove();
@@ -42,13 +42,12 @@ public class LoadUnload extends ConditionalActivity {
 	}
 	
 	//Duration
-	public double duration()  
-	{ 
+	public double duration() { 
 		return model.rvp.uLoadUnloadTime();
 	}
 	
 	//Terminating Event SCS
-	public void terminatingEvent(){
+	public void terminatingEvent() {
 		model.qExitLine[Constants.LUA].add(model.loadUnloadMachine.sampleHolderID);
 		model.loadUnloadMachine.sampleHolderID = Constants.NONE;
 	}

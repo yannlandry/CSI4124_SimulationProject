@@ -34,7 +34,4 @@ class Constants
 	protected final static int MANUAL_PREP_TIME = 5;
 	//Maximum acceptable time for NORMAL & RUSH
 	protected final static int NORMAL_TIME_LIMIT = 60, RUSH_TIME_LIMIT = 30;
-	
-	//Not yet decided by CM team:
-	//EMPTY_SEQ, NONE_WAITING
 }

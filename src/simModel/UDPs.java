@@ -105,9 +105,6 @@ class UDPs
 		// distribute among remaining cells
 		for(int i = Constants.CELL1; sh < total; i = (i + 1) % 5)
 			model.qExitLine[i].add(sh++);
-		
-		System.out.println(sh + " of " + model.numSampleHolders + " shs distributed");
-
 	}
 	 
 	protected void testMachineInitialization() {
@@ -171,10 +168,12 @@ class UDPs
 	protected void sampleOutput(Sample sampleRef) {
 		double time = model.getClock() - sampleRef.startTime + Constants.MANUAL_PREP_TIME;
 
-		if((sampleRef.type == Sample.Type.NORMAL && time <= Constants.NORMAL_TIME_LIMIT)
-			|| (sampleRef.type == Sample.Type.RUSH && time <= Constants.RUSH_TIME_LIMIT))
-			updateSuccessfulCompletions();
-		else
-			updateUnsuccessfulCompletions();
+		// only update for samples that came in before the last hour
+		if(sampleRef.startTime < 1380)
+			if((sampleRef.type == Sample.Type.NORMAL && time <= Constants.NORMAL_TIME_LIMIT)
+				|| (sampleRef.type == Sample.Type.RUSH && time <= Constants.RUSH_TIME_LIMIT))
+				updateSuccessfulCompletions();
+			else
+				updateUnsuccessfulCompletions();
 	}
 }

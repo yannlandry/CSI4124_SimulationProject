@@ -32,11 +32,13 @@ class Experiment {
 		 */
 
 		// to run the whole thing
+		// we will first adjust the machines and not the sample holders
+		// need to perform multiple runs with a single setup to ensure steady quality
 		//runFullExperiment();
 		
 		// to run only one simple test experiment
-		numTestMachines = new int[] {2, 3, 3, 4, 5};
-		runOneExperiment(0.0, 1440.0, 5, 16, numTestMachines, sds);
+		numTestMachines = new int[] {2, 2, 2, 3, 4};
+		runOneExperiment(0.0, 1440.0, 5, 26, numTestMachines, sds);
 		
 		System.out.println("--SIMULATION COMPLETE--");
 		System.out.println(labTesting.getTotalCompleted() + " samples were processed, " + (labTesting.getPctCompletedInTime()) + " were completed in time.");

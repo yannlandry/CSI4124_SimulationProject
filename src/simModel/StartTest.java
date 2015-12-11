@@ -28,9 +28,6 @@ public class StartTest extends ConditionalActivity {
 			model.testMachine.get(cell_id).get(machine_id).sampleHolderID = model.qTestCellWaitingLine[cell_id].remove();
 		
 		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.BUSY;
-		
-		System.out.println("--START DOOMED TEST--");
-		model.debug.testCell(cell_id);
 	}
 	
 	// Duration
@@ -42,8 +39,5 @@ public class StartTest extends ConditionalActivity {
 	public void terminatingEvent() {
 		model.qMaintenanceWaitingLine.add(testMachineID);
 		model.testMachine.get(testMachineID[0]).get(testMachineID[1]).state = TestMachine.State.MAINTENANCE;
-		
-		System.out.println("--MACHINE GOING TO MAINTENANCE--");
-		model.debug.testCell(testMachineID[0]);
 	}
 }

@@ -88,12 +88,10 @@ class RVPs
 	private final double PCT_N = 0.93;
 	// PROPN_RUSH = 7%, but not needed for calculation
 	MersenneTwister typeRandGen = new MersenneTwister();
+	
 	public Sample.Type uSampleType(){
-		double randNum = typeRandGen.nextDouble();
-		Sample.Type type;
-		if(randNum<PCT_N) type = Sample.Type.NORMAL;
-		else type = Sample.Type.RUSH;
-		return(type);
+		if(typeRandGen.nextDouble() < PCT_N) return Sample.Type.NORMAL;
+		else return Sample.Type.RUSH;
 	}
 	
 	//RVP for sample test sequence
@@ -159,8 +157,6 @@ class RVPs
 			sequence.add(3);
 			sequence.add(4);
 		}
-		
-		System.out.println("First test will be in cell " + sequence.peek());
 		
 		return sequence;
 	}

@@ -33,7 +33,6 @@ public class SampleArrivals extends ScheduledAction {
 		if(model.getClock() < 1380)
 			++model.output.sampleTotal;
 		
-		//System.out.println(model.getClock() + ": NEW SAMPLE with type " + (icSample.type == Sample.Type.NORMAL ? "NORMAL" : "RUSH") + " and first test in CELL" + icSample.testSequence.peek());
 	}
 	
 }
