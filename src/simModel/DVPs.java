@@ -8,8 +8,8 @@ class DVPs
 	protected DVPs(SMLabTesting model) { this.model = model; }
 	
 	// Return cycle time in minute according to test type.
-	protected double getUCycleTime(int cellID) {
-		switch (cellID){
+	protected double getUCycleTime(int cell_id) {
+		switch (cell_id){
 			case Constants.CELL1:
 				return 0.77;
 			case Constants.CELL2:
