@@ -235,13 +235,13 @@ class RVPs
 	
 	
 	//Triangular distribution
-	private double triangularDistribution(double a, double b, double c) {
-	    double F = (c - a) / (b - a);
+	private double triangularDistribution(double min, double mod, double max) {
+	    double F = (max - min) / (mod - min);
 	    double rand = Math.random();
 	    if (rand < F) {
-	        return a + Math.sqrt(rand * (b - a) * (c - a));
+	        return min + Math.sqrt(rand * (mod - min) * (max - min));
 	    } else {
-	        return b - Math.sqrt((1 - rand) * (b - a) * (b - c));
+	        return mod - Math.sqrt((1 - rand) * (mod - min) * (mod - max));
 	    }
 	}
 }
