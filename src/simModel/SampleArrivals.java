@@ -29,10 +29,10 @@ public class SampleArrivals extends ScheduledAction {
 		else
 			model.qInputQueue[Constants.RUSH].add(icSample);
 		
-		// do not count samples arrived during the last hour as they probably won't leave in time
-		if(model.getClock() < 1380)
+		// do not count samples arrived during the warm-up (first hour)
+		// and samples from the last hour as they probably won't leave in time
+		if(model.getClock() > 60.0 && model.getClock() < 1500.0)
 			++model.output.sampleTotal;
-		
 	}
 	
 }

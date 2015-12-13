@@ -13,7 +13,7 @@ public class MoveLoop extends ScheduledAction {
 	}
 	
 	//time sequence
-	private int moveTimes = 1440 * 60;
+	private int moveTimes = 1560 * 60;
 	private double[] move = new double[moveTimes+1];
 	private int i = 0;
 	

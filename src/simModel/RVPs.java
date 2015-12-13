@@ -48,39 +48,38 @@ class RVPs
 	
 	protected double duSampleInput()  // for getting next value of duInput
 	{
-		// Note that interarrival time is added to current
+		// Note that inter-arrival time is added to current
 		// clock value to get the next arrival time.
 		double mean = 0;
 		
-		if(model.getClock()<60) mean = MEAN1;
-		else if (model.getClock()<120) mean = MEAN2;
-		else if (model.getClock()<180) mean = MEAN3;
-		else if (model.getClock()<240) mean = MEAN4;
-		else if (model.getClock()<300) mean = MEAN5;
-		else if (model.getClock()<360) mean = MEAN6;
-		else if (model.getClock()<420) mean = MEAN7;
-		else if (model.getClock()<480) mean = MEAN8;
-		else if (model.getClock()<540) mean = MEAN9;
-		else if (model.getClock()<600) mean = MEAN10;
-		else if (model.getClock()<660) mean = MEAN11;
-		else if (model.getClock()<720) mean = MEAN12;
-		else if (model.getClock()<780) mean = MEAN13;
-		else if (model.getClock()<840) mean = MEAN14;
-		else if (model.getClock()<900) mean = MEAN15;
-		else if (model.getClock()<960) mean = MEAN16;
-		else if (model.getClock()<1020) mean = MEAN17;
-		else if (model.getClock()<1080) mean = MEAN18;
-		else if (model.getClock()<1140) mean = MEAN19;
-		else if (model.getClock()<1200) mean = MEAN20;
-		else if (model.getClock()<1260) mean = MEAN21;
-		else if (model.getClock()<1320) mean = MEAN22;
-		else if (model.getClock()<1380) mean = MEAN23;
-		else if (model.getClock()<1440) mean = MEAN24;
-		
-		//double gen = interArrDist.nextDouble(mean);
-		//System.out.println("Next mean is " + mean + " and gave " + gen + " minutes" + (gen > mean ? " OVER AVERAGE!" : ""));
-		
+		if(model.getClock()<60) mean = MEAN24; // first hour, warm-up
+		else if(model.getClock()<120) mean = MEAN1;
+		else if (model.getClock()<180) mean = MEAN2;
+		else if (model.getClock()<240) mean = MEAN3;
+		else if (model.getClock()<300) mean = MEAN4;
+		else if (model.getClock()<360) mean = MEAN5;
+		else if (model.getClock()<420) mean = MEAN6;
+		else if (model.getClock()<480) mean = MEAN7;
+		else if (model.getClock()<540) mean = MEAN8;
+		else if (model.getClock()<600) mean = MEAN9;
+		else if (model.getClock()<660) mean = MEAN10;
+		else if (model.getClock()<720) mean = MEAN11;
+		else if (model.getClock()<780) mean = MEAN12;
+		else if (model.getClock()<840) mean = MEAN13;
+		else if (model.getClock()<900) mean = MEAN14;
+		else if (model.getClock()<960) mean = MEAN15;
+		else if (model.getClock()<1020) mean = MEAN16;
+		else if (model.getClock()<1080) mean = MEAN17;
+		else if (model.getClock()<1140) mean = MEAN18;
+		else if (model.getClock()<1200) mean = MEAN19;
+		else if (model.getClock()<1260) mean = MEAN20;
+		else if (model.getClock()<1320) mean = MEAN21;
+		else if (model.getClock()<1380) mean = MEAN22;
+		else if (model.getClock()<1440) mean = MEAN23;
+		else if (model.getClock()<1500) mean = MEAN24;
+		else mean = MEAN1; // last hour
         
+		// need to generate something from exponential
         return model.getClock() + mean;
 	}
 	

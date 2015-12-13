@@ -168,8 +168,8 @@ class UDPs
 	protected void sampleOutput(Sample sampleRef) {
 		double time = model.getClock() - sampleRef.startTime + Constants.MANUAL_PREP_TIME;
 
-		// only update for samples that came in before the last hour
-		if(sampleRef.startTime < 1380)
+		// do not count samples that entered during the first and last hours
+		if(sampleRef.startTime > 60.0 && sampleRef.startTime < 1500.0)
 			if((sampleRef.type == Sample.Type.NORMAL && time <= Constants.NORMAL_TIME_LIMIT)
 				|| (sampleRef.type == Sample.Type.RUSH && time <= Constants.RUSH_TIME_LIMIT))
 				updateSuccessfulCompletions();

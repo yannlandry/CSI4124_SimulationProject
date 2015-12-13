@@ -9,7 +9,7 @@ import simModel.Seeds;
 
 // Main Method: Experiments
 class Experiment {
-	private static double startTime = 0.0, endTime = 1440.0;
+	private static double startTime = 0.0, endTime = 1560.0;
 	private static int i;
 	private static int maxSampleHoldersWaiting = 5;
 	private static int numSampleHolders;
@@ -34,64 +34,67 @@ class Experiment {
 		// to run the whole thing
 		// we will first adjust the machines and not the sample holders
 		// need to perform multiple runs with a single setup to ensure steady quality
-		//runFullExperiment();
+		runFullExperiment();
 		
 		// to run only one simple test experiment
-		numTestMachines = new int[] {2, 2, 2, 3, 4};
-		runOneExperiment(0.0, 1440.0, 5, 26, numTestMachines, sds);
+		/*numTestMachines = new int[] {10,10,10,10,10};
+		runOneExperiment(0.0, 1560.0, 5, 200, numTestMachines, sds);
 		
 		System.out.println("--SIMULATION COMPLETE--");
 		System.out.println(labTesting.getTotalCompleted() + " samples were processed, " + (labTesting.getPctCompletedInTime()) + " were completed in time.");
 		
 		for(int i = 0; i < 5; ++i) {
 			System.out.println("Unsuccessful entries in Test Cell " + (i+1) + " was " + (labTesting.getPctUnsuccessfulEntry()[i]) + " (" + labTesting.getNumUnsuccessfulEntry()[i] + "/" + labTesting.getTotalEntryAttempts()[i] + ").");
-		}
+		}*/
 	}
 	
 	private static void runFullExperiment() {
-		for (i = maxSampleHoldersWaiting; i > 0; i--) {
-			numSampleHolders = 5;
-			numTestMachines = new int[] { 5, 5, 5, 5, 5 };
-
-			// Run the simulation until the optimal number of sample holders is
-			// achieved
-			while (true) {
-				runSim();
-				if (labTesting.getPctCompletedInTime() < 0.9)
-					numSampleHolders+=10;
-				else
-					break;
-			}
-
-			numTestMachines = new int[] { 1, 1, 1, 1, 1 };
-			// Run the simulation until the optimal number of test machines in
-			// each cell
-			while (true) {
+		System.out.println("--- STARTING FULL EXPERIMENT ---");
+		
+		for (i = maxSampleHoldersWaiting; i > 0; --i) {
+			System.out.println("\nTESTING WITH maxSampleHoldersWaiting = " + i);
+			
+			numSampleHolders = 40;
+			numTestMachines = new int[] {1, 1, 1, 1, 1};
+			
+			double[] results = new double[50];
+			
+			// Machine adjustment
+			System.out.print("Adding one machine inside Test Cell...");
+			
+			while(!validSetup(results)) {
+				// otherwise find the most crowded machine
 				int mostCrowded = 0;
-
-				for (int j = 1; j < 5; j++) {
-					if (labTesting.getPctUnsuccessfulEntry()[mostCrowded] < labTesting.getPctUnsuccessfulEntry()[j])
-						mostCrowded = j;
-				}
-
-				numTestMachines[mostCrowded] += 1;
-				runSim();
-
-				if (labTesting.getPctCompletedInTime() >= 0.9)
-					break;
+				for(int k = 1; k < 5; ++k)
+					if(labTesting.getPctUnsuccessfulEntry()[k] > labTesting.getPctUnsuccessfulEntry()[mostCrowded])
+						mostCrowded = k;
+				
+				System.out.print(" " + (mostCrowded+1) + ",");
+				++numTestMachines[mostCrowded];
 			}
-
-			// Display output
-			// Display percent normal and rush samples completed
-			System.out.print("Case " + (maxSampleHoldersWaiting - i + 1) + "\n\tnumSampleHolders = " + numSampleHolders
-					+ "\n\tnumTestMachines = " + testMachinesToString() + "\n\tPctCompletedInTime = "
-					+ labTesting.getPctCompletedInTime());
-
-			// Display percent unsuccessful entry for each test cell
-			for (int j = 0; j < 5; j++)
-				System.out.print("\n\t\tTest Cell " + (j + 1) + "\tPctUnsuccesfulEntry = "
-						+ labTesting.getPctUnsuccessfulEntry()[j]);
-			System.out.println();
+			
+			System.out.println(" done.");
+			
+			// Sample holder adjustment
+			numSampleHolders = 5;
+			System.out.print("Adjusting sample holders... " + numSampleHolders);
+			
+			while(!validSetup(results))
+				// add one sample holder
+				System.out.print(" " + ++numSampleHolders);
+			
+			System.out.println(" -- done.");
+			
+			double[] stats = computeStats(results);
+			
+			// print the last results
+			System.out.println("\tWith maxSampleHoldersWaiting = " + i
+					+ ", the mean of the proportions of samples completed in time over the last 50 runs was " + (Math.round(stats[0] * 1000.0) / 10.0) + "%, "
+					+ "with a sample standard deviation of " + (Math.round(stats[1] * 1000.0) / 10.0) + "%. "
+					+ "All 50 runs reached customer satisfaction; i.e. had a proportion of samples completed in time of at least 90%.");
+			System.out.println("\tThe number of machines in Test Cells 1 to 5, respectively, was: ["
+					+ numTestMachines[0] + ", " + numTestMachines[1] + ", " + numTestMachines[2] + ", " + numTestMachines[3] + ", " + numTestMachines[4] + "]");
+			System.out.println("\tThe number of sample holders was " + numSampleHolders + ".");
 		}
 	}
 
@@ -102,6 +105,35 @@ class Experiment {
 	private static void runOneExperiment(double startTime, double endTime, int i, int numSampleHolders, int[] numTestMachines, Seeds sds) {
 		labTesting = new SMLabTesting(startTime, endTime, i, numSampleHolders, numTestMachines, sds);
 		labTesting.runSimulation();
+	}
+	
+	private static boolean validSetup(double[] results) {
+		for(int i = 0; i < 50; ++i) {
+			runSim();
+			results[i] = labTesting.getPctCompletedInTime();
+			
+			if(labTesting.getPctCompletedInTime() < 0.9)
+				return false;
+		}
+		return true;
+	}
+	
+	private static double[] computeStats(double[] results) {
+		// stats[0] is the mean while stats[1] is the sd
+		double[] stats = new double[] {0, 0};
+		
+		// mean
+		for(int i = 0; i < 50; ++i)
+			stats[0]+= results[i];
+		stats[0]/= 50.0;
+		
+		// sample standard deviation
+		for(int i = 0; i < 50; ++i)
+			stats[1]+= Math.pow(results[i] - stats[0], 2);
+		stats[1]/= 49.0; // divide by N-1 for sample sd
+		stats[1] = Math.sqrt(stats[1]);
+		
+		return stats;
 	}
 	
 	private static String testMachinesToString() { 
