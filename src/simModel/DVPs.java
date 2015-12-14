@@ -5,9 +5,11 @@ class DVPs
 	SMLabTesting model;  // for accessing the clock
 	
 	// Constructor
-	protected DVPs(SMLabTesting model) { this.model = model; }
+	protected DVPs(SMLabTesting model) {
+		this.model = model;
+	}
 	
-	// Return cycle time in minute according to test type.
+	// returns the cycle time of cell_id
 	protected double getUCycleTime(int cell_id) {
 		switch (cell_id){
 			case Constants.CELL1:
@@ -24,15 +26,8 @@ class DVPs
 		}		
 	}
 	
-	// The returned value is the rotation time in minute of the transportation loop.
-	protected double[] getMoveOnePosTime(){
-		int moveTimes = 1560 * 60;
-		double[] move = new double[moveTimes + 1];
-		move[0] = 1.0 / 60.0;
-		for(int i = 1; i < move.length; i++){
-			move[i] = move[i-1] + 1.0 / 60.0;
-		}
-		move[moveTimes] = -1;
-		return move;
+	// returns the time between two transportation loop moves
+	protected double getMoveOnePosTime() {
+		return 1.0 / 60.0;
 	}
 }

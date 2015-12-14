@@ -6,6 +6,7 @@ import java.util.Queue;
 import cern.jet.random.Exponential;
 import cern.jet.random.Normal;
 import cern.jet.random.engine.MersenneTwister;
+import dataModelling.TriangularVariate;
 
 class RVPs 
 {
@@ -16,27 +17,33 @@ class RVPs
 	// constructor with seeds
 
 
-	// Constructor
-	protected RVPs(SMLabTesting model, Seeds sd) 
+	/* -- Constructor -- */
+	protected RVPs(SMLabTesting model) 
 	{ 
 		this.model = model; 
+		
 		// Set up distribution functions
-		interArrDist = new Exponential(MEAN1, new MersenneTwister(sd.seed1));
-		loadUnloadTime = triangularDistribution(0.18, 0.23, 0.45);
-		cleaningTime = triangularDistribution(5, 6, 10);
-		repairTime1 = new Normal(MEAN_R_1, SD_R_1, new MersenneTwister(sd.seed2));
-		repairTime3 = new Normal(MEAN_R_3, SD_R_3, new MersenneTwister(sd.seed3));
-		repairTime4 = new Normal(MEAN_R_4, SD_R_4, new MersenneTwister(sd.seed4));
-		repairTime5 = new Normal(MEAN_R_5, SD_R_5, new MersenneTwister(sd.seed5));
-		timeToFail1 = new Normal(MEAN_F_1, SD_F_1, new MersenneTwister(sd.seed6));
-		timeToFail3 = new Normal(MEAN_F_3, SD_F_3, new MersenneTwister(sd.seed7));
-		timeToFail4 = new Normal(MEAN_F_4, SD_F_4, new MersenneTwister(sd.seed8));
-		timeToFail5 = new Normal(MEAN_F_5, SD_F_5, new MersenneTwister(sd.seed9));
+		interArrDist = new Exponential(MEAN1, new MersenneTwister(Seeds.next()));
+		
+		repairTime1 = new Normal(MEAN_R_1, SD_R_1, new MersenneTwister(Seeds.next()));
+		repairTime3 = new Normal(MEAN_R_3, SD_R_3, new MersenneTwister(Seeds.next()));
+		repairTime4 = new Normal(MEAN_R_4, SD_R_4, new MersenneTwister(Seeds.next()));
+		repairTime5 = new Normal(MEAN_R_5, SD_R_5, new MersenneTwister(Seeds.next()));
+		timeToFail1 = new Normal(MEAN_F_1, SD_F_1, new MersenneTwister(Seeds.next()));
+		timeToFail3 = new Normal(MEAN_F_3, SD_F_3, new MersenneTwister(Seeds.next()));
+		timeToFail4 = new Normal(MEAN_F_4, SD_F_4, new MersenneTwister(Seeds.next()));
+		timeToFail5 = new Normal(MEAN_F_5, SD_F_5, new MersenneTwister(Seeds.next()));
+		
+		loadUnloadTime = new TriangularVariate(0.18, 0.23, 0.45, new MersenneTwister(Seeds.next()));
+		cleaningTime = new TriangularVariate(5.0, 6.0, 10.0, new MersenneTwister(Seeds.next()));
+		
+		typeRandGen = new MersenneTwister(Seeds.next());
 	}
 	
 	
-	//RVP for sample arrivals
+	/* -- Sample arrivals -- */
 	private Exponential interArrDist;  // Exponential distribution for interarrival times
+	
 	private final double MEAN1=60.0/119.0, MEAN2=60.0/107.0, MEAN3=60.0/100.0,
 						 MEAN4=60.0/113.0, MEAN5=60.0/123.0, MEAN6=60.0/116.0,
 						 MEAN7=60.0/107.0, MEAN8=60.0/121.0, MEAN9=60.0/131.0,
@@ -46,8 +53,7 @@ class RVPs
 						 MEAN19=60.0/165.0, MEAN20=60.0/155.0, MEAN21=60.0/149.0,
 						 MEAN22=60.0/134.0, MEAN23=60.0/119.0, MEAN24=60.0/116.0;
 	
-	protected double duSampleInput()  // for getting next value of duInput
-	{
+	protected double duSampleInput() {
 		// Note that inter-arrival time is added to current
 		// clock value to get the next arrival time.
 		double mean = 0;
@@ -83,17 +89,20 @@ class RVPs
         return model.getClock() + mean;
 	}
 	
-	//RVP for SampleType
+	
+	/* -- Sample type -- */
 	private final double PCT_N = 0.93;
-	// PROPN_RUSH = 7%, but not needed for calculation
-	MersenneTwister typeRandGen = new MersenneTwister();
+	// private final double PCT_R = 0.07; --- not used
+	
+	MersenneTwister typeRandGen;
 	
 	public Sample.Type uSampleType(){
 		if(typeRandGen.nextDouble() < PCT_N) return Sample.Type.NORMAL;
 		else return Sample.Type.RUSH;
 	}
 	
-	//RVP for sample test sequence
+	
+	/* -- Test sequence -- */
 	private final double PCT_1 = 0.22;
 	private final double PCT_2 = 0.46;
 	private final double PCT_3 = 1.00;
@@ -160,21 +169,22 @@ class RVPs
 		return sequence;
 	}
 	
-	//RVP for loadUnload time
-	private double loadUnloadTime;
 	
+	/* -- Load/unload time -- */
+	private TriangularVariate loadUnloadTime;
 	public double uLoadUnloadTime(){
-		return loadUnloadTime;
+		return loadUnloadTime.next();
 	}
 	
-	//RVP for loadUnload time
-	private double cleaningTime;
 	
+	/* -- Cleaning time -- */
+	private TriangularVariate cleaningTime;
 	public double uCleaningTime(){
-		return cleaningTime;
+		return cleaningTime.next();
 	}
 	
-	//RVP for repair time
+	
+	/* -- Repair time -- */
 	private final double MEAN_R_1 = 11;
 	private final double MEAN_R_3 = 7;
 	private final double MEAN_R_4 = 14;
@@ -203,7 +213,8 @@ class RVPs
 		}
 	}
 	
-	//RVP for time to fail
+	
+	/* -- Time between failures -- */
 	private final double MEAN_F_1 = 840;
 	private final double MEAN_F_3 = 540;
 	private final double MEAN_F_4 = 900;
@@ -230,17 +241,5 @@ class RVPs
 			default:
 				return timeToFail5.nextDouble();
 		}
-	}
-	
-	
-	//Triangular distribution
-	private double triangularDistribution(double min, double mod, double max) {
-	    double F = (max - min) / (mod - min);
-	    double rand = Math.random();
-	    if (rand < F) {
-	        return min + Math.sqrt(rand * (mod - min) * (max - min));
-	    } else {
-	        return mod - Math.sqrt((1 - rand) * (mod - min) * (mod - max));
-	    }
 	}
 }

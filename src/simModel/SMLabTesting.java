@@ -66,7 +66,7 @@ public class SMLabTesting extends AOSimulationModel
 	
 	/*----------Constructor----------*/
 	@SuppressWarnings("unchecked")
-	public SMLabTesting(double t0time, double tftime, int maxSHWaiting, int numSH, int[] numTM, Seeds sd)
+	public SMLabTesting(double t0time, double tftime, int maxSHWaiting, int numSH, int[] numTM)
 	{
 		// parameters
 		maxSampleHoldersWaiting = maxSHWaiting;
@@ -114,7 +114,7 @@ public class SMLabTesting extends AOSimulationModel
 		maintenanceEmployee = new MaintenanceEmployee();
 		
 		// things that end with a P
-		rvp = new RVPs(this, sd);
+		rvp = new RVPs(this);
 		dvp = new DVPs(this);
 		udp = new UDPs(this);
 		

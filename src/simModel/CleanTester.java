@@ -17,7 +17,7 @@ public class CleanTester extends ConditionalActivity{
 	
 	// Starting Event SCS
 	public void startingEvent() {
-		model.maintenanceEmployee.testMachineID = model.qMaintenanceWaitingLine.remove();		
+		model.maintenanceEmployee.testMachineID = model.qMaintenanceWaitingLine.remove();
 	}
 	
 	// Duration
@@ -33,6 +33,6 @@ public class CleanTester extends ConditionalActivity{
 		model.testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning = Constants.NUM_TEST_BEFORE;
 		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.AVAILABLE;
 		
-		model.maintenanceEmployee.testMachineID = Constants.TM_NONE;	
+		model.maintenanceEmployee.testMachineID = Constants.TM_NONE;
 	}
 }

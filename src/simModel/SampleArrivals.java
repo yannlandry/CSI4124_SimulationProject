@@ -16,7 +16,7 @@ public class SampleArrivals extends ScheduledAction {
 		return model.rvp.duSampleInput();
 	}
 	
-	//event SCS
+	// event SCS
 	public void actionEvent(){
 		Sample icSample = new Sample();
 		
