@@ -1,8 +1,5 @@
 package simModel;
 
-import java.util.ArrayDeque;
-import java.util.concurrent.ArrayBlockingQueue;
-
 import simulationModelling.ScheduledAction;
 
 class Initialise extends ScheduledAction
@@ -10,7 +7,9 @@ class Initialise extends ScheduledAction
 	SMLabTesting model;
 	
 	// Constructor
-	protected Initialise(SMLabTesting model) { this.model = model; }
+	protected Initialise(SMLabTesting model) {
+		this.model = model;
+	}
 
 	double [] ts = { 0.0, -1.0 }; // -1.0 ends scheduling
 	int tsix = 0;  // set index to first entry.

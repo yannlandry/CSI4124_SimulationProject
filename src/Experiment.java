@@ -17,10 +17,10 @@ class Experiment {
 	public static void main(String[] args) {
 
 		// do a full experiment with all configurations and alternate cases
-		runFullExperiment();
+		//runFullExperiment();
 		
 		// uncomment to use sandbox method instead
-		//sandbox();
+		sandbox();
 		
 	}
 	
@@ -87,12 +87,7 @@ class Experiment {
 		
 		runSim();
 		
-		System.out.println("--SIMULATION COMPLETE--");
-		System.out.println(labTesting.getTotalCompleted() + " samples were processed, " + (labTesting.getPctCompletedInTime()) + " were completed in time.");
-		
-		for(int i = 0; i < 5; ++i) {
-			System.out.println("Unsuccessful entries in Test Cell " + (i+1) + " was " + (labTesting.getPctUnsuccessfulEntry()[i]) + " (" + labTesting.getNumUnsuccessfulEntry()[i] + "/" + labTesting.getTotalEntryAttempts()[i] + ").");
-		}
+		labTesting.debug.testResults();
 	}
 
 	/**

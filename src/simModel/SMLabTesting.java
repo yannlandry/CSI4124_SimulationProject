@@ -52,16 +52,11 @@ public class SMLabTesting extends AOSimulationModel
 	// Output values - define the public methods that return values
 	// required for experimentation.
 	public double[] getPctUnsuccessfulEntry(){ return output.pctUnsuccessfulEntry; }
-	public int[] getNumUnsuccessfulEntry(){ return output.unsuccessfulEntry; }
-	public int[] getTotalEntryAttempts(){ return output.totalEntryAttempts; }
-	
-	public int getTotalCompleted(){ return output.sampleTotal; }
-	public int getNumCompletedInTime(){ return output.completedInTime; }
 	public double getPctCompletedInTime(){ return output.pctCompletedInTime; }
 	
 	
 	/*----------Debug----------*/
-	protected Debug debug;
+	public Debug debug;
 	
 	
 	/*----------Constructor----------*/

@@ -54,7 +54,29 @@ public class Debug {
 		System.out.println(model.qInputQueue[Constants.NORMAL].size() + " NORMAL and " + model.qInputQueue[Constants.RUSH].size() + " RUSH.");
 	}
 	
-	/*public void maintenance() {
-		Maintenance
-	} to be completed */
+	public void maintenance() {
+		System.out.println("Maintenance status:");
+		
+		Integer[] tmid = model.maintenanceEmployee.testMachineID;
+		
+		if(tmid == Constants.TM_NONE)
+			System.out.print("[No operation in progress]");
+		else
+			System.out.print((tmid[0] == Constants.CELL2 ? "Cleaning" : "Repairing") + " machine [" + tmid[0] + "][" + tmid[1] + "] ");
+		
+		System.out.println(" {" + model.qMaintenanceWaitingLine.size() + " waiting}");
+	}
+	
+	public void testResults() {
+		System.out.println("--SIMULATION COMPLETE--");
+		System.out.println(model.output.sampleTotal + " samples were processed, " + model.output.pctCompletedInTime + " were completed in time.");
+		
+		for(int i = 0; i < 5; ++i) {
+			System.out.println("Unsuccessful entries in Test Cell " + (i+1) + " was " + (model.output.pctUnsuccessfulEntry[i]) + " (" + model.output.unsuccessfulEntry[i] + "/" + model.output.totalEntryAttempts[i] + ").");
+		}
+	}
+	
+	public void inputQueues() {
+		System.out.println(model.qInputQueue[Constants.NORMAL].size() + " NORMAL samples and " + model.qInputQueue[Constants.RUSH].size() + " RUSH samples waiting in the input queues.");
+	}
 }

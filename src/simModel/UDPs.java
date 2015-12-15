@@ -1,9 +1,5 @@
 package simModel;
 
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-
 class UDPs 
 {
 	SMLabTesting model;  // for accessing the clock
@@ -179,8 +175,6 @@ class UDPs
 	protected void sampleOutput(Sample sampleRef) {
 		double time = model.getClock() - sampleRef.startTime + Constants.MANUAL_PREP_TIME;
 		
-		//System.out.println("Sample of type " + (sampleRef.type == Sample.Type.NORMAL ? "NORMAL" : "RUSH") + " completed in " + (model.getClock() - sampleRef.startTime) + " minutes.");
-
 		// do not count samples that entered during the first and last hours
 		if(sampleRef.startTime > 60.0 && sampleRef.startTime < 1500.0)
 			if((sampleRef.type == Sample.Type.NORMAL && time <= Constants.NORMAL_TIME_LIMIT)

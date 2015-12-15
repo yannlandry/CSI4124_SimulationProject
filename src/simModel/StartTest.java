@@ -1,6 +1,5 @@
 package simModel;
 
-import simModel.TestMachine.State;
 import simulationModelling.ConditionalActivity;
 
 public class StartTest extends ConditionalActivity {

@@ -18,7 +18,7 @@ public class RepairTester extends ConditionalActivity {
 	
 	// Starting Event SCS
 	public void startingEvent() {
-		model.maintenanceEmployee.testMachineID = model.qMaintenanceWaitingLine.remove();			
+		model.maintenanceEmployee.testMachineID = model.qMaintenanceWaitingLine.remove();
 	}
 	
 	// Duration

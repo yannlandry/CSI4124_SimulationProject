@@ -1,11 +1,7 @@
 package simModel;
 
-import simModel.Sample.Type;
-
 public class TestMachine {
 
-	//enum Type{CELL1,CELL2,CELL3,CELL4,CELL5};
-	//Type type;								//Type of sample
 	int sampleHolderID;							//The identifier of the SampleHolder currently being serviced by the test
 												//If the value is NULL, then there's no sample holder inside the machine.
 	enum State{AVAILABLE, BUSY, MAINTENANCE};	//Indicates the current state of the machine.
