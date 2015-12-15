@@ -13,7 +13,7 @@ public class SampleArrivals extends ScheduledAction {
 	
 	// time sequence
 	public double timeSequence(){
-		return model.rvp.duSampleInput();
+		return model.rvp.DuSampleArrival();
 	}
 	
 	// event SCS

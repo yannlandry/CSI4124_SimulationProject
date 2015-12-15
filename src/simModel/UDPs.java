@@ -136,7 +136,7 @@ class UDPs
 
 		return tm.state == TestMachine.State.AVAILABLE
 			&& (model.qTestCellWaitingLine[cell_id].size() != Constants.NONE_WAITING || tm.sampleHolderID != Constants.NONE)
-			&& (cell_id == Constants.CELL2 || tm.timeLeftToFailure >= model.dvp.getUCycleTime(cell_id));
+			&& (cell_id == Constants.CELL2 || tm.timeLeftToFailure >= model.dvp.uCycleTime(cell_id));
 	}
 	 
 	// check if machine is able to perform test while failing in the process
@@ -145,7 +145,7 @@ class UDPs
 
 		return tm.state == TestMachine.State.AVAILABLE
 			&& (model.qTestCellWaitingLine[cell_id].size() != Constants.NONE_WAITING || tm.sampleHolderID != Constants.NONE)
-			&& cell_id != Constants.CELL2 && tm.timeLeftToFailure < model.dvp.getUCycleTime(cell_id);
+			&& cell_id != Constants.CELL2 && tm.timeLeftToFailure < model.dvp.uCycleTime(cell_id);
 	}
 	 
 	// is the maintenance employee ready to repair a tester?

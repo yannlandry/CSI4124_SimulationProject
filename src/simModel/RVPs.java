@@ -53,7 +53,7 @@ class RVPs
 						 MEAN19=60.0/165.0, MEAN20=60.0/155.0, MEAN21=60.0/149.0,
 						 MEAN22=60.0/134.0, MEAN23=60.0/119.0, MEAN24=60.0/116.0;
 	
-	protected double duSampleInput() {
+	protected double DuSampleArrival() {
 		// Note that inter-arrival time is added to current
 		// clock value to get the next arrival time.
 		double mean = 0;
@@ -113,7 +113,7 @@ class RVPs
 	private final double PCT_8 = 0.06;
 	private final double PCT_9 = 0.59;
 	
-	public Queue<Integer> uSampleTestSequence(){
+	public Queue<Integer> uSampleTestSequence() {
 		double randNum = typeRandGen.nextDouble();
 		Queue<Integer> sequence = new ArrayDeque<Integer>();
 		if(randNum<PCT_8){

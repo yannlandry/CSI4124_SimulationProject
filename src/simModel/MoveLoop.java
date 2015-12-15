@@ -13,7 +13,7 @@ public class MoveLoop extends ScheduledAction {
 	
 	// time sequence
 	public double timeSequence() {
-		return model.getClock() + model.dvp.getMoveOnePosTime();
+		return model.getClock() + model.dvp.MoveOnePosTime();
 	}
 	
 	// event SCS

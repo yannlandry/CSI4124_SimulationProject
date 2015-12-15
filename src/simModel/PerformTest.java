@@ -28,14 +28,11 @@ public class PerformTest extends ConditionalActivity {
 			model.testMachine.get(cell_id).get(machine_id).sampleHolderID = model.qTestCellWaitingLine[cell_id].remove();
 		
 		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.BUSY;
-		
-		//System.out.println("--START TEST--");
-		//model.debug.testCell(cell_id);
 	}
 	
 	// Duration
 	public double duration() {
-		return model.dvp.getUCycleTime(testMachineID[0]);
+		return model.dvp.uCycleTime(testMachineID[0]);
 	}
 	
 	// Terminating Event SCS
@@ -62,11 +59,7 @@ public class PerformTest extends ConditionalActivity {
 		
 		// otherwise decrease time before failure
 		else {
-			model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure-= model.dvp.getUCycleTime(cell_id);
+			model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure-= model.dvp.uCycleTime(cell_id);
 		}
-		
-		//System.out.println("--END TEST--");
-		//model.debug.testCell(cell_id);
 	}
-	
 }

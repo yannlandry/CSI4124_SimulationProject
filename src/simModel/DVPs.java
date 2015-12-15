@@ -10,7 +10,7 @@ class DVPs
 	}
 	
 	// returns the cycle time of cell_id
-	protected double getUCycleTime(int cell_id) {
+	protected double uCycleTime(int cell_id) {
 		switch (cell_id){
 			case Constants.CELL1:
 				return 0.77;
@@ -27,7 +27,7 @@ class DVPs
 	}
 	
 	// returns the time between two transportation loop moves
-	protected double getMoveOnePosTime() {
+	protected double MoveOnePosTime() {
 		return 1.0 / 60.0;
 	}
 }
