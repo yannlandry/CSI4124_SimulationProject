@@ -19,8 +19,8 @@ public class MoveLoop extends ScheduledAction {
 	// event SCS
 	public void actionEvent(){
 		model.rqTransportationLoop.offset = (model.rqTransportationLoop.offset + 1) % (Constants.TLOOP_LEN);
-		model.udp.moveOffLoop();
 		model.udp.moveOnLoop();
+		model.udp.moveOffLoop();
 	}
 	
 }

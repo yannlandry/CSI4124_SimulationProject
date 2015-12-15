@@ -81,8 +81,8 @@ class Experiment {
 	 * Sandbox method mostly used for testing
 	 */
 	private static void sandbox() {
-		numTestMachines = new int[] {2,2,3,3,4};
-		numSampleHolders = 25;
+		numTestMachines = new int[] {5,5,5,5,5};
+		numSampleHolders = 40;
 		maxSampleHoldersWaiting = 5;
 		
 		runSim();

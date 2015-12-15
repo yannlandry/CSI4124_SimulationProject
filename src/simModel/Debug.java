@@ -30,7 +30,7 @@ public class Debug {
 	}
 	
 	public void testCell(int cell_id) {
-		System.out.println("Test cell " + cell_id + " (" + model.testMachine.get(cell_id).size() + " test machines): " + model.qTestCellWaitingLine[cell_id].size() + " waiting, " + model.qExitLine[cell_id].size() + " in the exit.");
+		System.out.println("Test Cell " + (cell_id+1) + " (" + model.testMachine.get(cell_id).size() + " test machines): " + model.qTestCellWaitingLine[cell_id].size() + " waiting, " + model.qExitLine[cell_id].size() + " in the exit.");
 		System.out.print("Servicing: ");
 		
 		for(int j = 0; j < model.testMachine.get(cell_id).size(); ++j) {
@@ -50,8 +50,8 @@ public class Debug {
 	}
 	
 	public void loadUnloadArea() {
-		System.out.println("Servicing sample holder " + model.loadUnloadMachine.sampleHolderID + "/" + model.numSampleHolders + "; " + model.qLoadUnloadWaitingLine.size() + " waiting; " + model.qExitLine[5].size() + " about to exit.");
-		System.out.println(model.qInputQueue[Constants.NORMAL].size() + " NORMAL and " + model.qInputQueue[Constants.RUSH].size() + " RUSH.");
+		System.out.println("Servicing sample holder " + model.loadUnloadMachine.sampleHolderID + "; " + model.qLoadUnloadWaitingLine.size() + " waiting; " + model.qExitLine[5].size() + " about to exit.");
+		System.out.println(model.qInputQueue[Constants.NORMAL].size() + " NORMAL and " + model.qInputQueue[Constants.RUSH].size() + " RUSH in the input queues.");
 	}
 	
 	public void maintenance() {
@@ -69,14 +69,10 @@ public class Debug {
 	
 	public void testResults() {
 		System.out.println("--SIMULATION COMPLETE--");
-		System.out.println(model.output.sampleTotal + " samples were processed, " + model.output.pctCompletedInTime + " were completed in time.");
+		System.out.println(model.output.sampleTotal + " samples were processed, " + model.output.pctCompletedInTime + " (" + model.output.completedInTime + "/" + model.output.sampleTotal + ") were completed in time.");
 		
 		for(int i = 0; i < 5; ++i) {
 			System.out.println("Unsuccessful entries in Test Cell " + (i+1) + " was " + (model.output.pctUnsuccessfulEntry[i]) + " (" + model.output.unsuccessfulEntry[i] + "/" + model.output.totalEntryAttempts[i] + ").");
 		}
-	}
-	
-	public void inputQueues() {
-		System.out.println(model.qInputQueue[Constants.NORMAL].size() + " NORMAL samples and " + model.qInputQueue[Constants.RUSH].size() + " RUSH samples waiting in the input queues.");
 	}
 }
