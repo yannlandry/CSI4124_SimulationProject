@@ -35,7 +35,7 @@ public class SMLabTesting extends AOSimulationModel
 	/* Things that aren't queues */
 	protected SampleHolder sampleHolder[];
 	protected TransportationLoop rqTransportationLoop;
-	protected HashMap<Integer, ArrayList<TestMachine>> testMachine;
+	protected TestMachine testMachine[][];
 	protected LoadUnloadMachine loadUnloadMachine;
 	protected MaintenanceEmployee maintenanceEmployee;
 
@@ -91,12 +91,14 @@ public class SMLabTesting extends AOSimulationModel
 			qTestCellWaitingLine[i] = new ArrayBlockingQueue<Integer>(Constants.TEST_Q_LEN);
 
 		// test machines
-		testMachine = new HashMap<Integer, ArrayList<TestMachine>>();
+		testMachine = new TestMachine[5][];
 		
-		for(int i = 0; i < 5; ++i) {
-			testMachine.put(i, new ArrayList<TestMachine>());
-			for(int j = 0; j < numTestMachines[i]; ++j)
-				testMachine.get(i).add(new TestMachine());
+		for(int i = 0; i < testMachine.length; ++i) {
+			for(int j = 0; j < numTestMachines[i]; ++j){
+				testMachine[i] = new TestMachine[j];
+				for(int k = 0; k < j; ++k)
+					testMachine[i][k] = new TestMachine();
+			}
 		}
 		
 		// exit lines
@@ -168,7 +170,7 @@ public class SMLabTesting extends AOSimulationModel
 		}
 
 		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; ++cell_id) {
-			for(int machine_id = 0; machine_id < testMachine.get(cell_id).size(); ++machine_id) {
+			for(int machine_id = 0; machine_id < testMachine[cell_id].length; ++machine_id) {
 
 				if(PerformTest.precondition(this, cell_id, machine_id) == true) {
 					Integer[] tmid = {cell_id, machine_id};
@@ -200,15 +202,15 @@ public class SMLabTesting extends AOSimulationModel
 		// See examples for suggestions on setup logging
 
 		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; ++cell_id) {
-			for(int machine_id = 0; machine_id < testMachine.get(cell_id).size(); ++machine_id) {
+			for(int machine_id = 0; machine_id < testMachine[cell_id].length; ++machine_id) {
 				if(traceFlag) {
 					System.out.println("Clock: " + getClock() + 
 										" cell_id " + cell_id +
 										" machine_id " + machine_id +
-										" sampleHolderID " + testMachine.get(cell_id).get(machine_id).sampleHolderID +
-										" state " + testMachine.get(cell_id).get(machine_id).state + 
-										" timeLeftToFailure " + testMachine.get(cell_id).get(machine_id).timeLeftToFailure +
-										" testLeftBeforeCleaning " + testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning);
+										" sampleHolderID " + testMachine[cell_id][machine_id].sampleHolderID +
+										" state " + testMachine[cell_id][machine_id].state + 
+										" timeLeftToFailure " + testMachine[cell_id][machine_id].timeLeftToFailure +
+										" testLeftBeforeCleaning " + testMachine[cell_id][machine_id].testsLeftBeforeCleaning);
 					showSBL();
 				}
 			}

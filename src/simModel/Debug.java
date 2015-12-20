@@ -30,11 +30,11 @@ public class Debug {
 	}
 	
 	public void testCell(int cell_id) {
-		System.out.println("Test Cell " + (cell_id+1) + " (" + model.testMachine.get(cell_id).size() + " test machines): " + model.qTestCellWaitingLine[cell_id].size() + " waiting, " + model.qExitLine[cell_id].size() + " in the exit.");
+		System.out.println("Test Cell " + (cell_id+1) + " (" + model.testMachine[cell_id].length + " test machines): " + model.qTestCellWaitingLine[cell_id].size() + " waiting, " + model.qExitLine[cell_id].size() + " in the exit.");
 		System.out.print("Servicing: ");
 		
-		for(int j = 0; j < model.testMachine.get(cell_id).size(); ++j) {
-			TestMachine tm = model.testMachine.get(cell_id).get(j);
+		for(int j = 0; j < model.testMachine[cell_id].length; ++j) {
+			TestMachine tm = model.testMachine[cell_id][j];
 			
 			String display;
 			if(tm.sampleHolderID == -1) display = " ";

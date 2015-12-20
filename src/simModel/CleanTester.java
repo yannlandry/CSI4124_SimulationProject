@@ -30,8 +30,8 @@ public class CleanTester extends ConditionalActivity{
 		int cell_id = model.maintenanceEmployee.testMachineID[0];
 		int machine_id = model.maintenanceEmployee.testMachineID[1];
 				
-		model.testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning = Constants.NUM_TEST_BEFORE;
-		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.AVAILABLE;
+		model.testMachine[cell_id][machine_id].testsLeftBeforeCleaning = Constants.NUM_TEST_BEFORE;
+		model.testMachine[cell_id][machine_id].state = TestMachine.State.AVAILABLE;
 		
 		model.maintenanceEmployee.testMachineID = Constants.TM_NONE;
 	}

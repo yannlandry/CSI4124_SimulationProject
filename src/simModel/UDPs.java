@@ -111,24 +111,24 @@ class UDPs
 	protected void testMachineInitialization() {
 		// for all test machines...
 		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; cell_id++) {
-			for(int machine_id = 0; machine_id < model.testMachine.get(cell_id).size(); ++machine_id) {
+			for(int machine_id = 0; machine_id < model.testMachine[cell_id].length; ++machine_id) {
 				
 				// available, not servicing anything
-				model.testMachine.get(cell_id).get(machine_id).sampleHolderID = Constants.NONE;
-				model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.AVAILABLE;
+				model.testMachine[cell_id][machine_id].sampleHolderID = Constants.NONE;
+				model.testMachine[cell_id][machine_id].state = TestMachine.State.AVAILABLE;
 				
 				// adjust timer/counter for maintenance
 				if(cell_id == Constants.CELL2)
-					model.testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning = Constants.NUM_TEST_BEFORE;
+					model.testMachine[cell_id][machine_id].testsLeftBeforeCleaning = Constants.NUM_TEST_BEFORE;
 				else
-					model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure = model.rvp.uTimeToFail(cell_id);
+					model.testMachine[cell_id][machine_id].timeLeftToFailure = model.rvp.uTimeToFail(cell_id);
 			}
 		}
 	}
 	 
 	// check if machine is able to perform a test
 	protected boolean canPerformTest(int cell_id, int machine_id) {
-		TestMachine tm = model.testMachine.get(cell_id).get(machine_id);
+		TestMachine tm = model.testMachine[cell_id][machine_id];
 
 		return tm.state == TestMachine.State.AVAILABLE
 			&& (model.qTestCellWaitingLine[cell_id].size() != Constants.NONE_WAITING || tm.sampleHolderID != Constants.NONE)
@@ -137,7 +137,7 @@ class UDPs
 	 
 	// check if machine is able to perform test while failing in the process
 	protected boolean canStartTest(int cell_id, int machine_id) {
-		TestMachine tm = model.testMachine.get(cell_id).get(machine_id);
+		TestMachine tm = model.testMachine[cell_id][machine_id];
 
 		return tm.state == TestMachine.State.AVAILABLE
 			&& (model.qTestCellWaitingLine[cell_id].size() != Constants.NONE_WAITING || tm.sampleHolderID != Constants.NONE)

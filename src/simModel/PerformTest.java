@@ -24,10 +24,10 @@ public class PerformTest extends ConditionalActivity {
 		int cell_id = testMachineID[0];
 		int machine_id = testMachineID[1];
 		
-		if(model.testMachine.get(cell_id).get(machine_id).sampleHolderID == Constants.NONE)
-			model.testMachine.get(cell_id).get(machine_id).sampleHolderID = model.qTestCellWaitingLine[cell_id].remove();
+		if(model.testMachine[cell_id][machine_id].sampleHolderID == Constants.NONE)
+			model.testMachine[cell_id][machine_id].sampleHolderID = model.qTestCellWaitingLine[cell_id].remove();
 		
-		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.BUSY;
+		model.testMachine[cell_id][machine_id].state = TestMachine.State.BUSY;
 	}
 	
 	// Duration
@@ -40,26 +40,26 @@ public class PerformTest extends ConditionalActivity {
 		int cell_id = testMachineID[0];
 		int machine_id = testMachineID[1];
 		
-		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.AVAILABLE;
+		model.testMachine[cell_id][machine_id].state = TestMachine.State.AVAILABLE;
 		
 		// ship to exit line
-		model.qExitLine[cell_id].add(model.testMachine.get(cell_id).get(machine_id).sampleHolderID);
-		model.testMachine.get(cell_id).get(machine_id).sampleHolderID = Constants.NONE;
+		model.qExitLine[cell_id].add(model.testMachine[cell_id][machine_id].sampleHolderID);
+		model.testMachine[cell_id][machine_id].sampleHolderID = Constants.NONE;
 		
 		// decrease cell 2 tests before cleaning
 		if(cell_id == Constants.CELL2) {
-			model.testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning-= 1;
+			model.testMachine[cell_id][machine_id].testsLeftBeforeCleaning-= 1;
 			
 			// time to clean?
-			if(model.testMachine.get(cell_id).get(machine_id).testsLeftBeforeCleaning == 0){
+			if(model.testMachine[cell_id][machine_id].testsLeftBeforeCleaning == 0){
 				model.qMaintenanceWaitingLine.add(testMachineID);
-				model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.MAINTENANCE;
+				model.testMachine[cell_id][machine_id].state = TestMachine.State.MAINTENANCE;
 			}
 		}
 		
 		// otherwise decrease time before failure
 		else {
-			model.testMachine.get(cell_id).get(machine_id).timeLeftToFailure-= model.dvp.uCycleTime(cell_id);
+			model.testMachine[cell_id][machine_id].timeLeftToFailure-= model.dvp.uCycleTime(cell_id);
 		}
 	}
 }

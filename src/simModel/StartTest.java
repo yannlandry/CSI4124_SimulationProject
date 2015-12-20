@@ -23,20 +23,20 @@ public class StartTest extends ConditionalActivity {
 		int cell_id = testMachineID[0];
 		int machine_id = testMachineID[1];
 		
-		if(model.testMachine.get(cell_id).get(machine_id).sampleHolderID == Constants.NONE)
-			model.testMachine.get(cell_id).get(machine_id).sampleHolderID = model.qTestCellWaitingLine[cell_id].remove();
+		if(model.testMachine[cell_id][machine_id].sampleHolderID == Constants.NONE)
+			model.testMachine[cell_id][machine_id].sampleHolderID = model.qTestCellWaitingLine[cell_id].remove();
 		
-		model.testMachine.get(cell_id).get(machine_id).state = TestMachine.State.BUSY;
+		model.testMachine[cell_id][machine_id].state = TestMachine.State.BUSY;
 	}
 	
 	// Duration
 	public double duration() {
-		return model.testMachine.get(testMachineID[0]).get(testMachineID[1]).timeLeftToFailure;
+		return model.testMachine[testMachineID[0]][testMachineID[1]].timeLeftToFailure;
 	}
 	
 	// Terminating Event SCS
 	public void terminatingEvent() {
 		model.qMaintenanceWaitingLine.add(testMachineID);
-		model.testMachine.get(testMachineID[0]).get(testMachineID[1]).state = TestMachine.State.MAINTENANCE;
+		model.testMachine[testMachineID[0]][testMachineID[1]].state = TestMachine.State.MAINTENANCE;
 	}
 }
