@@ -5,7 +5,6 @@ import simModel.Seeds;
 
 // Main Method: Experiments
 class Experiment {
-	private static double startTime = 0.0, endTime = 1560.0;
 	private static int maxSampleHoldersWaiting;
 	private static int numSampleHolders;
 	private static int[] numTestMachines;
@@ -17,10 +16,10 @@ class Experiment {
 	public static void main(String[] args) {
 
 		// do a full experiment with all configurations and alternate cases
-		//runFullExperiment();
+		runFullExperiment();
 		
 		// uncomment to use sandbox method instead
-		sandbox();
+		//sandbox();
 		
 	}
 	
@@ -94,7 +93,13 @@ class Experiment {
 	 * Run simulation with current parameters
 	 */
 	private static void runSim() {
-		labTesting = new SMLabTesting(startTime, endTime, maxSampleHoldersWaiting, numSampleHolders, numTestMachines);
+		// warm up period
+		labTesting = new SMLabTesting(0.0, 1440.0, maxSampleHoldersWaiting, numSampleHolders, numTestMachines);
+		labTesting.runSimulation();
+		
+		// actual test period: 7 days
+		labTesting.resetOutputs();
+		labTesting.setTimef(8 * 1440.0);
 		labTesting.runSimulation();
 	}
 	

@@ -15,18 +15,4 @@ class Output
 	protected Output(SMLabTesting md) {
 		model = md; 	
 	}
-
-	// DSOVs available in the OutputSequence objects
-
-	
-    // If seperate methods required to process Trajectory or Sample
-    // Sequences - add them here
-
-    // SSOVs
-	
-
-	
-    
-		
-	
 }

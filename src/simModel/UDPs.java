@@ -18,13 +18,19 @@ class UDPs
 	}
 
 	protected void updateSuccessfulCompletions() {
-		model.output.pctCompletedInTime =
-			(double)(++model.output.completedInTime) / (double)(model.output.sampleTotal);
+		if(model.output.sampleTotal == 0)
+			model.output.pctCompletedInTime = 1.0;
+		else
+			model.output.pctCompletedInTime =
+				(double)(++model.output.completedInTime) / (double)(model.output.sampleTotal);
 	}
 
 	protected void updateUnsuccessfulCompletions() {
-		model.output.pctCompletedInTime =
-			(double)(model.output.completedInTime) / (double)(model.output.sampleTotal);
+		if(model.output.sampleTotal == 0)
+			model.output.pctCompletedInTime = 0.0;
+		else
+			model.output.pctCompletedInTime =
+				(double)(model.output.completedInTime) / (double)(model.output.sampleTotal);
 	}
 	
 	protected void moveOffToCell(int index, int cell_id) {
@@ -127,21 +133,33 @@ class UDPs
 	}
 	 
 	// check if machine is able to perform a test
-	protected boolean canPerformTest(int cell_id, int machine_id) {
-		TestMachine tm = model.testMachine[cell_id][machine_id];
-
-		return tm.state == TestMachine.State.AVAILABLE
-			&& (model.qTestCellWaitingLine[cell_id].size() != Constants.NONE_WAITING || tm.sampleHolderID != Constants.NONE)
-			&& (cell_id == Constants.CELL2 || tm.timeLeftToFailure >= model.dvp.uCycleTime(cell_id));
+	protected Integer[] canPerformTest() {
+		for(int cell_id = 0; cell_id < model.testMachine.length; ++cell_id) {
+			for(int machine_id = 0; machine_id < model.testMachine[cell_id].length; ++machine_id) {
+				TestMachine tm = model.testMachine[cell_id][machine_id];
+				if( tm.state == TestMachine.State.AVAILABLE
+					&& (model.qTestCellWaitingLine[cell_id].size() != Constants.NONE_WAITING || tm.sampleHolderID != Constants.NONE)
+					&& (cell_id == Constants.CELL2 || tm.timeLeftToFailure >= model.dvp.uCycleTime(cell_id)) )
+						return new Integer[] {cell_id, machine_id};
+			}
+		}
+		
+		return Constants.TM_NONE;
 	}
 	 
 	// check if machine is able to perform test while failing in the process
-	protected boolean canStartTest(int cell_id, int machine_id) {
-		TestMachine tm = model.testMachine[cell_id][machine_id];
-
-		return tm.state == TestMachine.State.AVAILABLE
-			&& (model.qTestCellWaitingLine[cell_id].size() != Constants.NONE_WAITING || tm.sampleHolderID != Constants.NONE)
-			&& cell_id != Constants.CELL2 && tm.timeLeftToFailure < model.dvp.uCycleTime(cell_id);
+	protected Integer[] canStartTest() {
+		for(int cell_id = 0; cell_id < model.testMachine.length; ++cell_id) {
+			for(int machine_id = 0; machine_id < model.testMachine[cell_id].length; ++machine_id) {
+				TestMachine tm = model.testMachine[cell_id][machine_id];
+				if( tm.state == TestMachine.State.AVAILABLE
+					&& (model.qTestCellWaitingLine[cell_id].size() != Constants.NONE_WAITING || tm.sampleHolderID != Constants.NONE)
+					&& cell_id != Constants.CELL2 && tm.timeLeftToFailure < model.dvp.uCycleTime(cell_id) )
+						return new Integer[] {cell_id, machine_id};
+			}
+		}
+		
+		return Constants.TM_NONE;
 	}
 	 
 	// is the maintenance employee ready to repair a tester?
@@ -173,15 +191,12 @@ class UDPs
 
 	// sample exit from the system
 	protected void sampleOutput(Sample sampleRef) {
-		// do not count samples that entered during the first and last hours
-		if(sampleRef.startTime > 60.0 && sampleRef.startTime < 1500.0) {
-			double time = model.getClock() - sampleRef.startTime + Constants.MANUAL_PREP_TIME;
-		
-			if((sampleRef.type == Sample.Type.NORMAL && time <= Constants.NORMAL_TIME_LIMIT)
-				|| (sampleRef.type == Sample.Type.RUSH && time <= Constants.RUSH_TIME_LIMIT))
-				updateSuccessfulCompletions();
-			else
-				updateUnsuccessfulCompletions();
-		}
+		double time = model.getClock() - sampleRef.startTime + Constants.MANUAL_PREP_TIME;
+	
+		if((sampleRef.type == Sample.Type.NORMAL && time <= Constants.NORMAL_TIME_LIMIT)
+			|| (sampleRef.type == Sample.Type.RUSH && time <= Constants.RUSH_TIME_LIMIT))
+			updateSuccessfulCompletions();
+		else
+			updateUnsuccessfulCompletions();
 	}
 }

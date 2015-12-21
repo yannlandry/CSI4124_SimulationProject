@@ -168,26 +168,17 @@ public class SMLabTesting extends AOSimulationModel
 			scheduleActivity(act);
 			statusChanged = true;
 		}
-
-		for(int cell_id = Constants.CELL1; cell_id < Constants.LUA; ++cell_id) {
-			for(int machine_id = 0; machine_id < testMachine[cell_id].length; ++machine_id) {
-
-				if(PerformTest.precondition(this, cell_id, machine_id) == true) {
-					Integer[] tmid = {cell_id, machine_id};
-					PerformTest act = new PerformTest(this, tmid);
-					act.startingEvent();
-					scheduleActivity(act);
-					statusChanged = true;
-				}
-				if(StartTest.precondition(this, cell_id, machine_id) == true) {
-					Integer[] tmid = {cell_id, machine_id};
-					StartTest act = new StartTest(this, tmid);
-					act.startingEvent();
-					scheduleActivity(act);
-					statusChanged = true;
-				}
-			
-			}
+		if(PerformTest.precondition(this) == true) {
+			PerformTest act = new PerformTest(this);
+			act.startingEvent();
+			scheduleActivity(act);
+			statusChanged = true;
+		}
+		if(StartTest.precondition(this) == true) {
+			StartTest act = new StartTest(this);
+			act.startingEvent();
+			scheduleActivity(act);
+			statusChanged = true;
 		}
 
 		return statusChanged;
@@ -226,6 +217,16 @@ public class SMLabTesting extends AOSimulationModel
 	{
 		seqAct.startingEvent();
 		scheduleActivity(seqAct);
-	}	
+	}
+	
+	public void resetOutputs() {
+		java.util.Arrays.fill(output.unsuccessfulEntry, 0);
+		java.util.Arrays.fill(output.totalEntryAttempts, 0);
+		java.util.Arrays.fill(output.pctUnsuccessfulEntry, 0);
+		
+		output.sampleTotal = 0;
+		output.completedInTime = 0;
+		output.pctCompletedInTime = 0;
+	}
 
 }

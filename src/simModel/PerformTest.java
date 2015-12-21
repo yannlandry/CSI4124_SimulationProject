@@ -8,19 +8,19 @@ public class PerformTest extends ConditionalActivity {
 	Integer[] testMachineID;
 	
 	// Constructor
-	protected PerformTest(SMLabTesting model, Integer[] testMachineID) {
+	protected PerformTest(SMLabTesting model) {
 		this.model = model;
-		this.testMachineID = testMachineID.clone();
-		
 	}
 	
 	// Precondition
-	protected static boolean precondition(SMLabTesting model, int cell_id, int machine_id) {
-		return model.udp.canPerformTest(cell_id, machine_id);
+	protected static boolean precondition(SMLabTesting model) {
+		return model.udp.canPerformTest() != Constants.TM_NONE;
 	}
 	
 	// Starting Event SCS
 	public void startingEvent() {
+		testMachineID = model.udp.canPerformTest();
+		
 		int cell_id = testMachineID[0];
 		int machine_id = testMachineID[1];
 		
