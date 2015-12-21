@@ -72,7 +72,7 @@ public class Debug {
 		System.out.println(model.output.sampleTotal + " samples were processed, " + model.output.pctCompletedInTime + " (" + model.output.completedInTime + "/" + model.output.sampleTotal + ") were completed in time.");
 		
 		for(int i = 0; i < 5; ++i) {
-			System.out.println("Unsuccessful entries in Test Cell " + (i+1) + " was " + (model.output.pctUnsuccessfulEntry[i]) + " (" + model.output.unsuccessfulEntry[i] + "/" + model.output.totalEntryAttempts[i] + ").");
+			System.out.println("Unsuccessful entries in CELL" + (i+1) + " was " + (model.output.pctUnsuccessfulEntry[i]) + " (" + model.output.unsuccessfulEntry[i] + "/" + model.output.totalEntryAttempts[i] + ").");
 		}
 	}
 }
