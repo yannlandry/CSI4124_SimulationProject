@@ -86,7 +86,7 @@ class RVPs
 		else mean = MEAN1; // last hour
         
 		// need to generate something from exponential
-        return model.getClock() + mean;
+        return model.getClock() + interArrDist.nextDouble(1.0 / mean);
 	}
 	
 	
