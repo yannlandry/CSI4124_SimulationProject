@@ -9,6 +9,8 @@ class Experiment {
 	private static int numSampleHolders;
 	private static int[] numTestMachines;
 	private static SMLabTesting labTesting; // Simulation object
+	
+	private static int totalruns = 0;
 
 	/**
 	 * Start point, both runFullExperiment and sandbox can be called
@@ -20,6 +22,8 @@ class Experiment {
 		
 		// uncomment to use sandbox method instead
 		//sandbox();
+		
+		System.out.println(totalruns + " runs.");
 		
 	}
 	
@@ -101,6 +105,8 @@ class Experiment {
 		labTesting.resetOutputs();
 		labTesting.setTimef(8 * 1440.0);
 		labTesting.runSimulation();
+		
+		++totalruns;
 	}
 	
 	/**
